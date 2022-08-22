@@ -1,0 +1,22 @@
+<div class="back">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-12 col-md-6 col-lg-4 offset-md-3 offset-lg-4">                
+          <div class="card text-center mt-5">
+            <div class="card-header"><h4>INICIO DE SESIÓN</h4></div>
+            <div class="card-body">
+              <div class="row">              
+                    <input type="text" class="form-control mb-2 text-center" #userEmail placeholder="Correo" required autofocus>
+                    <input type="password" class="form-control mb-2 text-center" #userPassword placeholder="Contraseña" required>
+                    <div class="d-grid gap-2">
+                      <button class="btn btn-lg btn-outline-success mb-1" (click)="authService.SignIn(userEmail.value, userPassword.value)" [routerLink]="['/']">Entrar</button>                  
+                    </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  

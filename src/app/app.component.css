@@ -1,0 +1,17 @@
+.nav-row {
+    display: flex;
+    justify-content: space-between;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+#toolbar {
+    background-color: #00ac69;
+    color: #323f52;
+}
+
+@media (max-width: 650px){
+    #nav_a {
+        display: none;
+    }
+}

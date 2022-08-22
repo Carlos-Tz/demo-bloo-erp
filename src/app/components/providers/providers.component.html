@@ -1,0 +1,55 @@
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card mt-2">
+                <div class="card-header">
+                    <nav class="navbar bg-light">
+                        <div class="container-fluid">
+                            <a class="navbar-brand">Gestión de proveedores</a>
+                            <div class="d-flex">
+                                <select2 
+                                    *ngIf="providers.length"
+                                    [data]="categories"
+                                    (update)="update($event)"
+                                    displaySearchStatus="always"
+                                    listPosition="below"
+                                    styleMode="material"
+                                    resettable
+                                    resultMaxHeight="250px">
+                                    <select2-hint>Clasificación</select2-hint>
+                                </select2>
+                                <!-- (change)="change('change1', $event)" -->
+                                <!-- [value]="value1" -->
+                            </div>
+                            <div class="d-flex">
+                                <button class="btn btn-outline-info me-2" (click)="openDialog()">Nuevo proveedor</button>
+                                <button class="btn btn-outline-success" (click)="getAllProviders()" >Todos los proveedores</button>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+                <div class="card-body">
+                    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+                    <!-- <table datatable [dtOptions]="dtOptions" class="row-border hover"> -->
+                        <thead>
+                          <tr>
+                            <th>RFC</th>
+                            <th>Nombre</th>
+                            <th>Teléfono</th>
+                            <th>Clasificación</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let provider of providers">
+                            <td>{{ provider.id }}</td>
+                            <td>{{ provider.name }}</td>
+                            <td>{{ provider.phone }}</td>
+                            <td>{{ provider.category }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
