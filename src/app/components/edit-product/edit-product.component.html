@@ -1,4 +1,4 @@
-<h2 mat-dialog-title style="margin-bottom: 0.5rem;">Nuevo producto</h2>
+<h2 mat-dialog-title style="margin-bottom: 0.5rem;">Editar producto</h2>
 <form [formGroup]="myForm" novalidate autocomplete="off">
     <mat-dialog-content class="w-100 m-0">
         <div class="row">
@@ -9,6 +9,7 @@
             <div class="col-sm-12 col-md-6">
                 <select2 class="w-100" 
                     [data]="categories"
+                    [value]="cat"
                     displaySearchStatus="always"
                     listPosition="below"
                     styleMode="material"
@@ -49,8 +50,10 @@
             </mat-form-field>
             <div class="col-sm-12">
                 <select2 class="w-100" 
-                    [data]="providers"
-                    multiple
+                    [data]="providers1"
+                    [value]="pro"
+                    multiple="true"
+                    [overlay]="false"
                     displaySearchStatus="always"
                     listPosition="above"
                     styleMode="material"

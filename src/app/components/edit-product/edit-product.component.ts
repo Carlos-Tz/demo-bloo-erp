@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Select2Data } from 'ng-select2-component';
 import { ToastrService } from 'ngx-toastr';
 import { ApiCategoryService } from 'src/app/services/api-category.service';
@@ -7,17 +8,19 @@ import { ApiProductService } from 'src/app/services/api-product.service';
 import { ApiProviderService } from 'src/app/services/api-provider.service';
 
 @Component({
-  selector: 'app-new-product',
-  templateUrl: './new-product.component.html',
-  styleUrls: ['./new-product.component.css']
+  selector: 'app-edit-product',
+  templateUrl: './edit-product.component.html',
+  styleUrls: ['./edit-product.component.css']
 })
-export class NewProductComponent implements OnInit {
+export class EditProductComponent implements OnInit, OnDestroy {
 
   public myForm!: FormGroup;
   public categories: Select2Data = [];
-  public providers: Select2Data = [];
-
+  public providers1: Select2Data = [];
+  public cat = '';
+  public pro: string[] = [];
   constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private fb: FormBuilder,
     public apiP: ApiProductService,
     public apiPv: ApiProviderService,
@@ -26,7 +29,23 @@ export class NewProductComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    //this.key = this.actRouter.snapshot.paramMap.get('key');
     this.sForm();
+    this.apiP.GetProduct(this.data.key).valueChanges().subscribe(data => {
+      this.myForm.patchValue(data);
+      this.cat = data.category;
+      this.pro = data.providers;
+      //this.pro = ["1454sas42121", "dsd098juhju4"];
+      //this.myForm.patchValue({ providers: this.pro });
+      //console.log(this.myForm.value);
+      //console.log(data);
+      
+      //this.myForm.patchValue({ providers: this.pro });
+      //this.pro = data.providers;
+      //console.log(data.providers);
+      
+    });
+
     this.apiC.GetCategoryList().snapshotChanges().subscribe(data => {
       data.forEach(item => {
         //const p = item.payload.toJSON();
@@ -40,7 +59,7 @@ export class NewProductComponent implements OnInit {
         //const p = item.payload.toJSON();
         const p = item.payload.val();
         const pro = {'value': p.id, 'label': p.name};        
-        this.providers.push(pro);
+        this.providers1.push(pro);
       });
     });
   }
@@ -61,12 +80,13 @@ export class NewProductComponent implements OnInit {
   }
 
   submitSurveyData = () => {
-    this.apiP.AddProduct(this.myForm.value);
-    this.ResetForm();
+    this.apiP.UpdateProduct(this.myForm.value, this.data.key);
+    this.toastr.success('Producto actualizado!');
   }
 
-  ResetForm() {
-    this.myForm.reset();
+  ngOnDestroy(): void {
+    // Do not forget to unsubscribe the event
+    //this.dtTrigger.unsubscribe();
+    //$.fn['dataTable'].ext.search.pop();
   }
-
 }

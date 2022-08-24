@@ -7,7 +7,7 @@
                         <div class="container-fluid">
                             <a class="navbar-brand">Gestión de productos</a>
                             <div class="d-flex">
-                                <input class="form-control" list="classificationOptions" id="classification"
+                                <!-- <input class="form-control" list="classificationOptions" id="classification"
                                     placeholder="Clasificación">
                                 <datalist id="classificationOptions">
                                     <option value="San Francisco">
@@ -15,17 +15,48 @@
                                     <option value="Seattle">
                                     <option value="Los Angeles">
                                     <option value="Chicago">
-                                </datalist>
+                                </datalist> -->
+                                <select2 
+                                    *ngIf="products.length"
+                                    [data]="categories"
+                                    (update)="update($event)"
+                                    displaySearchStatus="always"
+                                    listPosition="below"
+                                    styleMode="material"
+                                    resettable
+                                    resultMaxHeight="250px">
+                                    <select2-hint>Clasificación</select2-hint>
+                                </select2>
                             </div>
                             <div class="d-flex">
                                 <button class="btn btn-outline-info me-2" (click)="openDialog()">Nuevo producto</button>
-                                <button class="btn btn-outline-success">Todos los productos</button>
+                                <button class="btn btn-outline-success" (click)="getAllProducts()">Todos los productos</button>
                             </div>
                         </div>
                     </nav>
                 </div>
                 <div class="card-body">
-
+                    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Costo promedio</th>
+                                <th>Clasificación</th>
+                                <th>Opciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let product of products">
+                            <td>{{ product.name }}</td>
+                            <td>{{ product.avcost | currency }}</td>
+                            <td>{{ product.category }}</td>
+                            <td>                                
+                                <button class="btn btn-outline-info me-2" style="padding: 0 0.2rem;" (click)="openEditDialog(product.key)"><span class="material-icons">edit</span></button>
+                                <button class="btn btn-outline-danger" style="padding: 0 0.2rem;" (click)="openDeleteDialog(product.key)"><span class="material-icons">delete</span></button>
+                            </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

@@ -1,4 +1,5 @@
 export interface Product {
+    key: string;
     name: string;
     brand: string;
     model: string;
@@ -6,5 +7,6 @@ export interface Product {
     avcost: number;
     existence: number;
     category: string;
+    proration: boolean;
     providers: string[];
 }

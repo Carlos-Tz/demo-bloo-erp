@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase, AngularFireList } from '@angular/fire/compat/database';
+import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angular/fire/compat/database';
 import { ToastrService } from 'ngx-toastr';
 import { Product } from '../models/product';
 
@@ -9,6 +9,7 @@ import { Product } from '../models/product';
 export class ApiProductService {
 
   public productList!: AngularFireList<any>;
+  public productObject!: AngularFireObject<any>;
 
   constructor(private db: AngularFireDatabase, public toastr: ToastrService) { }
 
@@ -19,5 +20,21 @@ export class ApiProductService {
   GetProductList() {
     this.productList = this.db.list('ranchlook/product-list');
     return this.productList;
+  }
+
+  GetProduct(key: string) {
+    this.productObject = this.db.object('ranchlook/product-list/' + key);
+    return this.productObject;
+  }
+
+  UpdateProduct(product: Product, key: string) {
+    //this.db.object('ranchlook/product-list/' + key)
+    this.productObject
+    .update(product);
+  }
+
+  DeleteProduct(key: string) {
+    this.productObject = this.db.object('ranchlook/product-list/' + key);
+    this.productObject.remove();
   }
 }

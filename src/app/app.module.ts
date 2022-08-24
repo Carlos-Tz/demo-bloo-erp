@@ -40,6 +40,8 @@ import { CategoriesComponent } from './components/categories/categories.componen
 import { NewCategoryComponent } from './components/new-category/new-category.component';
 import { NewProviderComponent } from './components/new-provider/new-provider.component';
 import { NewProductComponent } from './components/new-product/new-product.component';
+import { EditProductComponent } from './components/edit-product/edit-product.component';
+import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +53,9 @@ import { NewProductComponent } from './components/new-product/new-product.compon
     CategoriesComponent,
     NewCategoryComponent,
     NewProviderComponent,
-    NewProductComponent
+    NewProductComponent,
+    EditProductComponent,
+    ConfirmDialogComponent
   ],
   imports: [
     BrowserModule,
