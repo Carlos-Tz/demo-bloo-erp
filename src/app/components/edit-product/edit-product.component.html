@@ -32,8 +32,8 @@
             <mat-form-field appearance="fill" class="col-sm-12 col-md-4">
                 <mat-label>Prorrateo</mat-label>
                 <mat-select matInput name="proration" id="proration" formControlName="proration" required>
-                    <mat-option value="false">No</mat-option>
-                    <mat-option value="true">Si</mat-option>
+                    <mat-option [value]="false">No</mat-option>
+                    <mat-option [value]="true">Si</mat-option>
                 </mat-select>
             </mat-form-field>
             <mat-form-field appearance="fill" class="col-sm-12 col-md-4">

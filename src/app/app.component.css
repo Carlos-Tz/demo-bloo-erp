@@ -6,8 +6,15 @@
 }
 
 #toolbar {
-    background-color: #00ac69;
-    color: #323f52;
+    background-color: #155a89;
+    /* background-color: #00ac69; */
+    color: #eff0f1;
+    /* color: #323f52; */
+}
+
+#toolbar a:hover {
+    color: #eff0f1;
+    transform: scale(1.1);
 }
 
 @media (max-width: 650px){

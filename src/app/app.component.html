@@ -2,15 +2,10 @@
   <mat-toolbar-row class="nav-row">
     <button mat-icon-button>
       <mat-icon (click)="sidenav.toggle()">menu</mat-icon>
-      <!-- <a (click)="sidenav.toggle()"><span class="material-icons">code</span> Menu</a> -->
     </button>
     <a mat-button [routerLink]="['/']" style="font-size: 1.1rem;">RANCHLOOK</a>
     <span class="menu-spacer"></span>
     <div id="nav_a">
-      <!-- <a mat-button [routerLink]="['/clientes']"><span class="material-icons">group</span> Clientes </a>
-      <a mat-button [routerLink]="['/ordenes']"><span class="material-icons">feed</span> Ordenes</a>
-      <a mat-button [routerLink]="['/notas']"><span class="material-icons">note</span> Presupuestos</a>
-      <a mat-button [routerLink]="['/inspeccion']"><span class="material-icons">search</span> Inspecciones</a> -->
       <a mat-button [routerLink]="['/']"><mat-icon> home</mat-icon> Inicio</a>
       <a mat-button *ngIf="this.authService.userName" (click)='authService.SignOut()'><mat-icon> power_settings_new</mat-icon>Salir</a>
       <a mat-button *ngIf="!this.authService.userName" [routerLink]="['/login']"><mat-icon> login</mat-icon> Acceder</a>
@@ -34,13 +29,26 @@
             Currently I am
           </mat-panel-description> -->
         </mat-expansion-panel-header>
-        <a mat-list-item [routerLink]="['/categories']"><span class="material-icons">category</span> Clasificaciones </a>
         <a mat-list-item [routerLink]="['/products']"><span class="material-icons">inventory_2</span> Productos </a>
         <a mat-list-item [routerLink]="['/providers']"><span class="material-icons">group</span> Proveedores </a>
+        <a mat-list-item [routerLink]="['/requisitions']"><span class="material-icons">description</span> Requisiciones </a>
+      </mat-expansion-panel>
+      <mat-expansion-panel *ngIf="this.authService.userName">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Configuración
+          </mat-panel-title>
+          <!-- <mat-panel-description>
+            Currently I am
+          </mat-panel-description> -->
+        </mat-expansion-panel-header>
+        <a mat-list-item [routerLink]="['/classifications']"><span class="material-icons">category</span> Clasificaciones </a>
+        <a mat-list-item [routerLink]="['/cicles']"><span class="material-icons">event_repeat</span> Ciclos </a>
+        <a mat-list-item [routerLink]="['/ranches']"><span class="material-icons">agriculture</span> Ranchos </a>
+        <a mat-list-item [routerLink]="['/company']"><span class="material-icons">corporate_fare</span> Empresa </a>
       </mat-expansion-panel>
       <a mat-list-item *ngIf="this.authService.userName" (click)='authService.SignOut()'><span class="material-icons">power_settings_new</span>Salir</a>
       <a mat-list-item *ngIf="!this.authService.userName" [routerLink]="['/login']"><span class="material-icons">login</span> Acceder</a>
-
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>

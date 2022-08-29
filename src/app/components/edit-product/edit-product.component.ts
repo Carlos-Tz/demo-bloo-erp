@@ -74,7 +74,7 @@ export class EditProductComponent implements OnInit, OnDestroy {
       unit: [''],
       avcost: [''],
       existence: [''],
-      proration: [''],
+      proration: [null],
       providers: []
     });
   }

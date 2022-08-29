@@ -31,6 +31,7 @@ export class NewCategoryComponent implements OnInit {
   }
 
   submitSurveyData = () => {
+    this.myForm.patchValue({ 'id' : (this.myForm.get('id')?.value).toUpperCase() });
     this.api.AddCategory(this.myForm.value);
     this.ResetForm();
   }

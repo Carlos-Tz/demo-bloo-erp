@@ -55,7 +55,7 @@ export class NewProductComponent implements OnInit {
       unit: [''],
       avcost: [''],
       existence: [''],
-      proration: [''],
+      proration: [null],
       providers: []
     });
   }

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase, AngularFireList } from '@angular/fire/compat/database';
+import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angular/fire/compat/database';
 import { ToastrService } from 'ngx-toastr';
+import { Observable } from 'rxjs';
 import { Provider } from '../models/provider';
 
 @Injectable({
@@ -9,6 +10,8 @@ import { Provider } from '../models/provider';
 export class ApiProviderService {
   
   public providerList!: AngularFireList<any>;
+  public providerObject!: AngularFireObject<any>;
+  public lastProviderRef!: Observable<any[]>;
 
   constructor(private db: AngularFireDatabase, public toastr: ToastrService) { }
 
@@ -28,5 +31,25 @@ export class ApiProviderService {
   GetProviderList() {
     this.providerList = this.db.list('ranchlook/provider-list');
     return this.providerList;
+  }
+
+  GetProvider(key: string) {
+    this.providerObject = this.db.object('ranchlook/provider-list/' + key);
+    return this.providerObject;
+  }
+
+  UpdateProvider(provider: Provider, key: string) {
+    this.db.object('ranchlook/provider-list/' + key)
+    .update(provider);
+  }
+
+  DeleteProvider(key: string) {
+    this.providerObject = this.db.object('ranchlook/provider-list/' + key);
+    this.providerObject.remove();
+  }
+
+  GetLastProvider(){
+    this.lastProviderRef = this.db.list('ranchlook/provider-list/', ref => ref.limitToLast(1)).valueChanges();
+    return this.lastProviderRef;
   }
 }

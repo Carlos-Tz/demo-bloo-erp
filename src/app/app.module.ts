@@ -27,6 +27,13 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatCardModule } from '@angular/material/card';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+//import { MatMomentDateModule } from "@angular/ material-moment-adapter";
 
 import { AuthService } from './services/auth.service';
 import { LoginComponent } from './components/login/login.component';
@@ -42,6 +49,17 @@ import { NewProviderComponent } from './components/new-provider/new-provider.com
 import { NewProductComponent } from './components/new-product/new-product.component';
 import { EditProductComponent } from './components/edit-product/edit-product.component';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
+import { RequisitionsComponent } from './components/requisitions/requisitions.component';
+import { CiclesComponent } from './components/cicles/cicles.component';
+import { NewCicleComponent } from './components/new-cicle/new-cicle.component';
+import { EditCicleComponent } from './components/edit-cicle/edit-cicle.component';
+import { EditCategoryComponent } from './components/edit-category/edit-category.component';
+import { EditProviderComponent } from './components/edit-provider/edit-provider.component';
+import { CompanyComponent } from './components/company/company.component';
+import { RanchesComponent } from './components/ranches/ranches.component';
+import { NewRanchComponent } from './components/new-ranch/new-ranch.component';
+import { EditRanchComponent } from './components/edit-ranch/edit-ranch.component';
+import { NewRequisitionComponent } from './components/new-requisition/new-requisition.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +73,18 @@ import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dial
     NewProviderComponent,
     NewProductComponent,
     EditProductComponent,
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
+    RequisitionsComponent,
+    CiclesComponent,
+    NewCicleComponent,
+    EditCicleComponent,
+    EditCategoryComponent,
+    EditProviderComponent,
+    CompanyComponent,
+    RanchesComponent,
+    NewRanchComponent,
+    EditRanchComponent,
+    NewRequisitionComponent
   ],
   imports: [
     BrowserModule,
@@ -81,7 +110,14 @@ import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dial
     MatDialogModule,
     MatFormFieldModule,
     MatSelectModule,
-    MatInputModule
+    MatInputModule,
+    MatSortModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatCardModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    //MatMomentDateModule
   ],
   providers: [AuthService, CurrencyPipe],
   bootstrap: [AppComponent]

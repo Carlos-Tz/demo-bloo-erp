@@ -35,7 +35,6 @@ export class ApiCategoryService {
   }
   
   GetCategory(key: string) {
-    console.log(key);
     this.categoryObject = this.db.object('ranchlook/category-list/' + key);
     return this.categoryObject;
   }

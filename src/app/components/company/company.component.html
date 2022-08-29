@@ -1,0 +1,42 @@
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <mat-card class="mt-3">
+                <mat-card-title-group>
+                    <mat-card-title>{{ this.myForm.value.name }}</mat-card-title>
+                    <mat-card-subtitle>RFC: {{ this.myForm.value.rfc }}</mat-card-subtitle>
+                    <img mat-card-lg-image src="https://image.shutterstock.com/image-vector/agricultural-logo-green-letter-leaf-260nw-1680135874.jpg" >
+                </mat-card-title-group>
+                <mat-card-content>Domicilio: 
+                    {{ this.myForm.value.address }}
+                </mat-card-content>
+                <mat-divider inset></mat-divider>
+                <form [formGroup]="myForm" novalidate autocomplete="off" class="mt-4 mb-3">
+                    <mat-dialog-content class="w-100 m-0">
+                        <mat-form-field appearance="fill" class="w-50">
+                            <mat-label>Nombre y/o Razón Social</mat-label>
+                            <input matInput type="text" formControlName="name">
+                        </mat-form-field>
+                        <mat-form-field appearance="fill" class="w-50">
+                            <mat-label>RFC</mat-label>
+                            <input matInput type="text" formControlName="rfc">
+                        </mat-form-field>
+                        <mat-form-field appearance="fill" class="w-100">
+                            <mat-label>Domicilio</mat-label>
+                            <input matInput type="text" formControlName="address">
+                        </mat-form-field>
+                    </mat-dialog-content>
+                </form>
+                <mat-divider inset></mat-divider>
+                <mat-card-actions align="end">
+                    <button mat-button class="btn btn-outline-info" (click)="submitSurveyData()">Guardar</button>
+                    <!-- <button mat-button>LIKE</button>
+                    <button mat-button>SHARE</button> -->
+                </mat-card-actions>
+                <!-- <mat-card-footer>
+                    
+                </mat-card-footer> -->
+            </mat-card>
+        </div>
+    </div>
+</div>
