@@ -73,16 +73,22 @@
                                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                                 <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
                             </table> -->
-                            <table>
-                                <thead>
-                                    <th>ID</th>
-                                    <th>Cantidad</th>
-                                </thead>
-                                <tr *ngFor="let pro of products_l">
-                                    <td>{{ pro.product }}</td>
-                                    <td>{{ pro.quantity }}</td>
-                                </tr>
-                            </table>
+                            <div class="col">
+                                <table class="table table-bordered">
+                                    <thead >
+                                        <th>Producto</th>
+                                        <th>Cantidad</th>
+                                        <th>Opciones</th>
+                                    </thead>
+                                    <tr *ngFor="let pro of products_l">
+                                        <td>{{ pro.name }}</td>
+                                        <td>{{ pro.quantity }}</td>
+                                        <td>
+                                            <button class="btn btn-outline-info me-2" style="padding: 0 0.2rem;" (click)="editPro(pro.key, pro.quantity)"><span class="material-icons">edit</span></button>
+                                            <button class="btn btn-outline-danger" style="padding: 0 0.2rem;" (click)="deletePro(pro.key)"><span class="material-icons">delete</span></button></td>
+                                    </tr>
+                                </table>
+                            </div>
                         </div>
                     </form>
                     <form [formGroup]="myForm1" novalidate autocomplete="off">

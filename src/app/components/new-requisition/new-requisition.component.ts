@@ -10,6 +10,7 @@ import { ApiCicleService } from 'src/app/services/api-cicle.service';
 import { Cicle } from 'src/app/models/cicle';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
+import { Product } from 'src/app/models/product';
 
 @Component({
   selector: 'app-new-requisition',
@@ -21,6 +22,7 @@ export class NewRequisitionComponent implements OnInit {
   public myForm!: FormGroup;
   public myForm1!: FormGroup;
   public date = '';
+  public product_selected = '-NAvyEW-aQ1Kv8RL_E-g';
   public dataSource = new MatTableDataSource<any>();
   @ViewChild(MatPaginator, {static: false}) paginator!: MatPaginator;
 
@@ -28,7 +30,8 @@ export class NewRequisitionComponent implements OnInit {
   //public providers: Select2Data = [];
   public cicles: Cicle[] = [];
   public products: Select2Data = [];
-  public products_l: any = [];
+  public products1: any[] = [];
+  public products_l: any[] = [];
   public displayedColumns = ['product', 'quantity'];
 
   constructor(
@@ -55,8 +58,10 @@ export class NewRequisitionComponent implements OnInit {
     this.apiP.GetProductList().snapshotChanges().subscribe(data => {
       data.forEach(item => {
         const p = item.payload.val();
-        const pro = {'value': item.key!, 'label': p.name};        
+        const pro = {'value': item.key!, 'label': p.name};
         this.products.push(pro);
+        p['key'] = item.key;        
+        this.products1.push(p);
       });
     });
 
@@ -98,15 +103,29 @@ export class NewRequisitionComponent implements OnInit {
   }
 
   addProduct(){
-    //this.products_l = this.products_l.concat([this.myForm1.value]);
-    //this.products_l.push(this.myForm1.value);
-    if ( this.myForm1.value && !this.products_l.includes(this.myForm1.value)) {
-      this.products_l.push(this.myForm1.value);
-      //this.dataSource.data = this.products_l.slice();
+    const p = this.products1.find(e => e.key === this.myForm1.get('product')!.value);
+    p['quantity'] = this.myForm1.get('quantity')!.value;
+    if (this.products_l.find(e => e.key === this.myForm1.get('product')!.value)) {
+      this.products_l = this.products_l.map(e => e.key !== this.myForm1.get('product')!.value ? e : p);
+    }else {
+      this.products_l.push(p);
+  
     }
-    console.log(this.products_l);
     this.myForm1.reset();
+  }
+
+  editPro(key: string, quantity: number){
+    this.myForm1.patchValue({ product: key , quantity: quantity})
+  }
+
+  deletePro(key: string){
+    const index = this.products_l.findIndex((object) => {
+      return object.key === key;
+    });
     
+    if (index !== -1) {
+      this.products_l.splice(index, 1);
+    }
   }
 
 }
