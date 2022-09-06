@@ -60,6 +60,7 @@ import { RanchesComponent } from './components/ranches/ranches.component';
 import { NewRanchComponent } from './components/new-ranch/new-ranch.component';
 import { EditRanchComponent } from './components/edit-ranch/edit-ranch.component';
 import { NewRequisitionComponent } from './components/new-requisition/new-requisition.component';
+import { MatTableExporterModule } from 'mat-table-exporter';
 
 @NgModule({
   declarations: [
@@ -117,7 +118,7 @@ import { NewRequisitionComponent } from './components/new-requisition/new-requis
     MatCardModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    //MatMomentDateModule
+    MatTableExporterModule
   ],
   providers: [AuthService, CurrencyPipe],
   bootstrap: [AppComponent]

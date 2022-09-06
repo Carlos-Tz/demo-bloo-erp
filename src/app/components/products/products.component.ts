@@ -28,11 +28,28 @@ export class ProductsComponent implements OnInit/* , OnDestroy */ {
   @ViewChild('input', {static: false}) input!: ElementRef;
   displayedColumns: any[] = [
     'name',
+    'unit',
+    'existence',
+    'brand',
+    'model',
     'avcost',
     'category',
-    'action'/*
-    'placas',
-    'fecha',*/
+    'proration',
+    'class',
+    'type',
+    'rsco',
+    'activeingredient',
+    'doseacre',
+    'periodreentry',
+    'termreentry',
+    'safetyinterval',
+    'termsafetyinterval',
+    'toxicologicalcategory',
+    'blueberry',
+    'strawberry',
+    'raspberry',
+    'blackberry',
+    'action'
   ];
   //dtOptions: DataTables.Settings = {};
   //dtTrigger: Subject<any> = new Subject<any>();
@@ -76,9 +93,10 @@ export class ProductsComponent implements OnInit/* , OnDestroy */ {
         /* const f = item.payload.toJSON();
         f['$key'] = item.key;
         this.Orden.push(f as Orden); */
-        const p = item.payload.val();        
-        const pro = {'key': item.key, 'name': p.name, 'avcost': p.avcost, 'category': p.category };        
-        this.products.push(pro as Product);
+        const p = item.payload.val();     
+        p['key'] = item.key;   
+        //const pro = {'key': item.key, 'name': p.name, 'avcost': p.avcost, 'category': p.category, 'unit': p.unit, 'existence': p.existence, 'brand': p.brand, 'model': p.model };        
+        this.products.push(p as Product);
       });
       if (this.products.length > 0) {
         this.data = true;

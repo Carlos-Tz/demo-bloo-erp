@@ -28,6 +28,7 @@
     "fecha": "^4.2.3",
     "firebase": "^9.9.1",
     "jquery": "^3.6.0",
+    "mat-table-exporter": "^10.2.4",
     "ng-select2-component": "^10.0.0",
     "ngx-toastr": "^15.0.0",
     "rxjs": "~7.5.0",

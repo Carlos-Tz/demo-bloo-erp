@@ -75,6 +75,20 @@ export class EditProductComponent implements OnInit, OnDestroy {
       avcost: [''],
       existence: [''],
       proration: [null],
+      class: [''],
+      type: [''],
+      rsco: [''],
+      activeingredient: [''],
+      doseacre: [''],
+      periodreentry: [''],
+      termreentry: [''],
+      safetyinterval: [''],
+      termsafetyinterval: [''],
+      toxicologicalcategory: [''],
+      blueberry: [null],
+      strawberry: [null],
+      raspberry: [null],
+      blackberry: [null],
       providers: []
     });
   }
