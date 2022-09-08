@@ -1,16 +1,16 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Select2Data } from 'ng-select2-component';
 import { ToastrService } from 'ngx-toastr';
 import { ApiProductService } from 'src/app/services/api-product.service';
-import 'fecha';
-import fechaObj from 'fecha';
+//import 'fecha';
+//import fechaObj from 'fecha';
 import { ApiRequisitionService } from 'src/app/services/api-requisition.service';
 import { ApiCicleService } from 'src/app/services/api-cicle.service';
 import { Cicle } from 'src/app/models/cicle';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
-import { Product } from 'src/app/models/product';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-new-requisition',
@@ -22,6 +22,7 @@ export class NewRequisitionComponent implements OnInit {
   public myForm!: FormGroup;
   public myForm1!: FormGroup;
   public date = '';
+  public user = '';
   public product_selected = '-NAvyEW-aQ1Kv8RL_E-g';
   public dataSource = new MatTableDataSource<any>();
   @ViewChild(MatPaginator, {static: false}) paginator!: MatPaginator;
@@ -40,13 +41,16 @@ export class NewRequisitionComponent implements OnInit {
     public apiC: ApiCicleService,
     public apiP: ApiProductService,
     public toastr: ToastrService,
+    public authService: AuthService, 
   ) { }
 
   ngOnInit(): void {
-    this.sForm();
+    this.sForm();//console.log(this.authService.userName)
+    
     this.sForm1();
     //this.date = fechaObj.format(new Date(), 'D [/] MM [/] YYYY');
     this.myForm.patchValue({ date: new Date().toISOString() });
+    //this.myForm.patchValue({ petitioner: this.authService.userData });
     this.apiC.GetCicleList().snapshotChanges().subscribe(data => {
       data.forEach(item => {
         //const p = item.payload.toJSON();
@@ -74,6 +78,10 @@ export class NewRequisitionComponent implements OnInit {
     }, 0); */
   }
 
+  print(){
+    console.log('ok');
+  }
+
   sForm() {
     this.myForm = this.fb.group({
       id: [null, [Validators.required]],
@@ -95,7 +103,11 @@ export class NewRequisitionComponent implements OnInit {
 
   submitSurveyData = () => {
     //this.apiP.AddProduct(this.myForm.value);
-    this.ResetForm();
+    //this.ResetForm();
+    this.myForm.patchValue({ products: this.products_l })
+    console.log(this.myForm.value);
+    console.log(this.user)
+    
   }
 
   ResetForm() {
