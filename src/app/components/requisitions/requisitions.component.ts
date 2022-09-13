@@ -5,11 +5,14 @@ import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
 import { Requisition } from 'src/app/models/requisition';
+import { Company } from 'src/app/models/company';
 import { ApiRequisitionService } from 'src/app/services/api-requisition.service';
 import { NewRequisitionComponent } from '../new-requisition/new-requisition.component';
 import pdfMake from 'pdfmake/build/pdfmake';  
 import pdfFonts from 'pdfmake/build/vfs_fonts';  
 pdfMake.vfs = pdfFonts.pdfMake.vfs;  
+import { ApiCompanyService } from 'src/app/services/api-company.service';
+import { AuthorizeRequisitionComponent } from '../authorize-requisition/authorize-requisition.component';
 
 @Component({
   selector: 'app-requisitions',
@@ -33,10 +36,11 @@ export class RequisitionsComponent implements OnInit {
   ];
   //public categories: Select2Data = [];
   public requisitions: Requisition[] = [];
+  public company: Company;
   //public category = '';
   constructor(
     public dialog: MatDialog,
-    //public apiC: ApiCategoryService,
+    public apiC: ApiCompanyService,
     public apiR: ApiRequisitionService,
     public toastr: ToastrService,
   ) { }
@@ -58,6 +62,9 @@ export class RequisitionsComponent implements OnInit {
       setTimeout(() => {
         this.dataSource.paginator = this.paginator;
       }, 0);
+    });
+    this.apiC.GetCompany().valueChanges().subscribe(data => {
+      this.company = data;
     });
     
   }
@@ -93,12 +100,70 @@ export class RequisitionsComponent implements OnInit {
     });
   }
 
-  PDF(id) {  
-    let docDefinition = {  
-      //header: 'C# Corner PDF Header',  
-      content: [
-        {
-          /* columns: [
+  openAuthorizationDialog(id: string) {
+    const dialogRef = this.dialog.open(AuthorizeRequisitionComponent, {
+      data: {
+        id: id
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      //console.log(`Dialog result: ${result}`);
+    });
+  }
+
+  PDF(id) {
+    this.apiR.GetRequisition(id).valueChanges().subscribe(data => {
+      let priority = '';
+      if(data.priority == 1){
+        priority = 'Baja';
+      }else if(data.priority){
+        priority = 'Media';
+      }else{
+        priority = 'Alta';
+      }
+      if(!data.products){
+        data.products = [{ key: '', name: '', quantity: '', unit: '' }];
+      }
+      let docDefinition = {  
+        //header: 'C# Corner PDF Header',  
+        content: [
+          {
+            style: 'table',
+            table: {
+              widths: [75, 75, 75, 55, 70, 'auto'],
+              heights: [50, 20, 20, 20, 20, 20, 20, 25],
+              headerRows: 1,
+              body: [
+                [{text: 'REQUISICIÓN', colSpan: 5, alignment: 'center', fontSize: 26, margin: 15 },{}, {}, {}, {}, {}],
+                [{ colSpan: 5, rowSpan: 3, text: this.company.name + '\nRFC: ' + this.company.rfc + '\n' +  this.company.address +'\n' }, {}, {}, {}, {}, { text: 'MORELIA, MICHOACÁN', alignment: 'center'}],
+                [{}, {}, {}, {}, {}, { text: 'REQ - ' + data.id, alignment: 'center' }],
+                [{}, {}, {}, {}, {}, { text: 'Slogan', alignment: 'center' }],
+                [{ text: 'Solicitante', fillColor: '#eeeeee' }, { text: data.petitioner, colSpan: 2 }, {}, { text: 'Ciclo', fillColor: '#eeeeee' }, { text: data.cicle }, { text: 'Fecha', fillColor: '#eeeeee' }],
+                [{ text: 'Prioridad', fillColor: '#eeeeee' }, { text: priority, colSpan: 2 }, {}, { text: 'Catégoria', fillColor: '#eeeeee' }, {}, { text: data.date, alignment: 'center'}],
+                [{ text: 'Justificación', fillColor: '#eeeeee' }, { text: data.justification, colSpan: 5 }, {}, {}, {}, {}],
+                [{ text: 'ID', bold: true, style: 'he', fillColor: '#eeeeee' }, { text: 'CANTIDAD', bold: true, style: 'he', fillColor: '#eeeeee' }, { text: 'UNIDAD', bold: true, style: 'he', fillColor: '#eeeeee' }, { text: 'DESCRIPCIÓN', bold: true, style: 'he', colSpan: 3, fillColor: '#eeeeee' }, {}, {}],
+                ...data.products.map(p => ([{ text: p.key, style: 'he' }, { text: p.quantity, style: 'he' }, { text: p.unit, style: 'he' }, { text: p.name, colSpan: 3, style: 'he'},  '', '']))
+              ]
+            }
+          }
+        ],
+        styles: {
+          table :{
+            fontSize: 10
+          },
+          he: {
+            margin: 5,
+            alignment: 'center'
+          }
+        }  
+      };  
+     
+      pdfMake.createPdf(docDefinition).open();  
+    });
+    //console.log(this.req);
+     
+    /* columns: [
             [
               { text: 'REQUISICIÓN', fontSize: 26, alignment: 'center' },
               { text: 'Empresa' }, { text: 'RFC' }, { text: 'Dirección' }, { text: 'Colonia' }, { text: 'CP' }
@@ -112,57 +177,5 @@ export class RequisitionsComponent implements OnInit {
               { text: '06/02/00' , alignment: 'center'}
             ]
           ] */
-          style: 'table',
-          table: {
-            widths: [75, 75, 75, 60, 60, 'auto'],
-            heights: [50, 20, 20, 20, 20, 20, 20, 25],
-            headerRows: 1,
-            body: [
-              [{text: 'REQUISICIÓN', colSpan: 5, alignment: 'center', fontSize: 26 },{}, {}, {}, {}, {text: 'LOGO', alignment: 'center'}],
-              [{ colSpan: 5, rowSpan: 3, text: 'Empresa\n RFC\n Domicilio\n Colonia\n CP'}, {}, {}, {}, {}, { text: 'MORELIA, MICHOACÁN', alignment: 'center'}],
-              [{}, {}, {}, {}, {}, { text: 'REQ - ', alignment: 'center' }],
-              [{}, {}, {}, {}, {}, { text: 'Slogan', alignment: 'center' }],
-              [{ text: 'Solicitante', fillColor: '#eeeeee' }, { text: 'Sol', colSpan: 4 }, {}, {}, {}, { text: 'Fecha', alignment: 'center', fillColor: '#eeeeee' }],
-              [{ text: 'Prioridad', fillColor: '#eeeeee' }, { text: 'Pri' }, { text: 'Catégoria', fillColor: '#eeeeee' }, { text: 'cat', colSpan: 2 }, {}, { text: 'Fec', alignment: 'center'}],
-              [{ text: 'Justificación', fillColor: '#eeeeee' }, { text: 'Jus', colSpan: 5 }, {}, {}, {}, {}],
-              [{ text: 'ID', bold: true, alignment: 'center', fillColor: '#eeeeee' }, { text: 'CANTIDAD', bold: true, alignment: 'center', fillColor: '#eeeeee' }, { text: 'UNIDAD', bold: true, alignment: 'center', fillColor: '#eeeeee' }, { text: 'DESCRIPCIÓN', bold: true, alignment: 'center', colSpan: 3, fillColor: '#eeeeee' }, {}, {}]
-            ]
-          }
-        }
-      ],
-      styles: {
-        table :{
-          fontSize: 10
-        }
-      }  
-    };  
-   
-    pdfMake.createPdf(docDefinition).open();  
   } 
-
-  /* openEditDialog(key: string) {
-    const dialogRef = this.dialog.open(EditProductComponent, {
-      data: {
-        key: key
-      }
-    });
-    
-    dialogRef.afterClosed().subscribe(result => {
-      if(result){
-      }
-    });
-  } */
-
-  /* openDeleteDialog(key: string) {
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      data: "¿Confirma que desea eliminar este producto?"
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if(result){
-        this.toastr.info('Producto eliminado!');
-      }
-    });
-  } */
-
 }

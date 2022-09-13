@@ -63,9 +63,7 @@
                         <ng-container matColumnDef="action">
                             <mat-header-cell *matHeaderCellDef> Acción </mat-header-cell>
                             <mat-cell *matCellDef="let element; let i = index;">
-
-                                <!-- <button class="btn btn-outline-info me-2" style="padding: 0 0.2rem;" (click)="openEditDialog(element.id)"><span class="material-icons">edit</span></button>
-                                <button class="btn btn-outline-danger" style="padding: 0 0.2rem;" (click)="openDeleteDialog(element.id)"><span class="material-icons">delete</span></button> -->
+                                <button class="btn btn-outline-info me-2" style="padding: 0 0.2rem;" (click)="openAuthorizationDialog(element.id)" ><span class="material-icons">done</span>Autorizar</button>
                             </mat-cell>
                         </ng-container>
 
