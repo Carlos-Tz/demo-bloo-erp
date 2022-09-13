@@ -7,6 +7,9 @@ import { ToastrService } from 'ngx-toastr';
 import { Requisition } from 'src/app/models/requisition';
 import { ApiRequisitionService } from 'src/app/services/api-requisition.service';
 import { NewRequisitionComponent } from '../new-requisition/new-requisition.component';
+import pdfMake from 'pdfmake/build/pdfmake';  
+import pdfFonts from 'pdfmake/build/vfs_fonts';  
+pdfMake.vfs = pdfFonts.pdfMake.vfs;  
 
 @Component({
   selector: 'app-requisitions',
@@ -89,6 +92,53 @@ export class RequisitionsComponent implements OnInit {
       //console.log(`Dialog result: ${result}`);
     });
   }
+
+  PDF(id) {  
+    let docDefinition = {  
+      //header: 'C# Corner PDF Header',  
+      content: [
+        {
+          /* columns: [
+            [
+              { text: 'REQUISICIÓN', fontSize: 26, alignment: 'center' },
+              { text: 'Empresa' }, { text: 'RFC' }, { text: 'Dirección' }, { text: 'Colonia' }, { text: 'CP' }
+            ],
+            [
+              { text: 'logo' , alignment: 'center'},
+              { text: 'MORELIA, MICHOACÁN' , alignment: 'center'},
+              { text: 'REQ - ' , alignment: 'center'},
+              { text: 'Slogan' , alignment: 'center'},
+              { text: 'Fecha' , alignment: 'center'},
+              { text: '06/02/00' , alignment: 'center'}
+            ]
+          ] */
+          style: 'table',
+          table: {
+            widths: [75, 75, 75, 60, 60, 'auto'],
+            heights: [50, 20, 20, 20, 20, 20, 20, 25],
+            headerRows: 1,
+            body: [
+              [{text: 'REQUISICIÓN', colSpan: 5, alignment: 'center', fontSize: 26 },{}, {}, {}, {}, {text: 'LOGO', alignment: 'center'}],
+              [{ colSpan: 5, rowSpan: 3, text: 'Empresa\n RFC\n Domicilio\n Colonia\n CP'}, {}, {}, {}, {}, { text: 'MORELIA, MICHOACÁN', alignment: 'center'}],
+              [{}, {}, {}, {}, {}, { text: 'REQ - ', alignment: 'center' }],
+              [{}, {}, {}, {}, {}, { text: 'Slogan', alignment: 'center' }],
+              [{ text: 'Solicitante', fillColor: '#eeeeee' }, { text: 'Sol', colSpan: 4 }, {}, {}, {}, { text: 'Fecha', alignment: 'center', fillColor: '#eeeeee' }],
+              [{ text: 'Prioridad', fillColor: '#eeeeee' }, { text: 'Pri' }, { text: 'Catégoria', fillColor: '#eeeeee' }, { text: 'cat', colSpan: 2 }, {}, { text: 'Fec', alignment: 'center'}],
+              [{ text: 'Justificación', fillColor: '#eeeeee' }, { text: 'Jus', colSpan: 5 }, {}, {}, {}, {}],
+              [{ text: 'ID', bold: true, alignment: 'center', fillColor: '#eeeeee' }, { text: 'CANTIDAD', bold: true, alignment: 'center', fillColor: '#eeeeee' }, { text: 'UNIDAD', bold: true, alignment: 'center', fillColor: '#eeeeee' }, { text: 'DESCRIPCIÓN', bold: true, alignment: 'center', colSpan: 3, fillColor: '#eeeeee' }, {}, {}]
+            ]
+          }
+        }
+      ],
+      styles: {
+        table :{
+          fontSize: 10
+        }
+      }  
+    };  
+   
+    pdfMake.createPdf(docDefinition).open();  
+  } 
 
   /* openEditDialog(key: string) {
     const dialogRef = this.dialog.open(EditProductComponent, {

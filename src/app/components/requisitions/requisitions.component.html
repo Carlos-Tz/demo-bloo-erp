@@ -28,6 +28,7 @@
                         <ng-container matColumnDef="id">
                             <mat-header-cell *matHeaderCellDef mat-sort-header >ID</mat-header-cell>
                             <mat-cell *matCellDef="let element">{{element.id}}
+                                <span (click)="PDF(element.id)" style="color: #fff; background-color: green; border-radius: 20%; padding: 0.2rem; margin-left: 0.3rem; cursor: pointer; font-size: 0.7rem;">PDF</span>
                             </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="date">
