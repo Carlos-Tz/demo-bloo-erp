@@ -16,6 +16,7 @@ export class NewProductComponent implements OnInit {
   public myForm!: FormGroup;
   public categories: Select2Data = [];
   public providers: Select2Data = [];
+  public ord = 0;
 
   constructor(
     private fb: FormBuilder,
@@ -43,11 +44,19 @@ export class NewProductComponent implements OnInit {
         this.providers.push(pro);
       });
     });
+    this.apiP.GetLastProduct().subscribe(res=> {
+      if(res[0]){
+        this.ord = Number(res[0].id);
+        this.myForm.patchValue({ id: this.ord + 1 });      
+      } else {
+        this.myForm.patchValue({ id: 1 });      
+      }
+    });
   }
 
   sForm() {
     this.myForm = this.fb.group({
-      //id: ['', [Validators.required, Validators.maxLength(13), Validators.minLength(12)]],    //RFC
+      id: ['', [Validators.required]],
       name: ['', [Validators.required]],
       category: ['', [Validators.required]],
       brand: [''],
@@ -77,6 +86,7 @@ export class NewProductComponent implements OnInit {
   submitSurveyData = () => {
     this.apiP.AddProduct(this.myForm.value);
     this.ResetForm();
+    this.toastr.success('Producto guardado!');
   }
 
   ResetForm() {

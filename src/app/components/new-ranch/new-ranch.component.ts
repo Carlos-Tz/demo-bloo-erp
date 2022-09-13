@@ -34,6 +34,7 @@ export class NewRanchComponent implements OnInit {
     this.myForm.patchValue({ 'id' : (this.myForm.get('id')?.value).toUpperCase() });
     this.api.AddRanch(this.myForm.value);
     this.ResetForm();
+    this.toastr.success('Rancho guardado!');
   }
 
   ResetForm() {

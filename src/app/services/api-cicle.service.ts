@@ -15,40 +15,40 @@ export class ApiCicleService {
   constructor(private db: AngularFireDatabase, private storage: AngularFireStorage, public toastr: ToastrService) { }
 
   AddCicle(cicle: Cicle) {
-    this.db.database.ref().child('ranchlook/cicle-list/'+ cicle.id).once("value", snapshot => {
+    this.db.database.ref().child('blooming/cicle-list/'+ cicle.id).once("value", snapshot => {
       if(snapshot.exists()){
         this.toastr.error('No guardado, ya existe un registro con este nombre!');
         return true;
       }
-      this.toastr.success('Guardado!');
-      this.db.database.ref().child('ranchlook/cicle-list/'+ cicle.id).set(cicle);
+      //this.toastr.success('Guardado!');
+      this.db.database.ref().child('blooming/cicle-list/'+ cicle.id).set(cicle);
       return false;
     });
-    //this.db.list('ranchlook/cicle-list').push(cicle);
+    //this.db.list('blooming/cicle-list').push(cicle);
   }
   
   GetCicleList() {
-    this.cicleList = this.db.list('ranchlook/cicle-list')
+    this.cicleList = this.db.list('blooming/cicle-list')
     return this.cicleList;
   }
   
   GetCicle(key: string) {
-    this.cicleObject = this.db.object('ranchlook/cicle-list/' + key);
+    this.cicleObject = this.db.object('blooming/cicle-list/' + key);
     return this.cicleObject;
   }
 
   UpdateCicle(cicle: Cicle, key: string) {
-    this.db.object('ranchlook/cicle-list/' + key)
+    this.db.object('blooming/cicle-list/' + key)
     .update(cicle);
   }
 
   DeleteCicle(key: string) {
-    this.cicleObject = this.db.object('ranchlook/cicle-list/' + key);
+    this.cicleObject = this.db.object('blooming/cicle-list/' + key);
     this.cicleObject.remove();
   }
 
   GetLastCicle(){
-    this.lastCicleRef = this.db.list('ranchlook/cicle-list/', ref => ref.limitToLast(1)).valueChanges();
+    this.lastCicleRef = this.db.list('blooming/cicle-list/', ref => ref.limitToLast(1)).valueChanges();
     return this.lastCicleRef;
   }
 }

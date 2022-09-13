@@ -66,7 +66,7 @@ export class EditProductComponent implements OnInit, OnDestroy {
 
   sForm() {
     this.myForm = this.fb.group({
-      //id: ['', [Validators.required, Validators.maxLength(13), Validators.minLength(12)]],    //RFC
+      id: ['', [Validators.required]],
       name: ['', [Validators.required]],
       category: ['', [Validators.required]],
       brand: [''],

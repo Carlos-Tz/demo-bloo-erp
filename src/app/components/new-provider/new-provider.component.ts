@@ -58,6 +58,7 @@ export class NewProviderComponent implements OnInit {
     this.myForm.patchValue({ 'id' : (this.myForm.get('id')?.value).toUpperCase() });
     this.apiP.AddProvider(this.myForm.value);
     this.ResetForm();
+    this.toastr.success('Proveedor guardado!');
   }
 
   ResetForm() {

@@ -36,7 +36,7 @@ export class EditRanchComponent implements OnInit {
 
   submitSurveyData = () => {
     this.api.UpdateRanch(this.myForm.value, this.data.key);
-    this.toastr.success('Ciclo actualizado!');
+    this.toastr.success('Rancho actualizado!');
 
   }
 }

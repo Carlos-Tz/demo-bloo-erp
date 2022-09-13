@@ -40,5 +40,6 @@ export class CompanyComponent implements OnInit {
     this.myForm.patchValue({ 'rfc' : (this.myForm.get('rfc')?.value).toUpperCase() });
     this.myForm.patchValue({ 'address' : (this.myForm.get('address')?.value).toUpperCase() });
     this.api.UpdateCompary(this.myForm.value);
+    this.toastr.success('Datos guardados!');
   }
 }

@@ -6,11 +6,9 @@
                     <nav class="navbar bg-light">
                         <div class="container-fluid">
                             <a class="navbar-brand">Nueva requisición</a>
-                            <div class="d-flex"><input type="text" [value]="this.authService.userName" [(ngModel)]="user" #ctrl="ngModel">{{user}}
-                            </div>
                             <div class="d-flex">
                                 <button mat-button [routerLink]="['/requisitions']">Cancelar</button>
-                                <button mat-button (click)="submitSurveyData()" [disabled]="!myForm.valid" class="btn btn-outline-info">Guardar</button>
+                                <button mat-button (click)="submitSurveyData()" [routerLink]="['/requisitions']" [disabled]="!myForm.valid" class="btn btn-outline-info">Guardar</button>
                             </div>
                         </div>
                     </nav>
@@ -18,13 +16,13 @@
                 <div class="card-body">
                     <form [formGroup]="myForm" novalidate autocomplete="off">
                         <div class="row">
-                            <mat-form-field appearance="fill" class="col-sm-12 col-md-4">
+                            <mat-form-field appearance="fill" class="col-sm-12 col-md-4" hidden>
                                 <mat-label>ID</mat-label>
                                 <input matInput type="number" formControlName="id" required>
                             </mat-form-field>
-                            <mat-form-field appearance="fill" class="col-sm-12 col-md-4">
+                            <mat-form-field appearance="fill" class="col-sm-12 col-md-4" hidden>
                                 <mat-label>Solicitante</mat-label>
-                                <input matInput type="text" formControlName="petitioner" [value]=user (change)="print()" required>
+                                <input matInput type="text" formControlName="petitioner" required>
                             </mat-form-field>
                             <mat-form-field appearance="fill" class="col-sm-12 col-md-4" hidden>
                                 <mat-label>Estatus</mat-label>
@@ -32,14 +30,14 @@
                                     <mat-option [value]="1">VoBo</mat-option>
                                 </mat-select>
                             </mat-form-field>
-                            <mat-form-field appearance="fill" class="col-sm-12 col-md-4">
+                            <mat-form-field appearance="fill" class="col-sm-12 col-md-6">
                                 <mat-label>Ciclo</mat-label>
                                 <mat-select matInput name="cicle" id="cicle" formControlName="cicle" required>
                                     <mat-option *ngFor="let cicle of cicles" [value]="cicle.id">{{ cicle.id }}
                                     </mat-option>
                                 </mat-select>
                             </mat-form-field>
-                            <mat-form-field appearance="fill" class="col-sm-12 col-md-4">
+                            <mat-form-field appearance="fill" class="col-sm-12 col-md-6">
                                 <mat-label>Prioridad</mat-label>
                                 <mat-select matInput name="priority" id="priority" formControlName="priority"
                                     required>
@@ -48,13 +46,14 @@
                                     <mat-option [value]="3">Alta</mat-option>
                                 </mat-select>
                             </mat-form-field>
-                            <mat-form-field appearance="fill" class="col-sm-12 col-md-4">
+                            <!-- <mat-form-field appearance="fill" class="col-sm-12 col-md-4">
                                 <mat-label>Fecha</mat-label>
-                                <input matInput [matDatepicker]="picker1" formControlName="date">
+                                <input matInput type="date" formControlName="date">
+                            </mat-form-field> -->
+                                <!-- <input matInput [matDatepicker]="picker1" formControlName="date">
                                 <mat-hint>MM/DD/YYYY</mat-hint>
                                 <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                                <mat-datepicker #picker1></mat-datepicker>
-                            </mat-form-field>
+                                <mat-datepicker #picker1></mat-datepicker> -->
                             <mat-form-field appearance="fill" class="col-sm-12">
                                 <mat-label>Justificación</mat-label>
                                 <textarea matInput rows="2" style="resize: none;" formControlName="justification"

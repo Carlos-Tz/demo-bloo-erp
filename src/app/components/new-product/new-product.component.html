@@ -37,8 +37,25 @@
             </mat-form-field>
             <mat-form-field appearance="fill" class="col-sm-12 col-md-4">
                 <mat-label>Unidad de medida</mat-label>
-                <input matInput type="text" formControlName="unit">
+                <mat-select matInput name="unit" id="unit" formControlName="unit">
+                    <mat-option value="Kilogramo">Kilogramo</mat-option>
+                    <mat-option value="Gramo">Gramo</mat-option>
+                    <mat-option value="Litro">Litro</mat-option>
+                    <mat-option value="Mililitro">Mililitro</mat-option>
+                    <mat-option value="Paquete">Paquete</mat-option>
+                    <mat-option value="Caja">Caja</mat-option>
+                    <mat-option value="Pieza">Pieza</mat-option>
+                    <mat-option value="Rollo">Rollo</mat-option>
+                    <mat-option value="Metro">Metro</mat-option>
+                    <mat-option value="Servicio">Servicio</mat-option>
+                    <mat-option value="Otro">Otro</mat-option>
+                    <mat-option value="N/A">N/A</mat-option>
+                </mat-select>
             </mat-form-field>
+            <!-- <mat-form-field appearance="fill" class="col-sm-12 col-md-4">
+                <mat-label>Unidad de medida</mat-label>
+                <input matInput type="text" formControlName="unit">
+            </mat-form-field> -->
             <mat-form-field appearance="fill" class="col-sm-12 col-md-4">
                 <mat-label>Costo promedio</mat-label>
                 <input matInput type="number" formControlName="avcost">

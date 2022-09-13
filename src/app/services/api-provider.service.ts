@@ -17,39 +17,39 @@ export class ApiProviderService {
 
   AddProvider(provider: Provider) {
     
-    this.db.database.ref().child('ranchlook/provider-list/'+ provider.id).once("value", snapshot => {
+    this.db.database.ref().child('blooming/provider-list/'+ provider.id).once("value", snapshot => {
       if(snapshot.exists()){
         this.toastr.error('No guardado, ya existe un registro con este nombre!');
         return true;
       }
-      this.toastr.success('Guardado!');
-      this.db.database.ref().child('ranchlook/provider-list/'+ provider.id).set(provider);
+      //this.toastr.success('Guardado!');
+      this.db.database.ref().child('blooming/provider-list/'+ provider.id).set(provider);
       return false;
     });
   }
 
   GetProviderList() {
-    this.providerList = this.db.list('ranchlook/provider-list');
+    this.providerList = this.db.list('blooming/provider-list');
     return this.providerList;
   }
 
   GetProvider(key: string) {
-    this.providerObject = this.db.object('ranchlook/provider-list/' + key);
+    this.providerObject = this.db.object('blooming/provider-list/' + key);
     return this.providerObject;
   }
 
   UpdateProvider(provider: Provider, key: string) {
-    this.db.object('ranchlook/provider-list/' + key)
+    this.db.object('blooming/provider-list/' + key)
     .update(provider);
   }
 
   DeleteProvider(key: string) {
-    this.providerObject = this.db.object('ranchlook/provider-list/' + key);
+    this.providerObject = this.db.object('blooming/provider-list/' + key);
     this.providerObject.remove();
   }
 
   GetLastProvider(){
-    this.lastProviderRef = this.db.list('ranchlook/provider-list/', ref => ref.limitToLast(1)).valueChanges();
+    this.lastProviderRef = this.db.list('blooming/provider-list/', ref => ref.limitToLast(1)).valueChanges();
     return this.lastProviderRef;
   }
 }

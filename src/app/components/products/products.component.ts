@@ -27,6 +27,7 @@ export class ProductsComponent implements OnInit/* , OnDestroy */ {
   @ViewChild(MatSort, {static: true}) sort!: MatSort;
   @ViewChild('input', {static: false}) input!: ElementRef;
   displayedColumns: any[] = [
+    'id',
     'name',
     'unit',
     'existence',
@@ -94,7 +95,7 @@ export class ProductsComponent implements OnInit/* , OnDestroy */ {
         f['$key'] = item.key;
         this.Orden.push(f as Orden); */
         const p = item.payload.val();     
-        p['key'] = item.key;   
+        //p['key'] = item.key;   
         //const pro = {'key': item.key, 'name': p.name, 'avcost': p.avcost, 'category': p.category, 'unit': p.unit, 'existence': p.existence, 'brand': p.brand, 'model': p.model };        
         this.products.push(p as Product);
       });
@@ -124,7 +125,7 @@ export class ProductsComponent implements OnInit/* , OnDestroy */ {
         case 'name': return this.compare(a.name.trim().toLocaleLowerCase(), b.name.trim().toLocaleLowerCase(), isAsc);
         case 'category': return this.compare(a.category.trim().toLocaleLowerCase(), b.category.trim().toLocaleLowerCase(), isAsc);
         //case 'nombre': return this.compare(a.nombre.trim().toLocaleLowerCase(), b.nombre.trim().toLocaleLowerCase(), isAsc);
-        //case 'fecha': return this.compare(a.fecha, b.fecha, isAsc);
+        case 'id': return this.compare(a.id, b.id, isAsc);
         default: return 0;
       }
     });

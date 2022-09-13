@@ -40,6 +40,24 @@
                             <mat-header-cell *matHeaderCellDef class="pad-l">Ciclo</mat-header-cell>
                             <mat-cell *matCellDef="let element" class="pad-l">{{element.cicle}}</mat-cell>
                         </ng-container>
+                        <ng-container matColumnDef="priority">
+                            <mat-header-cell *matHeaderCellDef class="pad-l">Prioridad</mat-header-cell>
+                            <mat-cell *matCellDef="let element" class="pad-l">
+                                <span *ngIf="element.priority == 1">Baja</span>
+                                <span *ngIf="element.priority == 2">Media</span>
+                                <span *ngIf="element.priority == 3">Alta</span>
+                            </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="status">
+                            <mat-header-cell *matHeaderCellDef class="pad-l">Estatus</mat-header-cell>
+                            <mat-cell *matCellDef="let element" class="pad-l">
+                                <span *ngIf="element.status == 1">VoBo</span>
+                            </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="justification">
+                            <mat-header-cell *matHeaderCellDef class="pad-l">Justificación</mat-header-cell>
+                            <mat-cell *matCellDef="let element" class="pad-l">{{element.justification}}</mat-cell>
+                        </ng-container>
 
                         <ng-container matColumnDef="action">
                             <mat-header-cell *matHeaderCellDef> Acción </mat-header-cell>

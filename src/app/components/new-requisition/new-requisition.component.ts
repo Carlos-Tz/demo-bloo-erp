@@ -3,8 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Select2Data } from 'ng-select2-component';
 import { ToastrService } from 'ngx-toastr';
 import { ApiProductService } from 'src/app/services/api-product.service';
-//import 'fecha';
-//import fechaObj from 'fecha';
+import 'fecha';
+import fechaObj from 'fecha';
 import { ApiRequisitionService } from 'src/app/services/api-requisition.service';
 import { ApiCicleService } from 'src/app/services/api-cicle.service';
 import { Cicle } from 'src/app/models/cicle';
@@ -22,8 +22,6 @@ export class NewRequisitionComponent implements OnInit {
   public myForm!: FormGroup;
   public myForm1!: FormGroup;
   public date = '';
-  public user = '';
-  public product_selected = '-NAvyEW-aQ1Kv8RL_E-g';
   public dataSource = new MatTableDataSource<any>();
   @ViewChild(MatPaginator, {static: false}) paginator!: MatPaginator;
 
@@ -34,6 +32,7 @@ export class NewRequisitionComponent implements OnInit {
   public products1: any[] = [];
   public products_l: any[] = [];
   public displayedColumns = ['product', 'quantity'];
+  public ord = 0;
 
   constructor(
     private fb: FormBuilder,
@@ -48,15 +47,18 @@ export class NewRequisitionComponent implements OnInit {
     this.sForm();//console.log(this.authService.userName)
     
     this.sForm1();
-    //this.date = fechaObj.format(new Date(), 'D [/] MM [/] YYYY');
-    this.myForm.patchValue({ date: new Date().toISOString() });
-    //this.myForm.patchValue({ petitioner: this.authService.userData });
+    this.date = fechaObj.format(new Date(), 'DD[/]MM[/]YYYY');
+    //this.myForm.patchValue({ date: new Date().toISOString() });
+    this.myForm.patchValue({ date: this.date });
+    this.myForm.patchValue({ petitioner: 'Demo' });
     this.apiC.GetCicleList().snapshotChanges().subscribe(data => {
       data.forEach(item => {
         //const p = item.payload.toJSON();
         const c = item.payload.val();
-        const cic = {'id': c.id, 'status': c.status};        
-        this.cicles.push(cic);
+        if(c.status){
+          const cic = {'id': c.id, 'status': c.status};        
+          this.cicles.push(cic);
+        }
       });
     });
     this.apiP.GetProductList().snapshotChanges().subscribe(data => {
@@ -64,9 +66,19 @@ export class NewRequisitionComponent implements OnInit {
         const p = item.payload.val();
         const pro = {'value': item.key!, 'label': p.name};
         this.products.push(pro);
-        p['key'] = item.key;        
-        this.products1.push(p);
+        const p1 = { 'key': item.key, 'name': p.name }
+        //p['key'] = item.key;        
+        this.products1.push(p1);
       });
+    });
+
+    this.apiR.GetLastRequisition().subscribe(res=> {
+      if(res[0]){
+        this.ord = Number(res[0].id);
+        this.myForm.patchValue({ id: this.ord + 1 });      
+      } else {
+        this.myForm.patchValue({ id: 1 });      
+      }
     });
 
     /* if (this.products_l.length > 0) {
@@ -76,10 +88,6 @@ export class NewRequisitionComponent implements OnInit {
     /* setTimeout(() => {
       this.dataSource.paginator = this.paginator;
     }, 0); */
-  }
-
-  print(){
-    console.log('ok');
   }
 
   sForm() {
@@ -103,11 +111,9 @@ export class NewRequisitionComponent implements OnInit {
 
   submitSurveyData = () => {
     //this.apiP.AddProduct(this.myForm.value);
-    //this.ResetForm();
-    this.myForm.patchValue({ products: this.products_l })
-    console.log(this.myForm.value);
-    console.log(this.user)
-    
+    this.myForm.patchValue({ products: this.products_l });
+    this.apiR.AddRequisition(this.myForm.value);
+    this.ResetForm();
   }
 
   ResetForm() {

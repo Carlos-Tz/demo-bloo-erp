@@ -33,6 +33,7 @@ export class NewCicleComponent implements OnInit {
     this.myForm.patchValue({ 'id' : (this.myForm.get('id')?.value).toUpperCase() });
     this.api.AddCicle(this.myForm.value);
     this.ResetForm();
+    this.toastr.success('Ciclo guardado!');
   }
 
   ResetForm() {
