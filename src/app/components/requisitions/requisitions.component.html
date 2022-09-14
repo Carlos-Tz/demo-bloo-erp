@@ -38,11 +38,11 @@
                         </ng-container>
 
                         <ng-container matColumnDef="cicle">
-                            <mat-header-cell *matHeaderCellDef class="pad-l">Ciclo</mat-header-cell>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="pad-l">Ciclo</mat-header-cell>
                             <mat-cell *matCellDef="let element" class="pad-l">{{element.cicle}}</mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="priority">
-                            <mat-header-cell *matHeaderCellDef class="pad-l">Prioridad</mat-header-cell>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="pad-l">Prioridad</mat-header-cell>
                             <mat-cell *matCellDef="let element" class="pad-l">
                                 <span *ngIf="element.priority == 1">Baja</span>
                                 <span *ngIf="element.priority == 2">Media</span>
@@ -50,20 +50,31 @@
                             </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="status">
-                            <mat-header-cell *matHeaderCellDef class="pad-l">Estatus</mat-header-cell>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="pad-l">Estatus</mat-header-cell>
                             <mat-cell *matCellDef="let element" class="pad-l">
                                 <span *ngIf="element.status == 1">VoBo</span>
+                                <span *ngIf="element.status == 2">Autorizada</span>
+                                <span *ngIf="element.status == 3">Rechazada</span>
+                                <span *ngIf="element.status == 4">Cotizada</span>
+                                <span *ngIf="element.status == 5">Pedida</span>
+                                <span *ngIf="element.status == 6">Incompleta</span>
+                                <span *ngIf="element.status == 7">Completa</span>
                             </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="justification">
-                            <mat-header-cell *matHeaderCellDef class="pad-l">Justificación</mat-header-cell>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="pad-l">Justificación</mat-header-cell>
                             <mat-cell *matCellDef="let element" class="pad-l">{{element.justification}}</mat-cell>
                         </ng-container>
 
                         <ng-container matColumnDef="action">
                             <mat-header-cell *matHeaderCellDef> Acción </mat-header-cell>
                             <mat-cell *matCellDef="let element; let i = index;">
-                                <button class="btn btn-outline-info me-2" style="padding: 0 0.2rem;" (click)="openAuthorizationDialog(element.id)" ><span class="material-icons">done</span>Autorizar</button>
+                                <button *ngIf="element.status == 1" class="btn btn-outline-success me-2 w-100" style="padding: 0 0.2rem;" (click)="openAuthorizationDialog(element.id)" >
+                                    <span class="material-icons">done</span>Autorizar
+                                </button>
+                                <button *ngIf="element.status == 2" class="btn btn-outline-success me-2 w-100" style="padding: 0 0.2rem;" (click)="openRequestQuoteDialog(element.id)" >
+                                    <span class="material-icons">request_quote</span>Cotizar
+                                </button>
                             </mat-cell>
                         </ng-container>
 

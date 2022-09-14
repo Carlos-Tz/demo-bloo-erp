@@ -66,7 +66,7 @@ export class NewRequisitionComponent implements OnInit {
         const p = item.payload.val();
         const pro = {'value': item.key!, 'label': p.name};
         this.products.push(pro);
-        const p1 = { 'key': item.key, 'name': p.name, 'unit': p.unit }
+        const p1 = { 'key': item.key, 'name': p.name, 'unit': p.unit, 'avcost': p.avcost }
         //p['key'] = item.key;        
         this.products1.push(p1);
       });

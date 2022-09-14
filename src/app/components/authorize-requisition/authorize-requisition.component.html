@@ -2,14 +2,15 @@
 <form [formGroup]="myForm" novalidate autocomplete="off">
     <mat-dialog-content class="w-100 m-0">
         <div class="row">
-            <mat-form-field appearance="fill" class="col-sm-12 col-md-6">
+            <mat-form-field appearance="fill" class="col-sm-12 col-md-6" style="pointer-events: none;">
                 <mat-label>Ciclo</mat-label>
+                <!-- <input matInput type="text" formControlName="cicle" required readonly> -->
                 <mat-select matInput name="cicle" id="cicle" formControlName="cicle" required>
                     <mat-option *ngFor="let cicle of cicles" [value]="cicle.id">{{ cicle.id }}
                     </mat-option>
                 </mat-select>
             </mat-form-field>
-            <mat-form-field appearance="fill" class="col-sm-12 col-md-4">
+            <mat-form-field appearance="fill" class="col-sm-12 col-md-6" style="pointer-events: none;">
                 <mat-label>Prioridad</mat-label>
                 <mat-select matInput name="priority" id="priority" formControlName="priority" required>
                     <mat-option [value]="1">Baja</mat-option>
@@ -20,7 +21,7 @@
             <mat-form-field appearance="fill" class="col-sm-12">
                 <mat-label>Justificación</mat-label>
                 <textarea matInput rows="2" style="resize: none;" formControlName="justification"
-                    required></textarea>
+                    required readonly></textarea>
             </mat-form-field>
         </div>
         <div class="row">
@@ -30,11 +31,13 @@
                         <th>Producto</th>
                         <th>Cantidad</th>
                         <th>Unidad</th>
+                        <th>Costo promedio</th>
                     </thead>
                     <tr *ngFor="let pro of products">
                         <td>{{ pro.name }}</td>
                         <td>{{ pro.quantity }}</td>
                         <td>{{ pro.unit }}</td>
+                        <td>{{ pro.avcost | currency }}</td>
                     </tr>
                 </table>
             </div>
@@ -42,7 +45,8 @@
     </mat-dialog-content>
     <mat-dialog-actions align="end">
         <button mat-button mat-dialog-close>Cancelar</button>
-        <button mat-button [mat-dialog-close]="true" (click)="submitSurveyData()" [disabled]="!myForm.valid" class="btn btn-outline-info">Guardar</button>
+        <button mat-button [mat-dialog-close]="true" (click)="decline()" class="btn btn-outline-warning">Rechazar</button>
+        <button mat-button [mat-dialog-close]="true" (click)="vobo()" class="btn btn-outline-info">VoBo</button>
     </mat-dialog-actions>
 </form>
 

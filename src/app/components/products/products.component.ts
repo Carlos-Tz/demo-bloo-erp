@@ -101,7 +101,7 @@ export class ProductsComponent implements OnInit/* , OnDestroy */ {
       });
       if (this.products.length > 0) {
         this.data = true;
-        this.dataSource.data = this.products.slice();
+        this.dataSource.data = this.products.reverse().slice();
        /*  this.dataSource.sort = this.sort; */
       }
       /* Pagination */

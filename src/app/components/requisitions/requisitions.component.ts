@@ -55,7 +55,7 @@ export class RequisitionsComponent implements OnInit {
       });
       if (this.requisitions.length > 0) {
         this.data = true;
-        this.dataSource.data = this.requisitions.slice();
+        this.dataSource.data = this.requisitions.reverse().slice();
        /*  this.dataSource.sort = this.sort; */
       }
       /* Pagination */
@@ -80,6 +80,11 @@ export class RequisitionsComponent implements OnInit {
       const isAsc = sort.direction === 'asc';
       switch (sort.active) {
         case 'date': return this.compare(a.date.trim().toLocaleLowerCase(), b.date.trim().toLocaleLowerCase(), isAsc);
+        case 'id': return this.compare(a.id, b.id, isAsc);
+        case 'cicle': return this.compare(a.cicle.trim().toLocaleLowerCase(), b.cicle.trim().toLocaleLowerCase(), isAsc);
+        case 'priority': return this.compare(a.priority, b.priority, isAsc);
+        case 'status': return this.compare(a.status, b.status, isAsc);
+        case 'justification': return this.compare(a.justification.trim().toLocaleLowerCase(), b.justification.trim().toLocaleLowerCase(), isAsc);
         default: return 0;
       }
     });
@@ -101,6 +106,18 @@ export class RequisitionsComponent implements OnInit {
   }
 
   openAuthorizationDialog(id: string) {
+    const dialogRef = this.dialog.open(AuthorizeRequisitionComponent, {
+      data: {
+        id: id
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      //console.log(`Dialog result: ${result}`);
+    });
+  }
+
+  openRequestQuoteDialog(id: string) {
     const dialogRef = this.dialog.open(AuthorizeRequisitionComponent, {
       data: {
         id: id

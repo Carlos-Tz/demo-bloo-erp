@@ -54,9 +54,16 @@ export class AuthorizeRequisitionComponent implements OnInit {
     });
   }
 
-  submitSurveyData = () => {
+  vobo = () => {
+    this.myForm.patchValue({ status: 2 })
     this.apiR.UpdateRequisition(this.myForm.value, this.data.id);
-    this.toastr.success('Requisición actualizada!');
+    this.toastr.success('Requisición autorizada!');
+  }
+
+  decline = () => {
+    this.myForm.patchValue({ status: 3 })
+    this.apiR.UpdateRequisition(this.myForm.value, this.data.id);
+    this.toastr.warning('Requisición rechazada!');
   }
 
 }
