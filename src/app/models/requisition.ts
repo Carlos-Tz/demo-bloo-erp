@@ -6,5 +6,7 @@ export interface Requisition {
     status: number;
     justification: string;
     petitioner: string;
+    comments: string;
+    authorizationdate: string;
     products: [];
 }

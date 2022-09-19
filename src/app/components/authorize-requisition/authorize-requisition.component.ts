@@ -5,6 +5,8 @@ import { ToastrService } from 'ngx-toastr';
 import { Cicle } from 'src/app/models/cicle';
 import { ApiCicleService } from 'src/app/services/api-cicle.service';
 import { ApiRequisitionService } from 'src/app/services/api-requisition.service';
+import 'fecha';
+import fechaObj from 'fecha';
 
 @Component({
   selector: 'app-authorize-requisition',
@@ -16,6 +18,7 @@ export class AuthorizeRequisitionComponent implements OnInit {
   public myForm!: FormGroup;
   public cicles: Cicle[] = [];
   public products = [];
+  public date = '';
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private fb: FormBuilder,
@@ -50,12 +53,16 @@ export class AuthorizeRequisitionComponent implements OnInit {
       status: [''],
       justification: [''],
       petitioner: [''],
+      comments: [''],
+      authorizationdate: [''],
       products: []
     });
   }
 
   vobo = () => {
-    this.myForm.patchValue({ status: 2 })
+    this.date = fechaObj.format(new Date(), 'DD[/]MM[/]YYYY');
+    this.myForm.patchValue({ authorizationdate: this.date });
+    this.myForm.patchValue({ status: 2 });
     this.apiR.UpdateRequisition(this.myForm.value, this.data.id);
     this.toastr.success('Requisición autorizada!');
   }

@@ -99,6 +99,8 @@ export class NewRequisitionComponent implements OnInit {
       status: [1],
       justification: ['', [Validators.required]],
       petitioner: ['', [Validators.required]],
+      comments: [''],
+      authorizationdate: [''],
       products: [],
     });
   }

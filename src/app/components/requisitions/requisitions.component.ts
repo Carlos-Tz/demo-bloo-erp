@@ -118,15 +118,15 @@ export class RequisitionsComponent implements OnInit {
   }
 
   openRequestQuoteDialog(id: string) {
-    const dialogRef = this.dialog.open(AuthorizeRequisitionComponent, {
+    /* const dialogRef = this.dialog.open(AuthorizeRequisitionComponent, {
       data: {
         id: id
       }
-    });
+    }); */
 
-    dialogRef.afterClosed().subscribe(result => {
+    //dialogRef.afterClosed().subscribe(result => {
       //console.log(`Dialog result: ${result}`);
-    });
+    //});
   }
 
   PDF(id) {
