@@ -13,6 +13,7 @@ import pdfFonts from 'pdfmake/build/vfs_fonts';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;  
 import { ApiCompanyService } from 'src/app/services/api-company.service';
 import { AuthorizeRequisitionComponent } from '../authorize-requisition/authorize-requisition.component';
+import { QuoteComponent } from '../quote/quote.component';
 
 @Component({
   selector: 'app-requisitions',
@@ -118,11 +119,11 @@ export class RequisitionsComponent implements OnInit {
   }
 
   openRequestQuoteDialog(id: string) {
-    /* const dialogRef = this.dialog.open(AuthorizeRequisitionComponent, {
+    const dialogRef = this.dialog.open(QuoteComponent, {
       data: {
         id: id
       }
-    }); */
+    });
 
     //dialogRef.afterClosed().subscribe(result => {
       //console.log(`Dialog result: ${result}`);

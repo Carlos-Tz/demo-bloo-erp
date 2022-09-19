@@ -9,4 +9,5 @@ export interface Requisition {
     comments: string;
     authorizationdate: string;
     products: [];
+    quotations: [];
 }

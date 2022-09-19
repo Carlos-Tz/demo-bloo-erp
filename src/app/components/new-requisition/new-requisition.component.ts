@@ -102,6 +102,7 @@ export class NewRequisitionComponent implements OnInit {
       comments: [''],
       authorizationdate: [''],
       products: [],
+      quotations: [],
     });
   }
   sForm1() {

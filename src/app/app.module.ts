@@ -62,6 +62,7 @@ import { EditRanchComponent } from './components/edit-ranch/edit-ranch.component
 import { NewRequisitionComponent } from './components/new-requisition/new-requisition.component';
 import { MatTableExporterModule } from 'mat-table-exporter';
 import { AuthorizeRequisitionComponent } from './components/authorize-requisition/authorize-requisition.component';
+import { QuoteComponent } from './components/quote/quote.component';
 
 @NgModule({
   declarations: [
@@ -87,7 +88,8 @@ import { AuthorizeRequisitionComponent } from './components/authorize-requisitio
     NewRanchComponent,
     EditRanchComponent,
     NewRequisitionComponent,
-    AuthorizeRequisitionComponent
+    AuthorizeRequisitionComponent,
+    QuoteComponent
   ],
   imports: [
     BrowserModule,
