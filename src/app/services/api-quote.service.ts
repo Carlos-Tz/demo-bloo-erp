@@ -26,57 +26,84 @@ export class ApiQuoteService {
     this.apiP.GetProduct(product.key).valueChanges().subscribe(prod => {
       if(prod.providers){
         prod.providers.forEach(element => {
-          console.log(this.GetLastQuotationId());
           this.apiPr.GetProvider(element).valueChanges().subscribe(prov => {
             if(prov.email){
-              console.log(prov.email);
-              
-              let quotation: Quotation = { 
-                date: '',
-                id: null,
-                petitioner: '',
-                email: '',
-                provider: '',
-                products: []
-              };
-              quotation.date = fechaObj.format(new Date(), 'DD[/]MM[/]YYYY');
-              quotation.provider = prov.name;
-              quotation.email = prov.email;
-              quotation.petitioner = 'Demo';
-              quotation.products.push(product);
-              /* const last = this.GetLastQuotation();
-              last.subscribe(res => {
-                if(res[0]){
-                  quotation.id = Number(res[0].id) + 1;
-                } else {
-                  quotation.id = 1;
-                }
-                console.log(quotation.id);
-                this.add(quotation, id_requisition);
-              }); */
+              /* const lastQ = async (id_: number): Promise<number> => {
+                const p = await new Promise<number>((resolve, reject) => {
+                  let id = 0;
+                  this.GetLastQuotation().subscribe(res => {
+                    if(res[0]){ id = Number(res[0].id) + 1; } else { id = 1; }
+                  });
+                  resolve(id);
+                })
+                return p;
+              }
+              console.log(lastQ); */
+              /* const last = (id: number) => {
+                const p = new Promise<number>((resolve, reject) => {
+                  this.GetLastQuotation().subscribe(res => {
+                    let id_ = 0;
+                    if(res[0]){ id_ = Number(res[0].id) + 1; } else { id_ = 1; }
+                    console.log('ok');
+                    
+                    resolve(id_)
+                  })
+                })
+                return p;
+              }
+              console.log(last); */
+
+
 
               
-              /* this.GetLastQuotation().subscribe(res => {
-                if(res[0]){
-                  quotation.id = Number(res[0].id) + 1;
-                } else {
-                  quotation.id = 1;
-                }
-                this.db.database.ref().child('blooming/quotation-list/'+ quotation.id).set(quotation);
-                this.apiR.GetRequisition(id_requisition).valueChanges().subscribe(requi => {
-                  let quotations = [];
-                  //if(requi.quotations){
-                  //  quotations = requi.quotations;
-                  //}
-                  quotations.push(quotation.id);
-                  this.db.object('blooming/requisition-list/' + id_requisition).update({ 'quotations': quotations });
+              
+              /* const p = new Promise((resolve, reject) => {
+                this.GetLastQuotation().subscribe(res => {
+                  let id = 0;
+                  if(res[0]){ id = Number(res[0].id) + 1; } else { id = 1; }
+                  resolve(id);
                 });
-              }); */
-            }//else return 0;
-          });    
+              });              
+
+              await p.then(async (v: number) => { 
+                console.log(prov.email);                
+                let quotation: Quotation = { 
+                  date: '',
+                  id: null,
+                  petitioner: '',
+                  email: '',
+                  provider: '',
+                  products: []
+                };
+                quotation.id = v;
+                quotation.date = fechaObj.format(new Date(), 'DD[/]MM[/]YYYY');
+                quotation.provider = prov.name;
+                quotation.email = prov.email;
+                quotation.petitioner = 'Demo';
+                quotation.products.push(product);
+                await new Promise((resolve, reject) => setTimeout(resolve, 3000));
+                this.add(quotation, id_requisition); console.log('add', quotation.id);
+                console.log('3sec');
+
+                const p2 = new Promise((resolve, reject) => {
+                  this.apiR.GetRequisition(id_requisition).valueChanges().subscribe(requi => {
+                    let quotations = [];
+                    if(requi.quotations){
+                      quotations = [...requi.quotations];
+                    }
+                    quotations.push(v);
+                    resolve(quotations);
+                  });
+                });
+                await p2.then((quotations: any[]) => {
+                  this.db.object('blooming/requisition-list/' + id_requisition).update({ 'quotations': quotations });
+                }); 
+              });   */          
+            }
+          });
         });
-      } //return 2;
-    }); //return 1;
+      }
+    });
   }
 
   add(quotation, id){
@@ -86,26 +113,5 @@ export class ApiQuoteService {
   GetLastQuotation(){
     this.lastQuotationRef = this.db.list('blooming/quotation-list/', ref => ref.limitToLast(1)).valueChanges();
     return this.lastQuotationRef;
-  }
-
-  GetLastQuotationId(){
-    let id: number = 0;
-    let li = this.db.list('blooming/quotation-list/', ref => ref.limitToLast(1));
-    let r = li.valueChanges().subscribe(res => {
-      if(res[0]){
-        id = Number(res[0]['id']) + 1;
-        //console.log(id);
-        return id;
-        //return Number(res[0]); 
-      }else {
-        id = 1;
-        //console.log(id);
-        return id;
-        //return 1;
-      }
-    });
-    console.log(r);
-    
-    return id;
   }
 }
