@@ -14,6 +14,7 @@ import { ApiRequisitionService } from './api-requisition.service';
 export class ApiQuoteService {
 
   public lastQuotationRef!: Observable<any[]>;
+  public providers = [];
 
   constructor(
     private db: AngularFireDatabase,
@@ -25,8 +26,21 @@ export class ApiQuoteService {
   AddQuotation(product: any, id_requisition: any) {
     this.apiP.GetProduct(product.key).valueChanges().subscribe(prod => {
       if(prod.providers){
+        /* this.providers = [...prod.providers];
+        for (const p in this.providers) {
+          if (Object.prototype.hasOwnProperty.call(this.providers, p)) {
+            const element = this.providers[p];
+            console.log(element);
+            this.apiPr.GetProvider(element).valueChanges().subscribe(prov => {
+              if(prov.email){
+                console.log(prov.email);
+                
+              }
+            });
+          }
+        } */
         prod.providers.forEach(element => {
-          this.apiPr.GetProvider(element).valueChanges().subscribe(prov => {
+          this.apiPr.GetProvider(element).valueChanges().subscribe(async prov => {
             if(prov.email){
               /* const lastQ = async (id_: number): Promise<number> => {
                 const p = await new Promise<number>((resolve, reject) => {
@@ -57,7 +71,8 @@ export class ApiQuoteService {
 
               
               
-              /* const p = new Promise((resolve, reject) => {
+              //await new Promise((resolve, reject) => setTimeout(resolve, 3000));
+              const p = new Promise((resolve, reject) => {
                 this.GetLastQuotation().subscribe(res => {
                   let id = 0;
                   if(res[0]){ id = Number(res[0].id) + 1; } else { id = 1; }
@@ -81,9 +96,10 @@ export class ApiQuoteService {
                 quotation.email = prov.email;
                 quotation.petitioner = 'Demo';
                 quotation.products.push(product);
-                await new Promise((resolve, reject) => setTimeout(resolve, 3000));
-                this.add(quotation, id_requisition); console.log('add', quotation.id);
-                console.log('3sec');
+                this.db.list('blooming/quotation-list').push(quotation);
+                //await new Promise((resolve, reject) => setTimeout(resolve, 3000));
+                //this.add(quotation, id_requisition); console.log('add', quotation.id);
+                //console.log('3sec');
 
                 const p2 = new Promise((resolve, reject) => {
                   this.apiR.GetRequisition(id_requisition).valueChanges().subscribe(requi => {
@@ -98,7 +114,7 @@ export class ApiQuoteService {
                 await p2.then((quotations: any[]) => {
                   this.db.object('blooming/requisition-list/' + id_requisition).update({ 'quotations': quotations });
                 }); 
-              });   */          
+              });            
             }
           });
         });
