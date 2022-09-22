@@ -28,7 +28,14 @@
                         <ng-container matColumnDef="id">
                             <mat-header-cell *matHeaderCellDef mat-sort-header >ID</mat-header-cell>
                             <mat-cell *matCellDef="let element">{{element.id}}
-                                <span (click)="PDF(element.id)" style="color: #fff; background-color: green; border-radius: 20%; padding: 0.2rem; margin-left: 0.3rem; cursor: pointer; font-size: 0.7rem;">PDF</span>
+                                <span (click)="PDF(element.id)" style="color: #fff; background-color: green; border-radius: 20%; padding: 0.2rem; margin-left: 0.3rem; cursor: pointer; font-size: 0.7rem;" class="me-2">PDF</span>
+                                <span *ngIf="element.status == 1">VoBo</span>
+                                <span *ngIf="element.status == 2">Autorizada</span>
+                                <span *ngIf="element.status == 3">Rechazada</span>
+                                <span *ngIf="element.status == 4">Cotizada</span>
+                                <span *ngIf="element.status == 5">Pedida</span>
+                                <span *ngIf="element.status == 6">Incompleta</span>
+                                <span *ngIf="element.status == 7">Completa</span>
                             </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="date">
@@ -49,7 +56,7 @@
                                 <span *ngIf="element.priority == 3">Alta</span>
                             </mat-cell>
                         </ng-container>
-                        <ng-container matColumnDef="status">
+                        <!-- <ng-container matColumnDef="status">
                             <mat-header-cell *matHeaderCellDef mat-sort-header class="pad-l">Estatus</mat-header-cell>
                             <mat-cell *matCellDef="let element" class="pad-l">
                                 <span *ngIf="element.status == 1">VoBo</span>
@@ -60,7 +67,7 @@
                                 <span *ngIf="element.status == 6">Incompleta</span>
                                 <span *ngIf="element.status == 7">Completa</span>
                             </mat-cell>
-                        </ng-container>
+                        </ng-container> -->
                         <ng-container matColumnDef="justification">
                             <mat-header-cell *matHeaderCellDef mat-sort-header class="pad-l">Justificación</mat-header-cell>
                             <mat-cell *matCellDef="let element" class="pad-l">{{element.justification}}</mat-cell>
@@ -75,6 +82,11 @@
                                 <button *ngIf="element.status == 2" class="btn btn-outline-success me-2 w-100" style="padding: 0 0.2rem;" (click)="openRequestQuoteDialog(element.id)" >
                                     <span class="material-icons">request_quote</span>Cotizar
                                 </button>
+                                <button *ngIf="element.status == 4" class="btn btn-outline-success me-2 w-100" style="padding: 0 0.2rem;" (click)="openRequestQuoteDialog(element.id)" >
+                                    <span class="material-icons">add_shopping_cart</span>Pedido
+                                </button>
+                                <!-- <span *ngFor="let q of element.quotations" (click)="PDF(element.id)" style="color: #fff; background-color: green; border-radius: 20%; padding: 0.2rem; margin-left: 0.3rem; cursor: pointer; font-size: 0.7rem;" class="me-2">{{q.id}}</span> -->
+                                <button *ngIf="element.status == 4" class="btn btn-outline-secondary me-1" style="padding: 0.2rem;">COT</button>
                             </mat-cell>
                         </ng-container>
 

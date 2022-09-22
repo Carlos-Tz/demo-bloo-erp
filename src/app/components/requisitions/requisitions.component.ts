@@ -31,7 +31,7 @@ export class RequisitionsComponent implements OnInit {
     'date',
     'cicle',
     'priority',
-    'status',
+    /* 'status', */
     'justification',
     'action',
   ];
@@ -51,7 +51,7 @@ export class RequisitionsComponent implements OnInit {
       this.requisitions = [];
       data.forEach(item => {
         const r = item.payload.val();        
-        const req = {'id': item.key, 'cicle': r.cicle, 'date': r.date, 'priority': r.priority, 'status': r.status, 'justification': r.justification, 'petitioner': '', 'products': [] };        
+        const req = {'id': item.key, 'cicle': r.cicle, 'date': r.date, 'priority': r.priority, 'status': r.status, 'justification': r.justification, 'petitioner': '', 'products': [], 'quotations': r.quotations };        
         this.requisitions.push(req as Requisition);
       });
       if (this.requisitions.length > 0) {

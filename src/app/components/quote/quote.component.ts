@@ -1,4 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
+import { AngularFireDatabase } from '@angular/fire/compat/database';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
@@ -19,10 +20,12 @@ export class QuoteComponent implements  OnInit {
   public myForm!: FormGroup;
   public cicles: Cicle[] = [];
   public products = [];
+  public quotations_ = [];
   public date = '';
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private fb: FormBuilder,
+    private db: AngularFireDatabase,
     public apiR: ApiRequisitionService,
     public apiQ: ApiQuoteService,
     public apiC: ApiCicleService,
@@ -34,6 +37,7 @@ export class QuoteComponent implements  OnInit {
     this.apiR.GetRequisition(this.data.id).valueChanges().subscribe(data => {
       this.myForm.patchValue(data);
       this.products = data.products;
+      this.quotations_ = this.apiQ.AddQuotation(this.products);
     });
     this.apiC.GetCicleList().snapshotChanges().subscribe(data => {
       data.forEach(item => {
@@ -62,13 +66,29 @@ export class QuoteComponent implements  OnInit {
     });
   }
 
-  quote = () => {
-    this.myForm.get('products').value.forEach(element => {
-      //console.log(element);
-      this.apiQ.AddQuotation(element, this.data.id);
+  async quote() {
+    const p = new Promise((resolve, reject) => {
+      this.apiQ.GetLastQuotation().subscribe(res => {
+        let id = 0;
+        if(res[0]){ id = Number(res[0].id) + 1; } else { id = 1; }
+        resolve(id);
+      });
+    });              
+
+    await p.then(async (v: number) => { 
+      const q_l = [];
+      for (let i = 0; i < this.quotations_.length; i++) {
+        const e = this.quotations_[i];
+        let qq = e;
+        qq['id'] = v++;
+        this.apiQ.add(qq);
+        q_l.push(qq);
+      }
+      console.log(q_l);
+      this.myForm.patchValue({ status: 4 });
+      this.myForm.patchValue({ quotations: q_l });
+      this.apiR.UpdateRequisition(this.myForm.value, this.data.id);
+      this.toastr.success('Requisición cotizada!');
     });
-    /* this.myForm.patchValue({ status: 4 });
-    this.apiR.UpdateRequisition(this.myForm.value, this.data.id);
-    this.toastr.success('Requisición cotizada!'); */
   }
 }
