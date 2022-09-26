@@ -21,6 +21,7 @@ export class OrderComponent implements OnInit {
   public products = [];
   public quotations_ = [];
   public date = '';
+  public complete = false;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialog: MatDialog,
@@ -38,6 +39,10 @@ export class OrderComponent implements OnInit {
       this.myForm.patchValue(data);
       this.products = data.products;
       console.log(data.products);
+      this.complete = this.products.every((element) => {
+        if(element.provider) return true;
+        else return false;
+      });      
       
       this.quotations_ = this.apiQ.AddQuotation(this.products);
     });
@@ -96,11 +101,11 @@ export class OrderComponent implements OnInit {
     }); */
   }
 
-  openDialog(id_r: number, id_p: number, id: number) {
+  openDialog(id_r: number, pro: any, id: number) {
     const dialogRef = this.dialog.open(AssignProviderComponent, {
       data: {
         id_r: id_r,
-        id_p: id_p,
+        pro: pro,
         id: id
       }
     });

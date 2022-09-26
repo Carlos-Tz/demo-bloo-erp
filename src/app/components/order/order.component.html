@@ -44,9 +44,10 @@
                         <td>{{ pro.unit }}</td>
                         <td>{{ pro.avcost | currency }}</td>
                         <td>
-                            <button class="btn btn-outline-success me-2 w-100" style="padding: 0 0.2rem;" (click)="openDialog(data.id, pro.key, i)" >
+                            <button *ngIf="!pro.provider" class="btn btn-outline-success me-2 w-100" style="padding: 0 0.2rem;" (click)="openDialog(data.id, pro, i)" >
                                 <span class="material-icons">add</span>Asignar proveedor
                             </button>
+                            <span *ngIf="pro.provider" style="color: #fff; background-color: rgb(15, 123, 156); border-radius: 10%; padding: 0.2rem; margin-left: 0.3rem; font-size: 0.9rem;">Asignado</span>
                         </td>
                     </tr>
                 </table>
@@ -55,7 +56,7 @@
     </mat-dialog-content>
     <mat-dialog-actions align="end">
         <button mat-button mat-dialog-close>Cancelar</button>
-        <button mat-button [mat-dialog-close]="true" (click)="purchase_order()" class="btn btn-outline-info">Generar orden de compra</button>
+        <button *ngIf="complete" mat-button [mat-dialog-close]="true" (click)="purchase_order()" class="btn btn-outline-info">Realizar pedido</button>
     </mat-dialog-actions>
 </form>
 

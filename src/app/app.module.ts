@@ -65,6 +65,7 @@ import { AuthorizeRequisitionComponent } from './components/authorize-requisitio
 import { QuoteComponent } from './components/quote/quote.component';
 import { OrderComponent } from './components/order/order.component';
 import { AssignProviderComponent } from './components/assign-provider/assign-provider.component';
+import { ViewPdfQuotationsComponent } from './components/view-pdf-quotations/view-pdf-quotations.component';
 
 @NgModule({
   declarations: [
@@ -93,7 +94,8 @@ import { AssignProviderComponent } from './components/assign-provider/assign-pro
     AuthorizeRequisitionComponent,
     QuoteComponent,
     OrderComponent,
-    AssignProviderComponent
+    AssignProviderComponent,
+    ViewPdfQuotationsComponent
   ],
   imports: [
     BrowserModule,

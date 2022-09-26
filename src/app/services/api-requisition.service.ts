@@ -40,6 +40,12 @@ export class ApiRequisitionService {
     .update(requisition);
   }
 
+  AssignProvider(key: string, pro: any, index: number) {
+    this.db.object('blooming/requisition-list/' + key + '/products/' + index).update(pro);
+    /* this.requisitionObject
+    .update(requisition); */
+  }
+
   DeleteRequisition(key: string) {
     this.requisitionObject = this.db.object('blooming/requisition-list/' + key);
     this.requisitionObject.remove();

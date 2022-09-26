@@ -29,6 +29,7 @@
                             <mat-header-cell *matHeaderCellDef mat-sort-header >ID</mat-header-cell>
                             <mat-cell *matCellDef="let element">{{element.id}}
                                 <span (click)="PDF(element.id)" style="color: #fff; background-color: green; border-radius: 20%; padding: 0.2rem; margin-left: 0.3rem; cursor: pointer; font-size: 0.7rem;" class="me-2">PDF</span>
+                                <!-- <span (click)="PDF(element.id)" class="material-icons" style="color: #fff; background-color: green; border-radius: 20%; padding: 0.2rem; margin-left: 0.3rem; cursor: pointer; font-size: 1.5rem;">picture_as_pdf</span> -->
                                 <span *ngIf="element.status == 1">VoBo</span>
                                 <span *ngIf="element.status == 2">Autorizada</span>
                                 <span *ngIf="element.status == 3">Rechazada</span>
@@ -86,7 +87,7 @@
                                     <span class="material-icons">add_shopping_cart</span>Pedido
                                 </button>
                                 <!-- <span *ngFor="let q of element.quotations" (click)="PDF(element.id)" style="color: #fff; background-color: green; border-radius: 20%; padding: 0.2rem; margin-left: 0.3rem; cursor: pointer; font-size: 0.7rem;" class="me-2">{{q.id}}</span> -->
-                                <button *ngIf="element.status == 4" class="btn btn-outline-secondary me-1" style="padding: 0.2rem;">COT</button>
+                                <button *ngIf="element.status == 4" class="btn btn-outline-secondary me-1" style="padding: 0.2rem;" (click)="openQuotationsDialog(element)">COT</button>
                             </mat-cell>
                         </ng-container>
 

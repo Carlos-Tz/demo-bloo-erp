@@ -15,6 +15,7 @@ import { ApiCompanyService } from 'src/app/services/api-company.service';
 import { AuthorizeRequisitionComponent } from '../authorize-requisition/authorize-requisition.component';
 import { QuoteComponent } from '../quote/quote.component';
 import { OrderComponent } from '../order/order.component';
+import { ViewPdfQuotationsComponent } from '../view-pdf-quotations/view-pdf-quotations.component';
 
 @Component({
   selector: 'app-requisitions',
@@ -136,6 +137,19 @@ export class RequisitionsComponent implements OnInit {
       data: {
         id: id
       }
+    });
+
+    //dialogRef.afterClosed().subscribe(result => {
+      //console.log(`Dialog result: ${result}`);
+    //});
+  }
+
+  openQuotationsDialog(requisition: Requisition) {
+    const dialogRef = this.dialog.open(ViewPdfQuotationsComponent, {
+      data: {
+        requisition: requisition
+      },
+      autoFocus: false
     });
 
     //dialogRef.afterClosed().subscribe(result => {
