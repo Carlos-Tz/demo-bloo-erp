@@ -1,0 +1,63 @@
+<h2 mat-dialog-title style="margin-bottom: 0.5rem;">Realizar pedido de requisición No. {{ data.id }}</h2>
+<form [formGroup]="myForm" novalidate autocomplete="off">
+    <mat-dialog-content class="w-100 m-0">
+        <div class="row">
+            <mat-form-field appearance="fill" class="col-sm-12 col-md-6" style="pointer-events: none;">
+                <mat-label>Ciclo</mat-label>
+                <!-- <input matInput type="text" formControlName="cicle" required readonly> -->
+                <mat-select matInput name="cicle" id="cicle" formControlName="cicle" required>
+                    <mat-option *ngFor="let cicle of cicles" [value]="cicle.id">{{ cicle.id }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="fill" class="col-sm-12 col-md-6" style="pointer-events: none;">
+                <mat-label>Prioridad</mat-label>
+                <mat-select matInput name="priority" id="priority" formControlName="priority" required>
+                    <mat-option [value]="1">Baja</mat-option>
+                    <mat-option [value]="2">Media</mat-option>
+                    <mat-option [value]="3">Alta</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="fill" class="col-sm-12">
+                <mat-label>Justificación</mat-label>
+                <textarea matInput rows="2" style="resize: none;" formControlName="justification"
+                    required readonly></textarea>
+            </mat-form-field>
+            <mat-form-field appearance="fill" class="col-sm-12">
+                <mat-label>Comentarios</mat-label>
+                <textarea matInput rows="2" style="resize: none;" formControlName="comments" readonly></textarea>
+            </mat-form-field>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <table class="table table-bordered">
+                    <thead >
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Unidad</th>
+                        <th>Costo promedio</th>
+                        <th></th>
+                    </thead>
+                    <tr *ngFor="let pro of products; let i = index">
+                        <td>{{ pro.name }}</td>
+                        <td>{{ pro.quantity }}</td>
+                        <td>{{ pro.unit }}</td>
+                        <td>{{ pro.avcost | currency }}</td>
+                        <td>
+                            <button class="btn btn-outline-success me-2 w-100" style="padding: 0 0.2rem;" (click)="openDialog(data.id, pro.key, i)" >
+                                <span class="material-icons">add</span>Asignar proveedor
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>Cancelar</button>
+        <button mat-button [mat-dialog-close]="true" (click)="purchase_order()" class="btn btn-outline-info">Generar orden de compra</button>
+    </mat-dialog-actions>
+</form>
+
+
+

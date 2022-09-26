@@ -1,23 +1,21 @@
-import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
-import { Subscriber, Subscription } from 'rxjs';
 import { Cicle } from 'src/app/models/cicle';
 import { ApiCicleService } from 'src/app/services/api-cicle.service';
 import { ApiQuoteService } from 'src/app/services/api-quote.service';
 import { ApiRequisitionService } from 'src/app/services/api-requisition.service';
-//import 'fecha';
-//import fechaObj from 'fecha';
+import { AssignProviderComponent } from '../assign-provider/assign-provider.component';
 
 @Component({
-  selector: 'app-quote',
-  templateUrl: './quote.component.html',
-  styleUrls: ['./quote.component.css']
+  selector: 'app-order',
+  templateUrl: './order.component.html',
+  styleUrls: ['./order.component.css']
 })
-export class QuoteComponent implements  OnInit, OnDestroy {
-  sq: Subscription;
+export class OrderComponent implements OnInit {
+
   public myForm!: FormGroup;
   public cicles: Cicle[] = [];
   public products = [];
@@ -25,6 +23,7 @@ export class QuoteComponent implements  OnInit, OnDestroy {
   public date = '';
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
+    public dialog: MatDialog,
     private fb: FormBuilder,
     private db: AngularFireDatabase,
     public apiR: ApiRequisitionService,
@@ -38,6 +37,8 @@ export class QuoteComponent implements  OnInit, OnDestroy {
     this.apiR.GetRequisition(this.data.id).valueChanges().subscribe(data => {
       this.myForm.patchValue(data);
       this.products = data.products;
+      console.log(data.products);
+      
       this.quotations_ = this.apiQ.AddQuotation(this.products);
     });
     this.apiC.GetCicleList().snapshotChanges().subscribe(data => {
@@ -67,8 +68,10 @@ export class QuoteComponent implements  OnInit, OnDestroy {
     });
   }
 
-  async quote() {
-    const p = new Promise((resolve, reject) => {
+  async purchase_order() {
+    console.log('ok');
+    
+    /* const p = new Promise((resolve, reject) => {
       this.apiQ.GetLastQuotation().subscribe(res => {
         let id = 0;
         if(res[0]){ id = Number(res[0].id) + 1; } else { id = 1; }
@@ -90,16 +93,17 @@ export class QuoteComponent implements  OnInit, OnDestroy {
       this.myForm.patchValue({ quotations: q_l });
       this.apiR.UpdateRequisition(this.myForm.value, this.data.id);
       this.toastr.success('Requisición cotizada!');
-    })/* .then( () => {
-      this.quotations_ = [];
-      this.sq.unsubscribe();
-    }) */;
+    }); */
   }
-  ngOnDestroy() {
-    //this.quotations_ = [];
-    
-    //this.sq.unsubscribe();
-    console.log('des');
-    
+
+  openDialog(id_r: number, id_p: number, id: number) {
+    const dialogRef = this.dialog.open(AssignProviderComponent, {
+      data: {
+        id_r: id_r,
+        id_p: id_p,
+        id: id
+      }
+    });
   }
 }
+

@@ -24,6 +24,7 @@ export class ApiQuoteService {
     ) { }
 
   AddQuotation(products: any[]) {
+    this.quotations_ = [];
     products.forEach(product => {
       this.apiP.GetProduct(product.key).valueChanges().subscribe(prod => {
         if(prod.providers){

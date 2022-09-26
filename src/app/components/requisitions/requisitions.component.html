@@ -82,7 +82,7 @@
                                 <button *ngIf="element.status == 2" class="btn btn-outline-success me-2 w-100" style="padding: 0 0.2rem;" (click)="openRequestQuoteDialog(element.id)" >
                                     <span class="material-icons">request_quote</span>Cotizar
                                 </button>
-                                <button *ngIf="element.status == 4" class="btn btn-outline-success me-2 w-100" style="padding: 0 0.2rem;" (click)="openRequestQuoteDialog(element.id)" >
+                                <button *ngIf="element.status == 4" class="btn btn-outline-success me-2 w-100" style="padding: 0 0.2rem;" (click)="openOrderDialog(element.id)" >
                                     <span class="material-icons">add_shopping_cart</span>Pedido
                                 </button>
                                 <!-- <span *ngFor="let q of element.quotations" (click)="PDF(element.id)" style="color: #fff; background-color: green; border-radius: 20%; padding: 0.2rem; margin-left: 0.3rem; cursor: pointer; font-size: 0.7rem;" class="me-2">{{q.id}}</span> -->

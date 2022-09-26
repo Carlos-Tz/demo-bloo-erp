@@ -63,6 +63,8 @@ import { NewRequisitionComponent } from './components/new-requisition/new-requis
 import { MatTableExporterModule } from 'mat-table-exporter';
 import { AuthorizeRequisitionComponent } from './components/authorize-requisition/authorize-requisition.component';
 import { QuoteComponent } from './components/quote/quote.component';
+import { OrderComponent } from './components/order/order.component';
+import { AssignProviderComponent } from './components/assign-provider/assign-provider.component';
 
 @NgModule({
   declarations: [
@@ -89,7 +91,9 @@ import { QuoteComponent } from './components/quote/quote.component';
     EditRanchComponent,
     NewRequisitionComponent,
     AuthorizeRequisitionComponent,
-    QuoteComponent
+    QuoteComponent,
+    OrderComponent,
+    AssignProviderComponent
   ],
   imports: [
     BrowserModule,
