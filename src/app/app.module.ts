@@ -66,6 +66,13 @@ import { QuoteComponent } from './components/quote/quote.component';
 import { OrderComponent } from './components/order/order.component';
 import { AssignProviderComponent } from './components/assign-provider/assign-provider.component';
 import { ViewPdfQuotationsComponent } from './components/view-pdf-quotations/view-pdf-quotations.component';
+import { ViewPdfOrdersComponent } from './components/view-pdf-orders/view-pdf-orders.component';
+import { PaymentsComponent } from './components/payments/payments.component';
+import { RejectedRequisitionsComponent } from './components/rejected-requisitions/rejected-requisitions.component';
+import { OrderedRequisitionsComponent } from './components/ordered-requisitions/ordered-requisitions.component';
+import { SchedulePaymentComponent } from './components/schedule-payment/schedule-payment.component';
+import { MakePaymentComponent } from './components/make-payment/make-payment.component';
+import { ViewPaymentComponent } from './components/view-payment/view-payment.component';
 
 @NgModule({
   declarations: [
@@ -95,7 +102,14 @@ import { ViewPdfQuotationsComponent } from './components/view-pdf-quotations/vie
     QuoteComponent,
     OrderComponent,
     AssignProviderComponent,
-    ViewPdfQuotationsComponent
+    ViewPdfQuotationsComponent,
+    ViewPdfOrdersComponent,
+    PaymentsComponent,
+    RejectedRequisitionsComponent,
+    OrderedRequisitionsComponent,
+    SchedulePaymentComponent,
+    MakePaymentComponent,
+    ViewPaymentComponent
   ],
   imports: [
     BrowserModule,

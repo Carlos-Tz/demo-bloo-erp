@@ -9,7 +9,8 @@
                             <div class="d-flex">
                             </div>
                             <div class="d-flex">
-                                <!-- <button class="btn btn-outline-info me-2" (click)="openDialog()">Nueva requisición</button> -->
+                                <button class="btn btn-outline-warning me-2" (click)="openRDialog()">Requisiciones rechazadas</button>
+                                <button class="btn btn-outline-success me-2" (click)="openPDialog()">Requisiciones pedidas</button>
                                 <button class="btn btn-outline-info me-2" [routerLink]="['/new-requisition']">Nueva requisición</button>
                             </div>
                         </div>
@@ -27,7 +28,7 @@
 
                         <ng-container matColumnDef="id">
                             <mat-header-cell *matHeaderCellDef mat-sort-header >ID</mat-header-cell>
-                            <mat-cell *matCellDef="let element">{{element.id}}
+                            <mat-cell *matCellDef="let element">REQ-{{element.id}}
                                 <span (click)="PDF(element.id)" style="color: #fff; background-color: green; border-radius: 20%; padding: 0.2rem; margin-left: 0.3rem; cursor: pointer; font-size: 0.7rem;" class="me-2">PDF</span>
                                 <!-- <span (click)="PDF(element.id)" class="material-icons" style="color: #fff; background-color: green; border-radius: 20%; padding: 0.2rem; margin-left: 0.3rem; cursor: pointer; font-size: 1.5rem;">picture_as_pdf</span> -->
                                 <span *ngIf="element.status == 1">VoBo</span>
@@ -40,7 +41,7 @@
                             </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="date">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header class="pad-l">Fecha</mat-header-cell>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="pad-l">Fecha de solicitud</mat-header-cell>
                             <mat-cell *matCellDef="let element" class="pad-l">{{element.date}}
                             </mat-cell>
                         </ng-container>
@@ -88,6 +89,7 @@
                                 </button>
                                 <!-- <span *ngFor="let q of element.quotations" (click)="PDF(element.id)" style="color: #fff; background-color: green; border-radius: 20%; padding: 0.2rem; margin-left: 0.3rem; cursor: pointer; font-size: 0.7rem;" class="me-2">{{q.id}}</span> -->
                                 <button *ngIf="element.status == 4" class="btn btn-outline-secondary me-1" style="padding: 0.2rem;" (click)="openQuotationsDialog(element)">COT</button>
+                                <button *ngIf="element.status == 5" class="btn btn-outline-secondary me-1 w-100" style="padding: 0.2rem;" (click)="openOrdersDialog(element)">OC</button>
                             </mat-cell>
                         </ng-container>
 
@@ -96,7 +98,7 @@
                         <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
 
                     </mat-table>
-                    <mat-paginator [pageSizeOptions]="[10, 20]" showFirstLastButtons></mat-paginator>
+                    <mat-paginator [pageSizeOptions]="[10, 20, 50, 100]" showFirstLastButtons></mat-paginator>
                 </div>
             </div>
         </div>

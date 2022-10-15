@@ -1,33 +1,25 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { ToastrService } from 'ngx-toastr';
 import { Requisition } from 'src/app/models/requisition';
-import { Company } from 'src/app/models/company';
 import { ApiRequisitionService } from 'src/app/services/api-requisition.service';
-import { NewRequisitionComponent } from '../new-requisition/new-requisition.component';
 import pdfMake from 'pdfmake/build/pdfmake';  
 import pdfFonts from 'pdfmake/build/vfs_fonts';  
-pdfMake.vfs = pdfFonts.pdfMake.vfs;  
+import { Company } from 'src/app/models/company';
 import { ApiCompanyService } from 'src/app/services/api-company.service';
-import { AuthorizeRequisitionComponent } from '../authorize-requisition/authorize-requisition.component';
-import { QuoteComponent } from '../quote/quote.component';
-import { OrderComponent } from '../order/order.component';
-import { ViewPdfQuotationsComponent } from '../view-pdf-quotations/view-pdf-quotations.component';
-import { ViewPdfOrdersComponent } from '../view-pdf-orders/view-pdf-orders.component';
-import { RejectedRequisitionsComponent } from '../rejected-requisitions/rejected-requisitions.component';
-import { OrderedRequisitionsComponent } from '../ordered-requisitions/ordered-requisitions.component';
+pdfMake.vfs = pdfFonts.pdfMake.vfs;  
 
 @Component({
-  selector: 'app-requisitions',
-  templateUrl: './requisitions.component.html',
-  styleUrls: ['./requisitions.component.css']
+  selector: 'app-rejected-requisitions',
+  templateUrl: './rejected-requisitions.component.html',
+  styleUrls: ['./rejected-requisitions.component.css']
 })
-export class RequisitionsComponent implements OnInit {
+export class RejectedRequisitionsComponent implements OnInit {
   public dataSource = new MatTableDataSource<Requisition>();
   public data = false;
+  public requisitions: Requisition[] = [];
+  public company: Company;
   @ViewChild(MatPaginator, {static: false}) paginator!: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort!: MatSort;
   @ViewChild('input', {static: false}) input!: ElementRef;
@@ -38,17 +30,11 @@ export class RequisitionsComponent implements OnInit {
     'priority',
     /* 'status', */
     'justification',
-    'action',
+    /* 'action', */
   ];
-  //public categories: Select2Data = [];
-  public requisitions: Requisition[] = [];
-  public company: Company;
-  //public category = '';
   constructor(
-    public dialog: MatDialog,
-    public apiC: ApiCompanyService,
     public apiR: ApiRequisitionService,
-    public toastr: ToastrService,
+    public apiC: ApiCompanyService,
   ) { }
 
   ngOnInit(): void {
@@ -56,7 +42,7 @@ export class RequisitionsComponent implements OnInit {
       this.requisitions = [];
       data.forEach(item => {
         const r = item.payload.val();     
-        if(r.status != 5 && r.status != 3){
+        if(r.status == 3){
           const req = {'id': item.key, 'cicle': r.cicle, 'date': r.date, 'priority': r.priority, 'status': r.status, 'justification': r.justification, 'petitioner': '', 'products': [], 'quotations': r.quotations, 'orders': r.orders };        
           this.requisitions.push(req as Requisition);
         }   
@@ -74,7 +60,6 @@ export class RequisitionsComponent implements OnInit {
     this.apiC.GetCompany().valueChanges().subscribe(data => {
       this.company = data;
     });
-    
   }
 
   sortData(sort: Sort) {
@@ -105,92 +90,6 @@ export class RequisitionsComponent implements OnInit {
     this.dataSource.filter = event.value.trim().toLocaleLowerCase();
   }
 
-  openDialog() {
-    const dialogRef = this.dialog.open(NewRequisitionComponent);
-
-    dialogRef.afterClosed().subscribe(result => {
-      //console.log(`Dialog result: ${result}`);
-    });
-  }
-
-  openRDialog() {
-    const dialogRef = this.dialog.open(RejectedRequisitionsComponent, {
-      width: '80%',
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      //console.log(`Dialog result: ${result}`);
-    });
-  }
-
-  openPDialog() {
-    const dialogRef = this.dialog.open(OrderedRequisitionsComponent, {
-      width: '80%'
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      //console.log(`Dialog result: ${result}`);
-    });
-  }
-
-  openAuthorizationDialog(id: string) {
-    const dialogRef = this.dialog.open(AuthorizeRequisitionComponent, {
-      data: {
-        id: id
-      }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      //console.log(`Dialog result: ${result}`);
-    });
-  }
-
-  openRequestQuoteDialog(id: string) {
-    const dialogRef = this.dialog.open(QuoteComponent, {
-      data: {
-        id: id
-      }
-    });
-
-    //dialogRef.afterClosed().subscribe(result => {
-      //console.log(`Dialog result: ${result}`);
-    //});
-  }
-
-  openOrderDialog(id: string) {
-    const dialogRef = this.dialog.open(OrderComponent, {
-      data: {
-        id: id
-      }
-    });
-
-    //dialogRef.afterClosed().subscribe(result => {
-      //console.log(`Dialog result: ${result}`);
-    //});
-  }
-
-  openQuotationsDialog(requisition: Requisition) {
-    const dialogRef = this.dialog.open(ViewPdfQuotationsComponent, {
-      data: {
-        requisition: requisition
-      },
-      autoFocus: false
-    });
-
-    //dialogRef.afterClosed().subscribe(result => {
-      //console.log(`Dialog result: ${result}`);
-    //});
-  }
-
-  openOrdersDialog(requisition: Requisition) {
-    const dialogRef = this.dialog.open(ViewPdfOrdersComponent, {
-      data: {
-        requisition: requisition
-      },
-      autoFocus: false
-    });
-  }
-
   PDF(id) {
     this.apiR.GetRequisition(id).valueChanges().subscribe(data => {
       let priority = '';
@@ -204,8 +103,7 @@ export class RequisitionsComponent implements OnInit {
       if(!data.products){
         data.products = [{ key: '', name: '', quantity: '', unit: '' }];
       }
-      let docDefinition = {  
-        //header: 'C# Corner PDF Header',  
+      let docDefinition = {   
         content: [
           {
             style: 'table',
@@ -240,21 +138,5 @@ export class RequisitionsComponent implements OnInit {
      
       pdfMake.createPdf(docDefinition).open();  
     });
-    //console.log(this.req);
-     
-    /* columns: [
-            [
-              { text: 'REQUISICIÓN', fontSize: 26, alignment: 'center' },
-              { text: 'Empresa' }, { text: 'RFC' }, { text: 'Dirección' }, { text: 'Colonia' }, { text: 'CP' }
-            ],
-            [
-              { text: 'logo' , alignment: 'center'},
-              { text: 'MORELIA, MICHOACÁN' , alignment: 'center'},
-              { text: 'REQ - ' , alignment: 'center'},
-              { text: 'Slogan' , alignment: 'center'},
-              { text: 'Fecha' , alignment: 'center'},
-              { text: '06/02/00' , alignment: 'center'}
-            ]
-          ] */
-  } 
+  }
 }

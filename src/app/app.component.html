@@ -32,6 +32,7 @@
         <a mat-list-item [routerLink]="['/products']"><span class="material-icons">inventory_2</span> Productos </a>
         <a mat-list-item [routerLink]="['/providers']"><span class="material-icons">group</span> Proveedores </a>
         <a mat-list-item [routerLink]="['/requisitions']"><span class="material-icons">description</span> Requisiciones </a>
+        <a mat-list-item [routerLink]="['/payments']"><span class="material-icons">payments</span> Compras y pagos </a>
       </mat-expansion-panel>
       <mat-expansion-panel *ngIf="this.authService.userName">
         <mat-expansion-panel-header>

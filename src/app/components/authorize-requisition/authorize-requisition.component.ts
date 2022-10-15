@@ -55,7 +55,9 @@ export class AuthorizeRequisitionComponent implements OnInit {
       petitioner: [''],
       comments: [''],
       authorizationdate: [''],
-      products: []
+      products: [],
+      quotations: [],
+      orders: [],
     });
   }
 

@@ -8,6 +8,8 @@ import { ApiCicleService } from 'src/app/services/api-cicle.service';
 import { ApiQuoteService } from 'src/app/services/api-quote.service';
 import { ApiRequisitionService } from 'src/app/services/api-requisition.service';
 import { AssignProviderComponent } from '../assign-provider/assign-provider.component';
+import 'fecha';
+import fechaObj from 'fecha';
 
 @Component({
   selector: 'app-order',
@@ -38,13 +40,13 @@ export class OrderComponent implements OnInit {
     this.apiR.GetRequisition(this.data.id).valueChanges().subscribe(data => {
       this.myForm.patchValue(data);
       this.products = data.products;
-      console.log(data.products);
+      //console.log(data.products);
       this.complete = this.products.every((element) => {
         if(element.provider) return true;
         else return false;
       });      
       
-      this.quotations_ = this.apiQ.AddQuotation(this.products);
+      //this.quotations_ = this.apiQ.AddQuotation(this.products);
     });
     this.apiC.GetCicleList().snapshotChanges().subscribe(data => {
       data.forEach(item => {
@@ -69,15 +71,16 @@ export class OrderComponent implements OnInit {
       comments: [''],
       authorizationdate: [''],
       products: [],
-      quotations: []
+      quotations: [],
+      orders: []
     });
   }
 
   async purchase_order() {
-    console.log('ok');
+    //console.log('ok');
     
-    /* const p = new Promise((resolve, reject) => {
-      this.apiQ.GetLastQuotation().subscribe(res => {
+    const p = new Promise((resolve, reject) => {
+      this.apiQ.GetLastOrder().subscribe(res => {
         let id = 0;
         if(res[0]){ id = Number(res[0].id) + 1; } else { id = 1; }
         resolve(id);
@@ -85,20 +88,25 @@ export class OrderComponent implements OnInit {
     });              
 
     await p.then(async (v: number) => { 
-      const q_l = [];
-      for (let i = 0; i < this.quotations_.length; i++) {
-        const e = this.quotations_[i];
-        let qq = e;
-        qq['id'] = v++;
-        this.apiQ.add(qq);
-        q_l.push(qq);
+      const o_l = [];
+      for (let i = 0; i < this.products.length; i++) {
+        const e = this.products[i];
+        let oo = e;
+        oo['id'] = v++;
+        oo['key_r'] = this.data.id;
+        oo['orderdate'] = fechaObj.format(new Date(), 'DD[/]MM[/]YYYY');
+        oo['status'] = 1;
+        oo['balance'] = (e.quantity*e.price*e.iva + e.quantity*e.price);
+        oo['paidout'] = 0;
+        this.apiQ.addO(oo);
+        o_l.push(oo);
       }
-      console.log(q_l);
-      this.myForm.patchValue({ status: 4 });
-      this.myForm.patchValue({ quotations: q_l });
+      //console.log(o_l);
+      this.myForm.patchValue({ status: 5 });
+      this.myForm.patchValue({ orders: o_l });
       this.apiR.UpdateRequisition(this.myForm.value, this.data.id);
-      this.toastr.success('Requisición cotizada!');
-    }); */
+      this.toastr.success('Requisición pedida!');
+    });
   }
 
   openDialog(id_r: number, pro: any, id: number) {

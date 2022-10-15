@@ -14,6 +14,7 @@ import { ApiRequisitionService } from './api-requisition.service';
 export class ApiQuoteService {
 
   public lastQuotationRef!: Observable<any[]>;
+  public lastOrderRef!: Observable<any[]>;
   public quotations_ = [];
 
   constructor(
@@ -104,8 +105,17 @@ export class ApiQuoteService {
     this.db.database.ref().child('blooming/quotation-list/'+ quotation.id).set(quotation);
   }
 
+  addO(order){
+    this.db.database.ref().child('blooming/order-list/'+ order.id).set(order);
+  }
+
   GetLastQuotation(){
     this.lastQuotationRef = this.db.list('blooming/quotation-list/', ref => ref.limitToLast(1)).valueChanges();
     return this.lastQuotationRef;
+  }
+
+  GetLastOrder(){
+    this.lastOrderRef = this.db.list('blooming/order-list/', ref => ref.limitToLast(1)).valueChanges();
+    return this.lastOrderRef;
   }
 }

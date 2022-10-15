@@ -6,6 +6,7 @@ import { CompanyComponent } from './components/company/company.component';
 import { LoginComponent } from './components/login/login.component';
 import { MainComponent } from './components/main/main.component';
 import { NewRequisitionComponent } from './components/new-requisition/new-requisition.component';
+import { PaymentsComponent } from './components/payments/payments.component';
 import { ProductsComponent } from './components/products/products.component';
 import { ProvidersComponent } from './components/providers/providers.component';
 import { RanchesComponent } from './components/ranches/ranches.component';
@@ -25,6 +26,7 @@ const routes: Routes = [
   {path: 'ranches', component: RanchesComponent , canActivate: [AuthGuard]},
   {path: 'company', component: CompanyComponent , canActivate: [AuthGuard]},
   {path: 'new-requisition', component: NewRequisitionComponent , canActivate: [AuthGuard]},
+  {path: 'payments', component: PaymentsComponent , canActivate: [AuthGuard]},
   /*
   {path: 'editar-cliente/:key', component: EditRegisterComponent, canActivate: [AuthGuard]},
   {path: 'editar-orden/:key', component: EditOrdenComponent, canActivate: [AuthGuard]},

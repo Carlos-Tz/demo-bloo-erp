@@ -103,6 +103,7 @@ export class NewRequisitionComponent implements OnInit {
       authorizationdate: [''],
       products: [],
       quotations: [],
+      orders: [],
     });
   }
   sForm1() {

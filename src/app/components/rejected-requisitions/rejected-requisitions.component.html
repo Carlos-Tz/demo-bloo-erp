@@ -1,0 +1,63 @@
+<h2 mat-dialog-title style="margin-bottom: 0.5rem;">Requisiciones rechazadas</h2>
+<mat-dialog-content class="w-100 m-0">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card-body" *ngIf="data">
+                <div class="row">
+                    <div class="col s4">
+                        <mat-form-field>
+                          <input matInput type="text" (keyup)="doFilter($event.target)" placeholder="Buscar">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <mat-table class="mat-elevation-z8" [dataSource]="dataSource" matSort matSortActive="id" matSortDirection="desc" matSortDisableClear (matSortChange)="sortData($event)">
+
+                    <ng-container matColumnDef="id">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header >ID</mat-header-cell>
+                        <mat-cell *matCellDef="let element">REQ-{{element.id}}
+                            <span (click)="PDF(element.id)" style="color: #fff; background-color: green; border-radius: 20%; padding: 0.2rem; margin-left: 0.3rem; cursor: pointer; font-size: 0.7rem;" class="me-2">PDF</span>
+                            <span *ngIf="element.status == 1">VoBo</span>
+                            <span *ngIf="element.status == 2">Autorizada</span>
+                            <span *ngIf="element.status == 3">Rechazada</span>
+                            <span *ngIf="element.status == 4">Cotizada</span>
+                            <span *ngIf="element.status == 5">Pedida</span>
+                            <span *ngIf="element.status == 6">Incompleta</span>
+                            <span *ngIf="element.status == 7">Completa</span>
+                        </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="date">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header class="pad-l">Fecha de solicitud</mat-header-cell>
+                        <mat-cell *matCellDef="let element" class="pad-l">{{element.date}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="cicle">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header class="pad-l">Ciclo</mat-header-cell>
+                        <mat-cell *matCellDef="let element" class="pad-l">{{element.cicle}}</mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="priority">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header class="pad-l">Prioridad</mat-header-cell>
+                        <mat-cell *matCellDef="let element" class="pad-l">
+                            <span *ngIf="element.priority == 1">Baja</span>
+                            <span *ngIf="element.priority == 2">Media</span>
+                            <span *ngIf="element.priority == 3">Alta</span>
+                        </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="justification">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header class="pad-l">Justificación</mat-header-cell>
+                        <mat-cell *matCellDef="let element" class="pad-l">{{element.justification}}</mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+                    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+
+                </mat-table>
+                <mat-paginator [pageSizeOptions]="[10, 20, 50, 100]" showFirstLastButtons></mat-paginator>
+            </div>
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cerrar</button>
+</mat-dialog-actions>

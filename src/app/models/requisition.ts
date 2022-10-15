@@ -10,4 +10,5 @@ export interface Requisition {
     authorizationdate: string;
     products: [];
     quotations: [];
+    orders: [];
 }
