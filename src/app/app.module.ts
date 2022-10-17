@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -73,6 +74,7 @@ import { OrderedRequisitionsComponent } from './components/ordered-requisitions/
 import { SchedulePaymentComponent } from './components/schedule-payment/schedule-payment.component';
 import { MakePaymentComponent } from './components/make-payment/make-payment.component';
 import { ViewPaymentComponent } from './components/view-payment/view-payment.component';
+import { MailService } from './services/mail.service';
 
 @NgModule({
   declarations: [
@@ -142,9 +144,10 @@ import { ViewPaymentComponent } from './components/view-payment/view-payment.com
     MatCardModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatTableExporterModule
+    MatTableExporterModule,
+    HttpClientModule
   ],
-  providers: [AuthService, CurrencyPipe],
+  providers: [AuthService, CurrencyPipe, MailService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

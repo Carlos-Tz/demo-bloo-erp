@@ -8,6 +8,7 @@ import { Cicle } from 'src/app/models/cicle';
 import { ApiCicleService } from 'src/app/services/api-cicle.service';
 import { ApiQuoteService } from 'src/app/services/api-quote.service';
 import { ApiRequisitionService } from 'src/app/services/api-requisition.service';
+import { MailService } from 'src/app/services/mail.service';
 //import 'fecha';
 //import fechaObj from 'fecha';
 
@@ -31,9 +32,15 @@ export class QuoteComponent implements  OnInit, OnDestroy {
     public apiQ: ApiQuoteService,
     public apiC: ApiCicleService,
     public toastr: ToastrService,
+    public mail: MailService
   ) { }
 
   ngOnInit(): void {
+    this.mail.mail_({ email: 'nine2one@live.com.mx' }).subscribe(data => {
+      if(data){
+        console.log(data);
+      }
+    });
     this.sForm();
     this.apiR.GetRequisition(this.data.id).valueChanges().subscribe(data => {
       this.myForm.patchValue(data);
