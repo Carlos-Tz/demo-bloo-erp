@@ -75,6 +75,8 @@ import { SchedulePaymentComponent } from './components/schedule-payment/schedule
 import { MakePaymentComponent } from './components/make-payment/make-payment.component';
 import { ViewPaymentComponent } from './components/view-payment/view-payment.component';
 import { MailService } from './services/mail.service';
+import { PaidOrdersComponent } from './components/paid-orders/paid-orders.component';
+import { NewOrderComponent } from './components/new-order/new-order.component';
 
 @NgModule({
   declarations: [
@@ -111,7 +113,9 @@ import { MailService } from './services/mail.service';
     OrderedRequisitionsComponent,
     SchedulePaymentComponent,
     MakePaymentComponent,
-    ViewPaymentComponent
+    ViewPaymentComponent,
+    PaidOrdersComponent,
+    NewOrderComponent
   ],
   imports: [
     BrowserModule,
