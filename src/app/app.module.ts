@@ -77,6 +77,10 @@ import { ViewPaymentComponent } from './components/view-payment/view-payment.com
 import { MailService } from './services/mail.service';
 import { PaidOrdersComponent } from './components/paid-orders/paid-orders.component';
 import { NewOrderComponent } from './components/new-order/new-order.component';
+import { ReceptionComponent } from './components/reception/reception.component';
+import { DeliveryComponent } from './components/delivery/delivery.component';
+import { OutputComponent } from './components/output/output.component';
+import { WarehouseReportComponent } from './components/warehouse-report/warehouse-report.component';
 
 @NgModule({
   declarations: [
@@ -115,7 +119,11 @@ import { NewOrderComponent } from './components/new-order/new-order.component';
     MakePaymentComponent,
     ViewPaymentComponent,
     PaidOrdersComponent,
-    NewOrderComponent
+    NewOrderComponent,
+    ReceptionComponent,
+    DeliveryComponent,
+    OutputComponent,
+    WarehouseReportComponent
   ],
   imports: [
     BrowserModule,

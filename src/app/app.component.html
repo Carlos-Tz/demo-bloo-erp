@@ -37,6 +37,20 @@
       <mat-expansion-panel *ngIf="this.authService.userName">
         <mat-expansion-panel-header>
           <mat-panel-title>
+            Almacén
+          </mat-panel-title>
+          <!-- <mat-panel-description>
+            Currently I am
+          </mat-panel-description> -->
+        </mat-expansion-panel-header>
+        <a mat-list-item [routerLink]="['/reception']"><span class="material-icons">archive</span> Recepción </a>
+        <a mat-list-item [routerLink]="['/delivery']"><span class="material-icons">outbox</span> Entrega </a>
+        <a mat-list-item [routerLink]="['/output']"><span class="material-icons">unarchive</span> Salida </a>
+        <a mat-list-item [routerLink]="['/warehouse-report']"><span class="material-icons">summarize</span> Reportes </a>
+      </mat-expansion-panel>
+      <mat-expansion-panel *ngIf="this.authService.userName">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
             Configuración
           </mat-panel-title>
           <!-- <mat-panel-description>
