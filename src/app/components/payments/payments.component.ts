@@ -35,6 +35,7 @@ export class PaymentsComponent implements OnInit {
   @ViewChild('input', {static: false}) input!: ElementRef;
   displayedColumns: any[] = [
     'id',
+    'status',
     /* 'orderdate', */
     'paymentdate',
     /* 'provider', */
