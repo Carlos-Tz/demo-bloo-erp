@@ -11,12 +11,9 @@ import { ApiOrdersService } from 'src/app/services/api-orders.service';
 import pdfMake from 'pdfmake/build/pdfmake';  
 import pdfFonts from 'pdfmake/build/vfs_fonts';  
 import { CurrencyPipe } from '@angular/common';
-import { SchedulePaymentComponent } from '../schedule-payment/schedule-payment.component';
 import { ApiProviderService } from 'src/app/services/api-provider.service';
-import { MakePaymentComponent } from '../make-payment/make-payment.component';
-import { ViewPaymentComponent } from '../view-payment/view-payment.component';
-import { PaidOrdersComponent } from '../paid-orders/paid-orders.component';
-import { NewOrderComponent } from '../new-order/new-order.component';
+import { ReceivedOrdersComponent } from '../received-orders/received-orders.component';
+import { ReceiveOrderComponent } from '../receive-order/receive-order.component';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;  
 
 @Component({
@@ -40,7 +37,9 @@ export class ReceptionComponent implements OnInit {
     /* 'provider', */
     /* 'price', */
     /* 'iva', */
-    /* 'quantity', */
+    'quantity',
+    'quantity_received',
+    'quantity_remaining',
     /* 'balance', */
     /* 'key_r', */
     'action',
@@ -59,9 +58,9 @@ export class ReceptionComponent implements OnInit {
       this.orders = [];
       data.forEach(item => {
         const o = item.payload.val();
-        /* if(o.status != 3){ */
+        if(o.status_reception < 3){
           this.orders.push(o as Order);
-        /* } */
+        }
       });
       if (this.orders.length > 0) {
         this.data = true;
@@ -160,26 +159,8 @@ export class ReceptionComponent implements OnInit {
     });
   }
 
-  openSchedulePaymentDialog(order: Order) {
-    const dialogRef = this.dialog.open(SchedulePaymentComponent, {
-      data: {
-        order: order
-      },
-      autoFocus: false
-    });
-  }
-
-  openMakePaymentDialog(order: Order) {
-    const dialogRef = this.dialog.open(MakePaymentComponent, {
-      data: {
-        order: order
-      },
-      autoFocus: false
-    });
-  }
-
-  openPaymentsDialog(order: Order) {
-    const dialogRef = this.dialog.open(ViewPaymentComponent, {
+  openReceptionDialog(order: Order) {
+    const dialogRef = this.dialog.open(ReceiveOrderComponent, {
       data: {
         order: order
       },
@@ -188,8 +169,8 @@ export class ReceptionComponent implements OnInit {
     });
   }
 
-  openPDialog() {
-    const dialogRef = this.dialog.open(PaidOrdersComponent, {
+  openRDialog() {
+    const dialogRef = this.dialog.open(ReceivedOrdersComponent, {
       /* data: {
         order: order
       }, */
@@ -198,13 +179,4 @@ export class ReceptionComponent implements OnInit {
     });
   }
 
-  openNewOrderDialog() {
-    const dialogRef = this.dialog.open(NewOrderComponent, {
-      /* data: {
-        order: order
-      }, */
-      /* autoFocus: false, */
-      width: '80%',
-    });
-  }
 }

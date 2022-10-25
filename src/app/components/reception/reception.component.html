@@ -8,10 +8,10 @@
                             <a class="navbar-brand">Recepción de Ordenes de Compra</a>
                             <div class="d-flex">
                             </div>
-                            <!-- <div class="d-flex">
-                                <button class="btn btn-outline-success me-2" (click)="openPDialog()">Ordenes pagadas</button>
-                                <button class="btn btn-outline-info me-2" (click)="openNewOrderDialog()">Nueva order de compra</button>
-                            </div> -->
+                            <div class="d-flex">
+                                <button class="btn btn-outline-success me-2" (click)="openRDialog()">Ordenes recibidas</button>
+                            <!--    <button class="btn btn-outline-info me-2" (click)="openNewOrderDialog()">Nueva order de compra</button>-->
+                            </div>
                         </div>
                     </nav>
                 </div>
@@ -29,45 +29,31 @@
                             <mat-header-cell *matHeaderCellDef mat-sort-header >ID Orden</mat-header-cell>
                             <mat-cell *matCellDef="let element">OC-{{element.id}}
                                 <span (click)="PDF(element.id)" style="color: #fff; background-color: green; border-radius: 20%; padding: 0.2rem; margin-left: 0.3rem; cursor: pointer; font-size: 0.7rem;" class="me-2">PDF</span>
-                                <span *ngIf="element.status == 1">Pedida</span>
-                                <span *ngIf="element.status == 2">Programada</span>
-                                <span *ngIf="element.status == 3">Pagada</span>
+                                <span *ngIf="element.status_reception == 1">Pendiente</span>
+                                <span *ngIf="element.status_reception == 2">Incompleta</span>
+                                <span *ngIf="element.status_reception == 3">Recibida</span>
                             </mat-cell>
                         </ng-container>
-                        <!-- <ng-container matColumnDef="provider">
-                            <mat-header-cell *matHeaderCellDef class="pad-l">Proveedor</mat-header-cell>
-                            <mat-cell *matCellDef="let element" class="pad-l">{{element.provider}}
-                            </mat-cell>
-                        </ng-container> -->
-
-                        <!-- <ng-container matColumnDef="orderdate">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header class="pad-l">Fecha de pedido</mat-header-cell>
-                            <mat-cell *matCellDef="let element" class="pad-l">{{element.orderdate}}</mat-cell>
-                        </ng-container> -->
                         <ng-container matColumnDef="orderdate">
                             <mat-header-cell *matHeaderCellDef class="pad-l">Fecha de orden</mat-header-cell>
                             <mat-cell *matCellDef="let element" class="pad-l">{{element.orderdate}}</mat-cell>
                         </ng-container>
-                        <!-- <ng-container matColumnDef="price">
-                            <mat-header-cell *matHeaderCellDef class="pad-l">Subtotal</mat-header-cell>
-                            <mat-cell *matCellDef="let element" class="pad-l">{{element.price*element.quantity | currency}}</mat-cell>
-                        </ng-container>
-                        <ng-container matColumnDef="iva">
-                            <mat-header-cell *matHeaderCellDef class="pad-l">I.V.A.</mat-header-cell>
-                            <mat-cell *matCellDef="let element" class="pad-l">{{element.price*element.quantity*element.iva | currency}}</mat-cell>
-                        </ng-container>
                         <ng-container matColumnDef="quantity">
-                            <mat-header-cell *matHeaderCellDef class="pad-l">Total</mat-header-cell>
-                            <mat-cell *matCellDef="let element" class="pad-l">{{(element.price*element.quantity*element.iva) + (element.price*element.quantity) | currency}}</mat-cell>
+                            <mat-header-cell *matHeaderCellDef class="pad-l">Cantidad pedida</mat-header-cell>
+                            <mat-cell *matCellDef="let element" class="pad-l">{{element.quantity}}</mat-cell>
                         </ng-container>
-                        <ng-container matColumnDef="balance">
-                            <mat-header-cell *matHeaderCellDef class="pad-l">Saldo</mat-header-cell>
-                            <mat-cell *matCellDef="let element" class="pad-l">{{element.balance | currency}}</mat-cell>
-                        </ng-container> -->
+                        <ng-container matColumnDef="quantity_received">
+                            <mat-header-cell *matHeaderCellDef class="pad-l">Cantidad recibida</mat-header-cell>
+                            <mat-cell *matCellDef="let element" class="pad-l">{{element.quantity_received}}</mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="quantity_remaining">
+                            <mat-header-cell *matHeaderCellDef class="pad-l">Cantidad restante</mat-header-cell>
+                            <mat-cell *matCellDef="let element" class="pad-l">{{element.quantity_remaining}}</mat-cell>
+                        </ng-container>
                         <ng-container matColumnDef="action">
                             <mat-header-cell *matHeaderCellDef> Acción </mat-header-cell>
                             <mat-cell *matCellDef="let element; let i = index;">                                
-                                <button class="btn btn-outline-secondary me-2 w-100" style="padding: 0 0.2rem;" (click)="openPaymentsDialog(element)" >
+                                <button *ngIf="element.status_reception < 3" class="btn btn-outline-secondary me-2 w-100" style="padding: 0 0.2rem;" (click)="openReceptionDialog(element)" >
                                     <span class="material-icons">archive</span>Recibir
                                 </button>
                             </mat-cell>

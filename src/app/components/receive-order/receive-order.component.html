@@ -1,0 +1,50 @@
+<h2 mat-dialog-title style="margin-bottom: 0.5rem;">Recibir order de compra No. {{ data.order.id }}</h2>
+<form [formGroup]="myForm" novalidate autocomplete="off">
+    <mat-dialog-content class="w-100 m-0">
+        <div class="row">
+            <mat-form-field appearance="fill" class="col-sm-12 col-md-6" style="pointer-events: none;">
+                <!-- <mat-label>Ciclo</mat-label> -->
+                <mat-label>Fecha de orden</mat-label>
+                <input matInput type="text" formControlName="orderdate" required readonly>
+                <!-- <mat-select matInput name="cicle" id="cicle" formControlName="cicle" required>
+                    <mat-option *ngFor="let cicle of cicles" [value]="cicle.id">{{ cicle.id }}
+                    </mat-option>
+                </mat-select> -->
+            </mat-form-field>
+            <mat-form-field appearance="fill" class="col-sm-12 col-md-6" style="pointer-events: none;">
+                <mat-label>Ciclo</mat-label>
+                <mat-select matInput name="cicle" id="cicle" formControlName="cicle" required>
+                    <mat-option *ngFor="let cicle of cicles" [value]="cicle.id">{{ cicle.id }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <table class="table table-bordered">
+                    <thead >
+                        <th>Id</th>
+                        <th>Producto</th>
+                        <th>Cantidad pedida</th>
+                        <th>Unidad</th>
+                        <th>Cantidad recibida</th>
+                    </thead>
+                    <tr>
+                        <td>{{ data.order.id }}</td>
+                        <td>{{ data.order.name }}</td>
+                        <td>{{ data.order.quantity }}</td>
+                        <td>{{ data.order.unit }}</td>
+                        <td><input matInput type="number" formControlName="quantity_received" required></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>Cancelar</button>
+        <!-- <button mat-button [mat-dialog-close]="true" (click)="decline()" class="btn btn-outline-warning">Rechazar</button> -->
+        <button mat-button [mat-dialog-close]="true" (click)="receive()" class="btn btn-outline-info">Recibir</button>
+    </mat-dialog-actions>
+</form>
+
+

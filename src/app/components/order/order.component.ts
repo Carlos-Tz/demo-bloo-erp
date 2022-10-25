@@ -96,8 +96,13 @@ export class OrderComponent implements OnInit {
         oo['key_r'] = this.data.id;
         oo['orderdate'] = fechaObj.format(new Date(), 'DD[/]MM[/]YYYY');
         oo['status'] = 1;
+        oo['status_reception'] = 1;
+        oo['quantity_received'] = 0;
+        oo['quantity_remaining'] = e.quantity;
         oo['balance'] = (e.quantity*e.price*e.iva + e.quantity*e.price);
         oo['paidout'] = 0;
+        oo['cicle'] = this.myForm.get('cicle').value;
+        oo['category'] = e.category;
         this.apiQ.addO(oo);
         o_l.push(oo);
       }

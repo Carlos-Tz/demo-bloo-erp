@@ -81,6 +81,8 @@ import { ReceptionComponent } from './components/reception/reception.component';
 import { DeliveryComponent } from './components/delivery/delivery.component';
 import { OutputComponent } from './components/output/output.component';
 import { WarehouseReportComponent } from './components/warehouse-report/warehouse-report.component';
+import { ReceivedOrdersComponent } from './components/received-orders/received-orders.component';
+import { ReceiveOrderComponent } from './components/receive-order/receive-order.component';
 
 @NgModule({
   declarations: [
@@ -123,7 +125,9 @@ import { WarehouseReportComponent } from './components/warehouse-report/warehous
     ReceptionComponent,
     DeliveryComponent,
     OutputComponent,
-    WarehouseReportComponent
+    WarehouseReportComponent,
+    ReceivedOrdersComponent,
+    ReceiveOrderComponent
   ],
   imports: [
     BrowserModule,
