@@ -9,6 +9,8 @@ import { Cicle } from 'src/app/models/cicle';
 import { ApiCicleService } from 'src/app/services/api-cicle.service';
 import { ApiMovementService } from 'src/app/services/api-movement.service';
 import { Movement } from 'src/app/models/movement';
+import { ApiProductService } from 'src/app/services/api-product.service';
+import { Product } from 'src/app/models/product';
 
 @Component({
   selector: 'app-receive-order',
@@ -27,6 +29,7 @@ export class ReceiveOrderComponent implements OnInit {
     public apiM: ApiMovementService,
     public apiO: ApiOrdersService,
     public apiC: ApiCicleService,
+    public apiP: ApiProductService,
     public toastr: ToastrService,
   ) { }
 
@@ -88,6 +91,7 @@ export class ReceiveOrderComponent implements OnInit {
     let quantity = this.myForm.get('quantity_remaining').value;
     let quantity_received = this.myForm.get('quantity_received').value;
     let price = this.myForm.get('price').value;
+    let iva = this.myForm.get('iva').value;
     let key_r = this.myForm.get('key_r').value;
     let key = this.myForm.get('key').value;
     let name = this.myForm.get('name').value;
@@ -117,6 +121,7 @@ export class ReceiveOrderComponent implements OnInit {
     else{
       this.myForm.patchValue({ 'status_reception': 2 });
       this.myForm.patchValue({ 'quantity_remaining': quantity - quantity_received });
+      this.myForm.patchValue({ 'quantity_received': this.myForm.get('quantity').value - this.myForm.get('quantity_remaining').value });
       await p.then(async (v: number) => { 
         let mo = {
           id: v++,
@@ -132,6 +137,24 @@ export class ReceiveOrderComponent implements OnInit {
         this.apiM.AddMovement(mo);
     });
     }
+    const p1 = new Promise((resolve, reject) => {
+      this.apiP.GetProduct(key).valueChanges().subscribe(res => {
+          resolve(res);
+      });
+    });
+    await p1.then(async (pro: Product) => {
+      let prod = pro;
+      let existence_c = pro.existence; 
+      let avcost_c = pro.avcost;
+      let existence_n = existence_c + quantity_received;
+      let price_c = price + price*iva;
+      let avcost_n = (avcost_c*existence_c + quantity_received*price_c) / existence_n; 
+      prod['avcost'] = avcost_n;
+      prod['existence'] = existence_n; console.log(prod);
+      
+      this.apiP.UpdateProduct(prod, key);
+      //this.apiM.AddMovement(mo);
+    });
     this.apiO.UpdateOrder(this.myForm.value, this.data.order.id);
     this.toastr.success('Orden recibida!');
   }
