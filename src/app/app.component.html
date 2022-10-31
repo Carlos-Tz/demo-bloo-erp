@@ -51,6 +51,19 @@
       <mat-expansion-panel *ngIf="this.authService.userName">
         <mat-expansion-panel-header>
           <mat-panel-title>
+            Aplicaciones
+          </mat-panel-title>
+          <!-- <mat-panel-description>
+            Currently I am
+          </mat-panel-description> -->
+        </mat-expansion-panel-header>
+        <a mat-list-item [routerLink]="['/applications']"><span class="material-icons">format_list_numbered</span> Recetas </a>
+        <a mat-list-item [routerLink]="['/run-applications']"><span class="material-icons">checklist_rtl</span> Ejecutar </a>
+        <a mat-list-item [routerLink]="['/applications-report']"><span class="material-icons">summarize</span> Reportes </a>
+      </mat-expansion-panel>
+      <mat-expansion-panel *ngIf="this.authService.userName">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
             Configuración
           </mat-panel-title>
           <!-- <mat-panel-description>

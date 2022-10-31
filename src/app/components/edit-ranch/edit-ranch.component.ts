@@ -31,6 +31,7 @@ export class EditRanchComponent implements OnInit {
     this.myForm = this.fb.group({
       id: ['', [Validators.required]],
       status: [null],
+      sectors: [],
     });
   }
 

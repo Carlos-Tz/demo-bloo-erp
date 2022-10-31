@@ -1,1 +1,50 @@
-<p>received-orders works!</p>
+<h2 mat-dialog-title style="margin-bottom: 0.5rem;">Ordenes recibidas</h2>
+<mat-dialog-content class="w-100 m-0">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card-body" *ngIf="data">
+                <div class="row">
+                    <div class="col s4">
+                        <mat-form-field>
+                          <input matInput type="text" (keyup)="doFilter($event.target)" placeholder="Buscar">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <mat-table class="mat-elevation-z8" [dataSource]="dataSource" matSort matSortActive="id" matSortDirection="desc" matSortDisableClear (matSortChange)="sortData($event)">
+
+                    <ng-container matColumnDef="id">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header >ID Orden</mat-header-cell>
+                        <mat-cell *matCellDef="let element">OC-{{element.id}}
+                            <span (click)="PDF(element.id)" style="color: #fff; background-color: green; border-radius: 20%; padding: 0.2rem; margin-left: 0.3rem; cursor: pointer; font-size: 0.7rem;" class="me-2">PDF</span>
+                        </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="paymentdate">
+                        <mat-header-cell *matHeaderCellDef class="pad-l">Fecha programada</mat-header-cell>
+                        <mat-cell *matCellDef="let element" class="pad-l">{{element.paymentdate}}</mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="orderdate">
+                        <mat-header-cell *matHeaderCellDef class="pad-l">Fecha de orden</mat-header-cell>
+                        <mat-cell *matCellDef="let element" class="pad-l">{{element.orderdate}}</mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="quantity">
+                        <mat-header-cell *matHeaderCellDef class="pad-l">Cantidad pedida</mat-header-cell>
+                        <mat-cell *matCellDef="let element" class="pad-l">{{element.quantity}}</mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="quantity_received">
+                        <mat-header-cell *matHeaderCellDef class="pad-l">Cantidad recibida</mat-header-cell>
+                        <mat-cell *matCellDef="let element" class="pad-l">{{element.quantity_received}}</mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+                    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+
+                </mat-table>
+                <mat-paginator [pageSizeOptions]="[10, 20, 50, 100]" showFirstLastButtons></mat-paginator>
+            </div>
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cerrar</button>
+</mat-dialog-actions>
