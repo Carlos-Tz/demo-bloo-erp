@@ -1,21 +1,56 @@
 <h2 mat-dialog-title>Editar rancho</h2>
 <form [formGroup]="myForm" novalidate autocomplete="off">
     <mat-dialog-content class="w-100 m-0">
-        <mat-form-field appearance="fill" class="w-100">
+        <mat-form-field appearance="fill" class="col-sm-12 col-md-6">
             <mat-label>Rancho</mat-label>
             <input matInput type="text" formControlName="id" required readonly>
         </mat-form-field>
-        <mat-form-field appearance="fill" class="w-100">
+        <mat-form-field appearance="fill" class="col-sm-12 col-md-6">
             <mat-label>Estatus</mat-label>
             <mat-select matInput name="status" id="status" formControlName="status" required>
                 <mat-option [value]="true">Activo</mat-option>
                 <mat-option [value]="false">Inactivo</mat-option>
             </mat-select>
         </mat-form-field>
+        <div class="col">
+            <table class="table table-bordered">
+                <thead>
+                    <th>Sector</th>
+                    <th>HA</th>
+                    <th>Opciones</th>
+                </thead>
+                <tr *ngFor="let sec of sectors">
+                    <td>{{ sec.name }}</td>
+                    <td>{{ sec.hectares }}</td>
+                    <td>
+                        <button class="btn btn-outline-info me-2" style="padding: 0 0.2rem;" (click)="editSec(sec.id, sec.hectares)"><span class="material-icons">edit</span></button>
+                        <button class="btn btn-outline-danger" style="padding: 0 0.2rem;" (click)="deleteSec(sec.id)"><span class="material-icons">delete</span></button></td>
+                </tr>
+            </table>
+        </div>
 
     </mat-dialog-content>
     <mat-dialog-actions align="end">
         <button mat-button mat-dialog-close>Cancelar</button>
         <button mat-button [mat-dialog-close]="true" (click)="submitSurveyData()" [disabled]="!myForm.valid" class="btn btn-outline-info">Guardar</button>
     </mat-dialog-actions>
+</form>
+<form [formGroup]="myForm1" novalidate autocomplete="off">
+    <div class="row">
+        <!-- <input matInput type="number" formControlName="id" required> -->
+        <input matInput type="text" formControlName="id_ranch" required value="{{ data.key }}">
+        <mat-form-field appearance="fill" class="col-sm-12 col-md-2">
+            <mat-label>Sector</mat-label>
+            <input matInput type="text" formControlName="name" required>
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="col-sm-12 col-md-2">
+            <mat-label>Hectáreas</mat-label>
+            <input matInput type="number" formControlName="hectares" required>
+        </mat-form-field>
+        
+        <div class="col-sm-12 col-md-2">
+            <button mat-button class="btn btn-outline-success" (click)="addProduct()"
+                [disabled]="!myForm1.valid">Agregar</button>
+        </div>
+    </div>
 </form>

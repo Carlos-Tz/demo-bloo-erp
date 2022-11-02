@@ -13,6 +13,8 @@ import { ApiRanchService } from 'src/app/services/api-ranch.service';
 export class EditRanchComponent implements OnInit {
 
   public myForm!: FormGroup;
+  public myForm1!: FormGroup;
+  public sectors: any[] = [];
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private fb: FormBuilder,
@@ -34,10 +36,46 @@ export class EditRanchComponent implements OnInit {
       sectors: [],
     });
   }
+  sForm1() {
+    this.myForm1 = this.fb.group({
+      id: ['',[Validators.required]],
+      name: ['',[Validators.required]],
+      hectares: ['', [Validators.required]],
+      variety: [''],
+      status: [''],
+      id_ranch: ['', [Validators.required]]
+    });
+  }
 
   submitSurveyData = () => {
     this.api.UpdateRanch(this.myForm.value, this.data.key);
     this.toastr.success('Rancho actualizado!');
+  }
 
+  addSector(){
+    const s = {
+      'id': this.myForm1.get('name').value,
+      'name': this.myForm1.get('name').value,
+      'hectares': this.myForm1.get('hectares').value,
+      'variety': '',
+      'status': true,
+      'id_ranch': this.myForm1.get('id_ranch').value,
+    };
+    this.sectors.push(s);
+    this.myForm1.reset();
+  }
+
+  editPro(key: string, quantity: number){
+    this.myForm1.patchValue({ product: key , quantity: quantity})
+  }
+
+  deletePro(key: string){
+    const index = this.sectors.findIndex((object) => {
+      return object.key === key;
+    });
+    
+    if (index !== -1) {
+      this.sectors.splice(index, 1);
+    }
   }
 }
