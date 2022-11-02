@@ -38,19 +38,19 @@
 <form [formGroup]="myForm1" novalidate autocomplete="off">
     <div class="row">
         <!-- <input matInput type="number" formControlName="id" required> -->
-        <input matInput type="text" formControlName="id_ranch" required value="{{ data.key }}">
-        <mat-form-field appearance="fill" class="col-sm-12 col-md-2">
+        <input matInput type="text" formControlName="id_ranch" required readonly>
+        <mat-form-field appearance="fill" class="col-sm-12 col-md-4">
             <mat-label>Sector</mat-label>
             <input matInput type="text" formControlName="name" required>
         </mat-form-field>
-        <mat-form-field appearance="fill" class="col-sm-12 col-md-2">
+        <mat-form-field appearance="fill" class="col-sm-12 col-md-4">
             <mat-label>Hectáreas</mat-label>
             <input matInput type="number" formControlName="hectares" required>
         </mat-form-field>
         
-        <div class="col-sm-12 col-md-2">
-            <button mat-button class="btn btn-outline-success" (click)="addProduct()"
-                [disabled]="!myForm1.valid">Agregar</button>
+        <div class="col-sm-12 col-md-4">
+            <button mat-button class="btn btn-outline-success" (click)="addSector()"
+                [disabled]="!myForm1.valid">Agregar sector</button>
         </div>
     </div>
 </form>

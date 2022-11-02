@@ -24,6 +24,8 @@ export class EditRanchComponent implements OnInit {
 
   ngOnInit(): void {
     this.sForm();
+    this.sForm1();
+    this.myForm1.patchValue({ 'id_ranch': this.data.key });
     this.api.GetRanch(this.data.key).valueChanges().subscribe(data => {
       this.myForm.patchValue(data);
     });
@@ -38,7 +40,7 @@ export class EditRanchComponent implements OnInit {
   }
   sForm1() {
     this.myForm1 = this.fb.group({
-      id: ['',[Validators.required]],
+      id: [''],
       name: ['',[Validators.required]],
       hectares: ['', [Validators.required]],
       variety: [''],
@@ -61,15 +63,17 @@ export class EditRanchComponent implements OnInit {
       'status': true,
       'id_ranch': this.myForm1.get('id_ranch').value,
     };
-    this.sectors.push(s);
+    this.sectors.push(s); console.log(this.sectors);
+    
     this.myForm1.reset();
+    this.myForm1.patchValue({ 'id_ranch': this.data.key });
   }
 
-  editPro(key: string, quantity: number){
+  editSec(key: string, quantity: number){
     this.myForm1.patchValue({ product: key , quantity: quantity})
   }
 
-  deletePro(key: string){
+  deleteSec(key: string){
     const index = this.sectors.findIndex((object) => {
       return object.key === key;
     });
