@@ -8,6 +8,7 @@ import { CompanyComponent } from './components/company/company.component';
 import { DeliveryComponent } from './components/delivery/delivery.component';
 import { LoginComponent } from './components/login/login.component';
 import { MainComponent } from './components/main/main.component';
+import { NewApplicationComponent } from './components/new-application/new-application.component';
 import { NewRequisitionComponent } from './components/new-requisition/new-requisition.component';
 import { OutputComponent } from './components/output/output.component';
 import { PaymentsComponent } from './components/payments/payments.component';
@@ -41,6 +42,7 @@ const routes: Routes = [
   {path: 'applications', component: ApplicationsComponent , canActivate: [AuthGuard]},
   {path: 'run-applications', component: RunApplicationsComponent , canActivate: [AuthGuard]},
   {path: 'applications-report', component: ApplicationsReportComponent , canActivate: [AuthGuard]},
+  {path: 'new-application', component: NewApplicationComponent , canActivate: [AuthGuard]},
   /*
   {path: 'editar-cliente/:key', component: EditRegisterComponent, canActivate: [AuthGuard]},
   {path: 'editar-orden/:key', component: EditOrdenComponent, canActivate: [AuthGuard]},

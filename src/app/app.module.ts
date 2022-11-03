@@ -86,6 +86,7 @@ import { ReceiveOrderComponent } from './components/receive-order/receive-order.
 import { ApplicationsComponent } from './components/applications/applications.component';
 import { RunApplicationsComponent } from './components/run-applications/run-applications.component';
 import { ApplicationsReportComponent } from './components/applications-report/applications-report.component';
+import { NewApplicationComponent } from './components/new-application/new-application.component';
 
 @NgModule({
   declarations: [
@@ -133,7 +134,8 @@ import { ApplicationsReportComponent } from './components/applications-report/ap
     ReceiveOrderComponent,
     ApplicationsComponent,
     RunApplicationsComponent,
-    ApplicationsReportComponent
+    ApplicationsReportComponent,
+    NewApplicationComponent
   ],
   imports: [
     BrowserModule,

@@ -23,8 +23,8 @@
                     <td>{{ sec.name }}</td>
                     <td>{{ sec.hectares }}</td>
                     <td>
-                        <button class="btn btn-outline-info me-2" style="padding: 0 0.2rem;" (click)="editSec(sec.id, sec.hectares)"><span class="material-icons">edit</span></button>
-                        <button class="btn btn-outline-danger" style="padding: 0 0.2rem;" (click)="deleteSec(sec.id)"><span class="material-icons">delete</span></button></td>
+                        <button class="btn btn-outline-info me-2" style="padding: 0 0.2rem;" (click)="editSec(sec)"><span class="material-icons">edit</span></button>
+                        <button class="btn btn-outline-danger" style="padding: 0 0.2rem;" (click)="openDeleteDialog(sec.id)"><span class="material-icons">delete</span></button></td>
                 </tr>
             </table>
         </div>
@@ -35,10 +35,11 @@
         <button mat-button [mat-dialog-close]="true" (click)="submitSurveyData()" [disabled]="!myForm.valid" class="btn btn-outline-info">Guardar</button>
     </mat-dialog-actions>
 </form>
+<hr class="pt-5">
 <form [formGroup]="myForm1" novalidate autocomplete="off">
     <div class="row">
         <!-- <input matInput type="number" formControlName="id" required> -->
-        <input matInput type="text" formControlName="id_ranch" required readonly>
+        <input matInput type="text" formControlName="id_ranch" required readonly hidden>
         <mat-form-field appearance="fill" class="col-sm-12 col-md-4">
             <mat-label>Sector</mat-label>
             <input matInput type="text" formControlName="name" required>
@@ -49,8 +50,8 @@
         </mat-form-field>
         
         <div class="col-sm-12 col-md-4">
-            <button mat-button class="btn btn-outline-success" (click)="addSector()"
-                [disabled]="!myForm1.valid">Agregar sector</button>
+            <button mat-button class="btn btn-outline-success w-100" (click)="addSector()"
+                [disabled]="!myForm1.valid">Guardar sector</button>
         </div>
     </div>
 </form>

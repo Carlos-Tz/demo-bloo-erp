@@ -1,9 +1,11 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
+import { Sector } from 'src/app/models/sector';
 import { ApiCicleService } from 'src/app/services/api-cicle.service';
 import { ApiRanchService } from 'src/app/services/api-ranch.service';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-edit-ranch',
@@ -17,6 +19,7 @@ export class EditRanchComponent implements OnInit {
   public sectors: any[] = [];
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
+    public dialog: MatDialog,
     private fb: FormBuilder,
     public api: ApiRanchService,
     public toastr: ToastrService,
@@ -28,6 +31,14 @@ export class EditRanchComponent implements OnInit {
     this.myForm1.patchValue({ 'id_ranch': this.data.key });
     this.api.GetRanch(this.data.key).valueChanges().subscribe(data => {
       this.myForm.patchValue(data);
+      if(data.sectors){
+        for (const e in data.sectors) {
+          if (Object.prototype.hasOwnProperty.call(data.sectors, e)) {
+            const element = data.sectors[e];
+            this.sectors.push(element);
+          }
+        }
+      }
     });
   }
 
@@ -50,7 +61,9 @@ export class EditRanchComponent implements OnInit {
   }
 
   submitSurveyData = () => {
+    this.myForm.patchValue({ 'sectors': [] });
     this.api.UpdateRanch(this.myForm.value, this.data.key);
+    this.sectors.forEach(el => this.api.AddSector(this.data.key, el));
     this.toastr.success('Rancho actualizado!');
   }
 
@@ -63,23 +76,52 @@ export class EditRanchComponent implements OnInit {
       'status': true,
       'id_ranch': this.myForm1.get('id_ranch').value,
     };
-    this.sectors.push(s); console.log(this.sectors);
+
+    const index = this.sectors.findIndex((object) => {
+      return object.id === this.myForm1.get('name').value;
+    });
+    
+    if (index !== -1) {
+      this.sectors = this.sectors.map(se => se.id !== s.id ? se : s);
+    }else {
+      this.sectors.push(s);
+    }
+
+    console.log(this.sectors);
     
     this.myForm1.reset();
     this.myForm1.patchValue({ 'id_ranch': this.data.key });
   }
 
-  editSec(key: string, quantity: number){
-    this.myForm1.patchValue({ product: key , quantity: quantity})
+  editSec(sec: Sector){
+    this.myForm1.patchValue(sec);
   }
 
-  deleteSec(key: string){
+  /* deleteSec(id: string){
     const index = this.sectors.findIndex((object) => {
-      return object.key === key;
+      return object.id === id;
     });
     
     if (index !== -1) {
       this.sectors.splice(index, 1);
     }
+  } */
+
+  openDeleteDialog(id: string) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: "¿Confirma que desea eliminar este sector?"
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        const index = this.sectors.findIndex((object) => {
+          return object.id === id;
+        });
+        
+        if (index !== -1) {
+          this.sectors.splice(index, 1);
+        }
+      }
+    });
   }
 }

@@ -4,6 +4,7 @@ import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { ToastrService } from 'ngx-toastr';
 import { map, Observable } from 'rxjs';
 import { Ranch } from '../models/ranch';
+import { Sector } from '../models/sector';
 
 @Injectable({
   providedIn: 'root'
@@ -24,6 +25,11 @@ export class ApiRanchService {
       this.db.database.ref().child('blooming/ranch-list/'+ ranch.id).set(ranch);
       return false;
     });
+  }
+
+  AddSector(id: string, se: Sector){
+    this.db.database.ref().child('blooming/ranch-list/'+ id + '/sectors/' + se.id).set(se);
+      return true;
   }
   
   GetRanchList() {

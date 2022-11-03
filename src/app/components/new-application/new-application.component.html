@@ -1,0 +1,122 @@
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card mt-2">
+                <div class="card-header">
+                    <nav class="navbar bg-light">
+                        <div class="container-fluid">
+                            <a class="navbar-brand">Nueva receta</a>
+                            <div class="d-flex">
+                                <button mat-button [routerLink]="['/requisitions']">Cancelar</button>
+                                <button mat-button (click)="submitSurveyData()" [routerLink]="['/requisitions']" [disabled]="!myForm.valid" class="btn btn-outline-info">Guardar</button>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+                <div class="card-body">
+                    <form [formGroup]="myForm" novalidate autocomplete="off">
+                        <div class="row">
+                            <mat-form-field appearance="fill" class="col-sm-12 col-md-4" hidden>
+                                <mat-label>ID</mat-label>
+                                <input matInput type="number" formControlName="id" required>
+                            </mat-form-field>
+                            <mat-form-field appearance="fill" class="col-sm-12 col-md-4" hidden>
+                                <mat-label>Estatus</mat-label>
+                                <mat-select matInput name="status" id="status" formControlName="status" required>
+                                    <mat-option [value]="1">Nueva</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <mat-form-field appearance="fill" class="col-sm-12 col-md-6">
+                                <mat-label>Rancho</mat-label>
+                                <mat-select matInput name="ranch" id="ranch" formControlName="id_ranch" required (selectionChange)="ranch($event)">
+                                    <mat-option *ngFor="let ranch of ranches" [value]="ranch.id">{{ ranch.id }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <mat-form-field appearance="fill" class="col-sm-12 col-md-6">
+                                <mat-label>Clasificación</mat-label>
+                                <input matInput type="text" value="Fertilizante y Agroquímico" readonly>
+                            </mat-form-field>
+                            <mat-form-field appearance="fill" class="col-sm-12 col-md-6">
+                                <mat-label>Encargado</mat-label>
+                                <textarea matInput rows="2" style="resize: none;" formControlName="manager"
+                                    required></textarea>
+                            </mat-form-field>
+                            <mat-form-field appearance="fill" class="col-sm-12 col-md-6">
+                                <mat-label>Equipo de aplicación</mat-label>
+                                <textarea matInput rows="2" style="resize: none;" formControlName="equipment"
+                                    required></textarea>
+                            </mat-form-field>
+                            <mat-form-field appearance="fill" class="col-sm-12">
+                                <mat-label>Justificación</mat-label>
+                                <textarea matInput rows="2" style="resize: none;" formControlName="justification"
+                                    required></textarea>
+                            </mat-form-field>
+                            <div class="col-sm-12">
+                                <select2 class="w-100" 
+                                    [data]="sectors"
+                                    multiple
+                                    displaySearchStatus="always"
+                                    listPosition="above"
+                                    styleMode="material"
+                                    resettable
+                                    resultMaxHeight="200px">
+                                    <!-- formControlName="sectors" -->
+                                    <select2-hint>Sectores</select2-hint>
+                                </select2>
+                            </div>
+                            <div class="col-sm-12">
+                                <select2 class="w-100" 
+                                    [data]="products"
+                                    multiple
+                                    displaySearchStatus="always"
+                                    listPosition="above"
+                                    styleMode="material"
+                                    resettable
+                                    resultMaxHeight="200px">
+                                    <!-- formControlName="products" -->
+                                    <select2-hint>Productos</select2-hint>
+                                </select2>
+                            </div>
+                            <!-- <div class="col">
+                                <table class="table table-bordered">
+                                    <thead >
+                                        <th>Producto</th>
+                                        <th>Cantidad</th>
+                                        <th>Opciones</th>
+                                    </thead>
+                                    <tr *ngFor="let pro of products_l">
+                                        <td>{{ pro.name }}</td>
+                                        <td>{{ pro.quantity }}</td>
+                                        <td>
+                                            <button class="btn btn-outline-info me-2" style="padding: 0 0.2rem;" (click)="editPro(pro.key, pro.quantity)"><span class="material-icons">edit</span></button>
+                                            <button class="btn btn-outline-danger" style="padding: 0 0.2rem;" (click)="deletePro(pro.key)"><span class="material-icons">delete</span></button></td>
+                                    </tr>
+                                </table>
+                            </div> -->
+                        </div>
+                    </form>
+                    <!-- <form [formGroup]="myForm1" novalidate autocomplete="off">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-4">
+                                <select2 class="w-100" [data]="products" displaySearchStatus="always"
+                                    listPosition="above" styleMode="material" resettable formControlName="product"
+                                    resultMaxHeight="200px">
+                                    <select2-hint>Productos</select2-hint>
+                                </select2>
+                            </div>
+                            <mat-form-field appearance="fill" class="col-sm-12 col-md-2">
+                                <mat-label>Cantidad</mat-label>
+                                <input matInput type="number" formControlName="quantity" required>
+                            </mat-form-field>
+                            <div class="col-sm-12 col-md-2">
+                                <button mat-button class="btn btn-outline-success" (click)="addProduct()"
+                                    [disabled]="!myForm1.valid">Agregar</button>
+                            </div>
+                        </div>
+                    </form> -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
