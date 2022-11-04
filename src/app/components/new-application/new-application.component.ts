@@ -23,6 +23,7 @@ export class NewApplicationComponent implements OnInit {
   public myForm1!: FormGroup;
   public date = '';
   public dataSource = new MatTableDataSource<any>();
+  public sec: string[] = [];
   @ViewChild(MatPaginator, {static: false}) paginator!: MatPaginator;
 
   //public categories: Select2Data = [];
@@ -30,6 +31,7 @@ export class NewApplicationComponent implements OnInit {
   public ranches: Ranch[] = [];
   public products: Select2Data = [];
   public products1: any[] = [];
+  public sectors1: any[] = [];
   //public products_l: any[] = [];
   //public displayedColumns = ['product', 'quantity'];
   public ord = 0;
@@ -166,4 +168,20 @@ export class NewApplicationComponent implements OnInit {
     }); */
   }
 
+  allSec(){
+    this.sec = [];
+    this.sectors.forEach(e => this.sec.push(e['value']));
+  }
+
+  updateS(ev){
+    //this.sectors1 = ev.value.map((e, i) => e)
+    this.sectors1 = ev.value.flatMap((e, i) => [e,i])
+    console.log(this.sectors1);
+    //this.sectors1 = [...ev.value];
+  }
+
+  updateP(ev){
+    console.log(ev.value);
+    this.products1 = [...ev.value];
+  }
 }

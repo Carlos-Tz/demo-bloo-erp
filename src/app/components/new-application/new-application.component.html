@@ -7,8 +7,9 @@
                         <div class="container-fluid">
                             <a class="navbar-brand">Nueva receta</a>
                             <div class="d-flex">
-                                <button mat-button [routerLink]="['/requisitions']">Cancelar</button>
-                                <button mat-button (click)="submitSurveyData()" [routerLink]="['/requisitions']" [disabled]="!myForm.valid" class="btn btn-outline-info">Guardar</button>
+                                <button mat-button class="btn btn-outline-success" (click)="allSec()">Todos los sectores</button>
+                                <button mat-button [routerLink]="['/applications']">Cancelar</button>
+                                <button mat-button (click)="submitSurveyData()" [routerLink]="['/applications']" [disabled]="!myForm.valid" class="btn btn-outline-info">Guardar</button>
                             </div>
                         </div>
                     </nav>
@@ -55,11 +56,14 @@
                             <div class="col-sm-12">
                                 <select2 class="w-100" 
                                     [data]="sectors"
+                                    [value]="sec"
                                     multiple
+                                    [overlay]="false"
                                     displaySearchStatus="always"
                                     listPosition="above"
                                     styleMode="material"
                                     resettable
+                                    (update)="updateS($event)"
                                     resultMaxHeight="200px">
                                     <!-- formControlName="sectors" -->
                                     <select2-hint>Sectores</select2-hint>
@@ -69,14 +73,30 @@
                                 <select2 class="w-100" 
                                     [data]="products"
                                     multiple
+                                    [overlay]="false"
                                     displaySearchStatus="always"
                                     listPosition="above"
                                     styleMode="material"
                                     resettable
+                                    (update)="updateP($event)"
                                     resultMaxHeight="200px">
                                     <!-- formControlName="products" -->
                                     <select2-hint>Productos</select2-hint>
                                 </select2>
+                            </div>
+                            <div class="col">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <th>Nombre del producto</th>
+                                        <th *ngFor="let sec of sectors1">Sector{{ sec }}</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let pro of products1">
+                                            <td>{{ pro }}</td>
+                                            <td *ngFor="let sec of sectors1">{{ pro }}-{{ sec }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                             <!-- <div class="col">
                                 <table class="table table-bordered">
