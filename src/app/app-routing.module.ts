@@ -6,6 +6,7 @@ import { CategoriesComponent } from './components/categories/categories.componen
 import { CiclesComponent } from './components/cicles/cicles.component';
 import { CompanyComponent } from './components/company/company.component';
 import { DeliveryComponent } from './components/delivery/delivery.component';
+import { EditApplicationComponent } from './components/edit-application/edit-application.component';
 import { LoginComponent } from './components/login/login.component';
 import { MainComponent } from './components/main/main.component';
 import { NewApplicationComponent } from './components/new-application/new-application.component';
@@ -43,11 +44,7 @@ const routes: Routes = [
   {path: 'run-applications', component: RunApplicationsComponent , canActivate: [AuthGuard]},
   {path: 'applications-report', component: ApplicationsReportComponent , canActivate: [AuthGuard]},
   {path: 'new-application', component: NewApplicationComponent , canActivate: [AuthGuard]},
-  /*
-  {path: 'editar-cliente/:key', component: EditRegisterComponent, canActivate: [AuthGuard]},
-  {path: 'editar-orden/:key', component: EditOrdenComponent, canActivate: [AuthGuard]},
-  {path: 'editar-nota/:key', component: EditNotaComponent, canActivate: [AuthGuard]},
-  {path: 'editar-inspeccion/:key', component: EditInspeccionComponent, canActivate: [AuthGuard]},*/
+  {path: 'edit-application/:id', component: EditApplicationComponent , canActivate: [AuthGuard]},
   {path: 'login', component: LoginComponent, canActivate: [SecureInnerPagesGuard]},
 ];
 

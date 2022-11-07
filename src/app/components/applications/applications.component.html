@@ -27,37 +27,21 @@
                     <mat-table class="mat-elevation-z8" [dataSource]="dataSource" matSort matSortActive="id" matSortDirection="desc" matSortDisableClear (matSortChange)="sortData($event)">
 
                         <ng-container matColumnDef="id">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header >ID</mat-header-cell>
-                            <mat-cell *matCellDef="let element">REQ-{{element.id}}
-                                <!-- <span (click)="PDF(element.id)" style="color: #fff; background-color: green; border-radius: 20%; padding: 0.2rem; margin-left: 0.3rem; cursor: pointer; font-size: 0.7rem;" class="me-2">PDF</span> -->
-                                <!-- <span (click)="PDF(element.id)" class="material-icons" style="color: #fff; background-color: green; border-radius: 20%; padding: 0.2rem; margin-left: 0.3rem; cursor: pointer; font-size: 1.5rem;">picture_as_pdf</span> -->
-                                <span *ngIf="element.status == 1">VoBo</span>
-                                <span *ngIf="element.status == 2">Autorizada</span>
-                                <span *ngIf="element.status == 3">Rechazada</span>
-                                <span *ngIf="element.status == 4">Cotizada</span>
-                                <span *ngIf="element.status == 5">Pedida</span>
-                                <span *ngIf="element.status == 6">Incompleta</span>
-                                <span *ngIf="element.status == 7">Completa</span>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header >Folio</mat-header-cell>
+                            <mat-cell *matCellDef="let element">{{element.id}}
+                                <span class="ms-3" *ngIf="element.status == 1">Programada</span>
+                                <!-- <span class="me-3" *ngIf="element.status == 2">Entregada</span>
+                                <span class="me-3" *ngIf="element.status == 3">Realizada</span> -->
                             </mat-cell>
                         </ng-container>
-                        <ng-container matColumnDef="date">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header class="pad-l">Fecha de solicitud</mat-header-cell>
-                            <mat-cell *matCellDef="let element" class="pad-l">{{element.date}}
-                            </mat-cell>
-                        </ng-container>
-
                         <ng-container matColumnDef="id_ranch">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header class="pad-l">Ciclo</mat-header-cell>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="pad-l">Rancho</mat-header-cell>
                             <mat-cell *matCellDef="let element" class="pad-l">{{element.id_ranch}}</mat-cell>
                         </ng-container>
-                        <!-- <ng-container matColumnDef="status">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header class="pad-l">Prioridad</mat-header-cell>
-                            <mat-cell *matCellDef="let element" class="pad-l">
-                                <span *ngIf="element.status == 1">Baja</span>
-                                <span *ngIf="element.priority == 2">Media</span>
-                                <span *ngIf="element.priority == 3">Alta</span>
-                            </mat-cell>
-                        </ng-container> -->
+                        <ng-container matColumnDef="date">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="pad-l">Fecha</mat-header-cell>
+                            <mat-cell *matCellDef="let element" class="pad-l">{{element.date}}</mat-cell>
+                        </ng-container>
                         <ng-container matColumnDef="justification">
                             <mat-header-cell *matHeaderCellDef mat-sort-header class="pad-l">Justificación</mat-header-cell>
                             <mat-cell *matCellDef="let element" class="pad-l">{{element.justification}}</mat-cell>
@@ -66,18 +50,9 @@
                         <ng-container matColumnDef="action">
                             <mat-header-cell *matHeaderCellDef> Acción </mat-header-cell>
                             <mat-cell *matCellDef="let element; let i = index;">
-                                <button *ngIf="element.status == 1" class="btn btn-outline-success me-2 w-100" style="padding: 0 0.2rem;" (click)="openAuthorizationDialog(element.id)" >
-                                    <span class="material-icons">done</span>Autorizar
+                                <button *ngIf="element.status == 1" class="btn btn-outline-success me-2 w-100" style="padding: 0 0.2rem;" [routerLink]="['/edit-application', element.id]" >
+                                    <span class="material-icons">edit</span>Editar
                                 </button>
-                                <button *ngIf="element.status == 2" class="btn btn-outline-success me-2 w-100" style="padding: 0 0.2rem;" (click)="openRequestQuoteDialog(element.id)" >
-                                    <span class="material-icons">request_quote</span>Cotizar
-                                </button>
-                                <button *ngIf="element.status == 4" class="btn btn-outline-success me-2 w-100" style="padding: 0 0.2rem;" (click)="openOrderDialog(element.id)" >
-                                    <span class="material-icons">add_shopping_cart</span>Pedido
-                                </button>
-                                <!-- <span *ngFor="let q of element.quotations" (click)="PDF(element.id)" style="color: #fff; background-color: green; border-radius: 20%; padding: 0.2rem; margin-left: 0.3rem; cursor: pointer; font-size: 0.7rem;" class="me-2">{{q.id}}</span> -->
-                                <button *ngIf="element.status == 4" class="btn btn-outline-secondary me-1" style="padding: 0.2rem;" (click)="openQuotationsDialog(element)">COT</button>
-                                <button *ngIf="element.status == 5" class="btn btn-outline-secondary me-1 w-100" style="padding: 0.2rem;" (click)="openOrdersDialog(element)">OC</button>
                             </mat-cell>
                         </ng-container>
 

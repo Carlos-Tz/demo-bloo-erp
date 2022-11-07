@@ -11,6 +11,8 @@ import { AuthService } from 'src/app/services/auth.service';
 import { Ranch } from 'src/app/models/ranch';
 import { ApiRanchService } from 'src/app/services/api-ranch.service';
 import { ApiApplicationService } from 'src/app/services/api-application.service';
+//declare var $: any;
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-new-application',
@@ -52,7 +54,7 @@ export class NewApplicationComponent implements OnInit {
   ngOnInit(): void {
     this.sForm();
     
-    this.sForm1();
+    /* this.sForm1(); */
     this.date = fechaObj.format(new Date(), 'DD[/]MM[/]YYYY');
     //this.myForm.patchValue({ date: new Date().toISOString() });
     this.myForm.patchValue({ date: this.date });
@@ -70,8 +72,8 @@ export class NewApplicationComponent implements OnInit {
     this.apiP.GetProductList().snapshotChanges().subscribe(data => {
       data.forEach(item => {
         const p = item.payload.val();
-        if(p.category == 'FERTILIZANTES' || p.category == 'AGROQUIMICOS'){
-          const pro = {'value': item.key!, 'label': p.name};
+        if((p.category == 'FERTILIZANTES' || p.category == 'AGROQUIMICOS') && p.existence >= 0.01){
+          const pro = {'value': item.key!, 'label': p.name, 'data': { 'existence': p.existence, 'unit': p.unit }};
           this.products.push(pro);
           //const p1 = { 'key': item.key, 'name': p.name, 'unit': p.unit, 'avcost': p.avcost, 'category': p.category }
           //this.products1.push(p1);
@@ -98,16 +100,33 @@ export class NewApplicationComponent implements OnInit {
       justification: ['', [Validators.required]],
       manager: ['', [Validators.required]],
       equipment: ['', [Validators.required]],
+      products: [],
     });
   }
-  sForm1() {
+  /* sForm1() {
     this.myForm1 = this.fb.group({
       product: ['',[Validators.required]],
       quantity: ['', [Validators.required]]
     });
-  }
+  } */
 
   submitSurveyData = () => {
+    let products_d = {};
+    this.products1.forEach(p => {
+      let sectors_d = {};
+      this.sectors1.forEach(s => {
+        if(!s.startsWith('sector__')){
+          let n1: string = $('input#'+p.value+'__'+s+'__1').val().toString();
+          let n2: string = $('input#'+p.value+'__'+s+'__2').val().toString();
+          let nn1 = parseFloat(n1);
+          let nn2 = parseFloat(n2);
+          sectors_d[s] = { sector: nn1, dosis: nn2 }
+        }
+      });
+      products_d[p.value] = sectors_d
+    });
+    this.myForm.patchValue({ 'products': products_d });
+    this.apiA.AddApplication(this.myForm.value);
     //this.apiP.AddProduct(this.myForm.value);
     //this.myForm.patchValue({ products: this.products_l });
     //this.apiR.AddRequisition(this.myForm.value);
@@ -147,12 +166,12 @@ export class NewApplicationComponent implements OnInit {
     //console.log(ev.value);
     this.sectors = [];
     this.apiRa.GetRanch(ev.value).valueChanges().subscribe(data => {
-      this.myForm.patchValue(data);
+      //this.myForm.patchValue(data);
       if(data.sectors){
         for (const e in data.sectors) {
           if (Object.prototype.hasOwnProperty.call(data.sectors, e)) {
             const element = data.sectors[e];
-            const sec = {'value': element.id, 'label': element.name};   
+            const sec = {'value': element.id, 'label': element.name, 'data': element.hectares};   
             this.sectors.push(sec);
           }
         }
@@ -175,13 +194,58 @@ export class NewApplicationComponent implements OnInit {
 
   updateS(ev){
     //this.sectors1 = ev.value.map((e, i) => e)
-    this.sectors1 = ev.value.flatMap((e, i) => [e,i])
-    console.log(this.sectors1);
+    /* this.sectors1 = ev.value.flatMap((e, i) => ['sector__'+e, e+'__'+i]); */
+    this.sectors1 = ev.value.flatMap((e, i) => ['sector__'+e, e]);
+    //console.log(this.sectors1);
     //this.sectors1 = [...ev.value];
   }
 
   updateP(ev){
-    console.log(ev.value);
-    this.products1 = [...ev.value];
+    this.products1 = [...ev.options];
+  }
+
+  change1(ev){
+    //console.log(ev.srcElement)
+    var arrId = ev.srcElement.id.split('__');
+    var id_p = arrId[0];
+    var id_s = arrId[1];
+    var id_c = arrId[2];
+    var s = this.sectors.find((el) => { return el.label == id_s; });
+    $('input#'+id_p+'__'+id_s+'__2').val((ev.srcElement.value/s.data).toFixed(2));
+    this.calculate(id_p);
+  }
+
+  change2(ev){
+    var arrId = ev.srcElement.id.split('__');
+    var id_p = arrId[0];
+    var id_s = arrId[1];
+    var id_c = arrId[2];
+    var s = this.sectors.find((el) => { return el.label == id_s; });
+    $('input#'+id_p+'__'+id_s+'__1').val((ev.srcElement.value*s.data).toFixed(2));
+    this.calculate(id_p);
+  }
+
+  calculate(id_p){
+    let sum = 0;
+    this.sectors1.forEach(p => {
+      if(!p.startsWith('sector__')){
+        let n: string = $('input#'+id_p+'__'+p+'__1').val().toString();
+        sum += parseFloat(n);
+      }
+    });
+    //console.log(sum);
+  }
+
+  focus1(pro){
+    //console.log(pro);
+    $('#exis').show()
+    $('#existence').html(pro.data.existence);
+    $('#unit').html(pro.data.unit);
+    $('#unit1').html(pro.data.unit);
+    $('#unit2').html(pro.data.unit);
+  }
+
+  blur1(){
+    $('#exis').hide();
   }
 }

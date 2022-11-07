@@ -6,4 +6,5 @@ export interface Application {
     justification: string;
     manager: string;
     equipment: string;
+    products: []
 }

@@ -4,21 +4,21 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
-import { Requisition } from 'src/app/models/requisition';
-import { Company } from 'src/app/models/company';
-import { ApiRequisitionService } from 'src/app/services/api-requisition.service';
-import { NewRequisitionComponent } from '../new-requisition/new-requisition.component';
-import pdfMake from 'pdfmake/build/pdfmake';  
-import pdfFonts from 'pdfmake/build/vfs_fonts';  
-pdfMake.vfs = pdfFonts.pdfMake.vfs;  
-import { ApiCompanyService } from 'src/app/services/api-company.service';
-import { AuthorizeRequisitionComponent } from '../authorize-requisition/authorize-requisition.component';
-import { QuoteComponent } from '../quote/quote.component';
-import { OrderComponent } from '../order/order.component';
-import { ViewPdfQuotationsComponent } from '../view-pdf-quotations/view-pdf-quotations.component';
-import { ViewPdfOrdersComponent } from '../view-pdf-orders/view-pdf-orders.component';
-import { RejectedRequisitionsComponent } from '../rejected-requisitions/rejected-requisitions.component';
-import { OrderedRequisitionsComponent } from '../ordered-requisitions/ordered-requisitions.component';
+//import { Requisition } from 'src/app/models/requisition';
+//import { Company } from 'src/app/models/company';
+//import { ApiRequisitionService } from 'src/app/services/api-requisition.service';
+//import { NewRequisitionComponent } from '../new-requisition/new-requisition.component';
+//import pdfMake from 'pdfmake/build/pdfmake';  
+//import pdfFonts from 'pdfmake/build/vfs_fonts';  
+//pdfMake.vfs = pdfFonts.pdfMake.vfs;  
+//import { ApiCompanyService } from 'src/app/services/api-company.service';
+//import { AuthorizeRequisitionComponent } from '../authorize-requisition/authorize-requisition.component';
+//import { QuoteComponent } from '../quote/quote.component';
+//import { OrderComponent } from '../order/order.component';
+//import { ViewPdfQuotationsComponent } from '../view-pdf-quotations/view-pdf-quotations.component';
+//import { ViewPdfOrdersComponent } from '../view-pdf-orders/view-pdf-orders.component';
+//import { RejectedRequisitionsComponent } from '../rejected-requisitions/rejected-requisitions.component';
+//import { OrderedRequisitionsComponent } from '../ordered-requisitions/ordered-requisitions.component';
 import { Application } from 'src/app/models/application';
 import { ApiApplicationService } from 'src/app/services/api-application.service';
 
@@ -58,10 +58,10 @@ export class ApplicationsComponent implements OnInit {
       this.applications = [];
       data.forEach(item => {
         const r = item.payload.val();     
-        //if(r.status != 5 && r.status != 3){
+        if(r.status == 1){
           const app = {'id': item.key, 'id_ranch': r.id_ranch, 'date': r.date, 'status': r.status, 'justification': r.justification };        
           this.applications.push(app as Application);
-        //}   
+        }   
       });
       if (this.applications.length > 0) {
         this.data = true;
@@ -91,9 +91,6 @@ export class ApplicationsComponent implements OnInit {
       switch (sort.active) {
         case 'date': return this.compare(a.date.trim().toLocaleLowerCase(), b.date.trim().toLocaleLowerCase(), isAsc);
         case 'id': return this.compare(a.id, b.id, isAsc);
-        //case 'cicle': return this.compare(a.cicle.trim().toLocaleLowerCase(), b.cicle.trim().toLocaleLowerCase(), isAsc);
-        //case 'priority': return this.compare(a.priority, b.priority, isAsc);
-        //case 'status': return this.compare(a.status, b.status, isAsc);
         case 'justification': return this.compare(a.justification.trim().toLocaleLowerCase(), b.justification.trim().toLocaleLowerCase(), isAsc);
         default: return 0;
       }
@@ -107,7 +104,7 @@ export class ApplicationsComponent implements OnInit {
     this.dataSource.filter = event.value.trim().toLocaleLowerCase();
   }
 
-  openDialog() {
+  /* openDialog() {
     const dialogRef = this.dialog.open(NewRequisitionComponent);
 
     dialogRef.afterClosed().subscribe(result => {
@@ -191,7 +188,7 @@ export class ApplicationsComponent implements OnInit {
       },
       autoFocus: false
     });
-  }
+  } */
 
   /* PDF(id) {
     this.apiR.GetRequisition(id).valueChanges().subscribe(data => {
