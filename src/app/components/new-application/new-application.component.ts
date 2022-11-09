@@ -7,7 +7,7 @@ import 'fecha';
 import fechaObj from 'fecha';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
-import { AuthService } from 'src/app/services/auth.service';
+//import { AuthService } from 'src/app/services/auth.service';
 import { Ranch } from 'src/app/models/ranch';
 import { ApiRanchService } from 'src/app/services/api-ranch.service';
 import { ApiApplicationService } from 'src/app/services/api-application.service';
@@ -48,7 +48,7 @@ export class NewApplicationComponent implements OnInit {
     public apiA: ApiApplicationService,
     public apiP: ApiProductService,
     public toastr: ToastrService,
-    public authService: AuthService, 
+    //public authService: AuthService, 
   ) { }
 
   ngOnInit(): void {
