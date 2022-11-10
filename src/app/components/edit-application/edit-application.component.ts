@@ -68,36 +68,52 @@ export class EditApplicationComponent implements OnInit, AfterViewInit {
       });
     });
 
-    await promise.then((p_l: any) => {
-      if(p_l){
-        console.log(p_l);
-        
-        let ind = 0;
-        this.prod = [];
-        this.sec = [];
-        for (const p in p_l) {
-          this.prod.push(p);
-          
-          if (Object.prototype.hasOwnProperty.call(p_l, p)) {
-            const element = p_l[p];
-            for (const s in element){
-              if(ind == 0){
-                this.sec.push(s)
+    await promise.then(async (p_l: any) => {
+      const promise1 = new Promise((resolve, reject) => {
+        if(p_l){
+          let ind = 0;
+          this.prod = [];
+          this.sec = [];
+          for (const p in p_l) {
+            this.prod.push(p);
+            if (Object.prototype.hasOwnProperty.call(p_l, p)) {
+              const element = p_l[p];
+              for (const s in element){
+                if(ind == 0){
+                  this.sec.push(s)
+                }
               }
             }
+            ind++;
           }
-          ind++;
+          resolve(p_l);
         }
-      }
-      /* for (const pp in p_l){
-        console.log(pp);
-        console.log(p_l[pp]);
-      } */
-    }); 
+      }); 
+
+      await promise1.then((p_l1: any) => {
+        for (const p1 in p_l1) {
+          if (Object.prototype.hasOwnProperty.call(p_l1, p1)) {
+            const element1 = p_l1[p1];
+            for (const s1 in element1){
+              console.log(p1, s1);
+              console.log(this.sec);
+              
+              //console.log($('input#'+p1+'__'+s1+'__1').val());
+              //console.log($('input#'+p1+'__'+s1+'__2').val());
+              $('input#'+p1+'__'+s1+'__1').val((element1[s1].sector).toFixed(2));
+              $('input#'+p1+'__'+s1+'__2').val((element1[s1].dosis).toFixed(2));
+              //console.log(element1[s1]);
+            }
+          }
+        }
+      });
+    });
 
   }
 
   ngAfterViewInit(): void {
+    console.log(this.sec);
+    
   }
 
   sForm() {
