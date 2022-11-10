@@ -7,14 +7,13 @@ import { Ranch } from 'src/app/models/ranch';
 import { ApiApplicationService } from 'src/app/services/api-application.service';
 import { ApiProductService } from 'src/app/services/api-product.service';
 import { ApiRanchService } from 'src/app/services/api-ranch.service';
-
+import * as $ from 'jquery';
 @Component({
   selector: 'app-edit-application',
   templateUrl: './edit-application.component.html',
   styleUrls: ['./edit-application.component.css']
 })
-export class EditApplicationComponent implements OnInit, AfterViewInit {
-
+export class EditApplicationComponent implements OnInit {
   public myForm!: FormGroup;
   public key = '';
   public pro: string[] = [];
@@ -25,6 +24,7 @@ export class EditApplicationComponent implements OnInit, AfterViewInit {
   public prod: string[] = [];
   public sectors: Select2Data = [];
   public ranches: Ranch[] = [];
+  public tab = false;
 
   constructor(
     private fb: FormBuilder,
@@ -68,8 +68,8 @@ export class EditApplicationComponent implements OnInit, AfterViewInit {
       });
     });
 
-    await promise.then(async (p_l: any) => {
-      const promise1 = new Promise((resolve, reject) => {
+    await promise.then((p_l: any) => {
+      //const promise1 = new Promise((resolve, reject) => {
         if(p_l){
           let ind = 0;
           this.prod = [];
@@ -86,19 +86,22 @@ export class EditApplicationComponent implements OnInit, AfterViewInit {
             }
             ind++;
           }
-          resolve(p_l);
+          //resolve(p_l);
         }
-      }); 
+      //}); 
+      /* await promise1.then((p_l1: any) => {
+        this.tab = true;
+      }); */
 
-      await promise1.then((p_l1: any) => {
+      /* await promise1.then((p_l1: any) => {
         for (const p1 in p_l1) {
           if (Object.prototype.hasOwnProperty.call(p_l1, p1)) {
             const element1 = p_l1[p1];
             for (const s1 in element1){
               console.log(p1, s1);
-              console.log(this.sec);
+              //console.log(this.sec);
               
-              //console.log($('input#'+p1+'__'+s1+'__1').val());
+              console.log($('input#'+p1+'__'+s1+'__1').val());
               //console.log($('input#'+p1+'__'+s1+'__2').val());
               $('input#'+p1+'__'+s1+'__1').val((element1[s1].sector).toFixed(2));
               $('input#'+p1+'__'+s1+'__2').val((element1[s1].dosis).toFixed(2));
@@ -106,14 +109,23 @@ export class EditApplicationComponent implements OnInit, AfterViewInit {
             }
           }
         }
-      });
+      }); */
     });
 
   }
 
-  ngAfterViewInit(): void {
-    console.log(this.sec);
-    
+  table(){
+    this.apiA.GetApplication(this.key).valueChanges().subscribe(data => {
+      for (const p1 in data.products) {
+        if (Object.prototype.hasOwnProperty.call(data.products, p1)) {
+          const element1 = data.products[p1];
+          for (const s1 in element1){
+            $('input#'+p1+'__'+s1+'__1').val((element1[s1].sector).toFixed(2));
+            $('input#'+p1+'__'+s1+'__2').val((element1[s1].dosis).toFixed(2));
+          }
+        }
+      }
+    });
   }
 
   sForm() {
@@ -145,7 +157,8 @@ export class EditApplicationComponent implements OnInit, AfterViewInit {
       products_d[p.value] = sectors_d
     });
     this.myForm.patchValue({ 'products': products_d });
-    this.apiA.AddApplication(this.myForm.value);
+    this.apiA.UpdateApplication(this.myForm.value, this.key)
+    //this.apiA.AddApplication(this.myForm.value);
   }
 
   /* ranch(ev){

@@ -91,9 +91,9 @@
                                         <th *ngFor="let sec of sectors1" [ngStyle]="{'background-color': sec.startsWith('sector__') ? '#155a89': '#fff'}"><span *ngIf="sec.startsWith('sector__')"  style="color: #fff; font-weight: 400;">Sector {{ sec | slice:8 }}</span><span *ngIf="!sec.startsWith('sector__')">Dosis Ha</span></th>
                                     </thead>
                                     <tbody>
-                                        <tr *ngFor="let pro of products1">
+                                        <tr *ngFor="let pro of products1; let lastp = last">
                                             <td>{{ pro.label }}</td>
-                                            <td *ngFor="let sec of sectors1">
+                                            <td *ngFor="let sec of sectors1; let lasts = last" [isLast]="lastp && lasts" (ngInit)="table()">
                                                 <input type="number" matInput *ngIf="sec.startsWith('sector__')" id="{{ pro.value }}__{{ sec | slice:8 }}__1" value="0" min="0" step="0.01" (blur)="blur1()" (focus)="focus1(pro)" (change)="change1($event)">
                                                 <input type="number" matInput *ngIf="!sec.startsWith('sector__')" id="{{ pro.value }}__{{ sec }}__2" value="0" min="0" step="0.01" (blur)="blur1()" (focus)="focus1(pro)" (change)="change2($event)"></td>
                                             <!-- <td *ngFor="let sec of sectors1">{{ pro }}-{{ sec }}</td> -->
