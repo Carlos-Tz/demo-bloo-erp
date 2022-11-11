@@ -89,6 +89,8 @@ import { ApplicationsReportComponent } from './components/applications-report/ap
 import { NewApplicationComponent } from './components/new-application/new-application.component';
 import { EditApplicationComponent } from './components/edit-application/edit-application.component';
 import { NgInitDirective } from './directives/ng-init.directive';
+import { DeliverApplicationComponent } from './components/deliver-application/deliver-application.component';
+import { RunApplicationComponent } from './components/run-application/run-application.component';
 
 @NgModule({
   declarations: [
@@ -139,7 +141,9 @@ import { NgInitDirective } from './directives/ng-init.directive';
     ApplicationsReportComponent,
     NewApplicationComponent,
     EditApplicationComponent,
-    NgInitDirective
+    NgInitDirective,
+    DeliverApplicationComponent,
+    RunApplicationComponent
   ],
   imports: [
     BrowserModule,

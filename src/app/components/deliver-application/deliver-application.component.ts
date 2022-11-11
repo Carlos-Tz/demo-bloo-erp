@@ -8,12 +8,13 @@ import { ApiApplicationService } from 'src/app/services/api-application.service'
 import { ApiProductService } from 'src/app/services/api-product.service';
 import { ApiRanchService } from 'src/app/services/api-ranch.service';
 import * as $ from 'jquery';
+
 @Component({
-  selector: 'app-edit-application',
-  templateUrl: './edit-application.component.html',
-  styleUrls: ['./edit-application.component.css']
+  selector: 'app-deliver-application',
+  templateUrl: './deliver-application.component.html',
+  styleUrls: ['./deliver-application.component.css']
 })
-export class EditApplicationComponent implements OnInit {
+export class DeliverApplicationComponent implements OnInit {
   public myForm!: FormGroup;
   public key = '';
   public pro: string[] = [];
@@ -88,28 +89,7 @@ export class EditApplicationComponent implements OnInit {
           }
           //resolve(p_l);
         }
-      //}); 
-      /* await promise1.then((p_l1: any) => {
-        this.tab = true;
-      }); */
-
-      /* await promise1.then((p_l1: any) => {
-        for (const p1 in p_l1) {
-          if (Object.prototype.hasOwnProperty.call(p_l1, p1)) {
-            const element1 = p_l1[p1];
-            for (const s1 in element1){
-              console.log(p1, s1);
-              //console.log(this.sec);
-              
-              console.log($('input#'+p1+'__'+s1+'__1').val());
-              //console.log($('input#'+p1+'__'+s1+'__2').val());
-              $('input#'+p1+'__'+s1+'__1').val((element1[s1].sector).toFixed(2));
-              $('input#'+p1+'__'+s1+'__2').val((element1[s1].dosis).toFixed(2));
-              //console.log(element1[s1]);
-            }
-          }
-        }
-      }); */
+      
     });
 
   }
@@ -122,6 +102,10 @@ export class EditApplicationComponent implements OnInit {
           for (const s1 in element1){
             $('input#'+p1+'__'+s1+'__1').val((element1[s1].sector).toFixed(2));
             $('input#'+p1+'__'+s1+'__2').val((element1[s1].dosis).toFixed(2));
+            if(element1[s1].delivered || element1[s1].sector == 0){
+              $('input#'+p1+'__'+s1+'__3').prop('checked', true);
+              $('input#'+p1+'__'+s1+'__3').prop('disabled', true);
+            }
           }
         }
       }
@@ -151,7 +135,7 @@ export class EditApplicationComponent implements OnInit {
           let n2: string = $('input#'+p.value+'__'+s+'__2').val().toString();
           let nn1 = parseFloat(n1);
           let nn2 = parseFloat(n2);
-          sectors_d[s] = { sector: nn1, dosis: nn2, delivered: false }
+          sectors_d[s] = { sector: nn1, dosis: nn2 }
         }
       });
       products_d[p.value] = sectors_d
@@ -161,41 +145,41 @@ export class EditApplicationComponent implements OnInit {
     //this.apiA.AddApplication(this.myForm.value);
   }
 
-  /* ranch(ev){
-    //console.log(ev.value);
-    this.sectors = [];
-    this.apiRa.GetRanch(ev.value).valueChanges().subscribe(data => {
-      //this.myForm.patchValue(data);
-      if(data.sectors){
-        for (const e in data.sectors) {
-          if (Object.prototype.hasOwnProperty.call(data.sectors, e)) {
-            const element = data.sectors[e];
-            const sec = {'value': element.id, 'label': element.name, 'data': element.hectares};   
-            this.sectors.push(sec);
-          }
-        }
-      }
-    });
-  } */
-
-  allSec(){
+  /* allSec(){
     this.sec = [];
     this.sectors.forEach(e => this.sec.push(e['value']));
-  }
+  } */
 
   updateS(ev){
-    //this.sectors1 = ev.value.map((e, i) => e)
-    /* this.sectors1 = ev.value.flatMap((e, i) => ['sector__'+e, e+'__'+i]); */
     this.sectors1 = ev.value.flatMap((e, i) => ['sector__'+e, e]);
-    //console.log(this.sectors1);
-    //this.sectors1 = [...ev.value];
   }
 
   updateP(ev){
     this.products1 = [...ev.options];
   }
 
-  change1(ev){
+  changeC(ev){
+    var arrId = ev.srcElement.id.split('__');
+    var sum = 0;
+    var id_p = arrId[0];
+    var id_s = arrId[1];
+    var id_c = arrId[2];
+    this.products1.forEach(p => {
+      this.sectors1.forEach(s => {
+        if(!s.startsWith('sector__') && p.value == id_p && $('input#'+p.value+'__'+s+'__3').prop('checked') && !$('input#'+p.value+'__'+s+'__3').prop('disabled')){
+          let n1: string = $('input#'+p.value+'__'+s+'__1').val().toString();
+          //let n2: string = $('input#'+p.value+'__'+s+'__2').val().toString();
+          let nn1 = parseFloat(n1);
+          sum += nn1;
+          $('p#'+id_p+'___p').text('Total: '+sum.toFixed(2));
+          //let nn2 = parseFloat(n2);
+          //sectors_d[s] = { sector: nn1, dosis: nn2 }
+        }
+      });
+    });
+  }
+
+  /* change1(ev){
     //console.log(ev.srcElement)
     var arrId = ev.srcElement.id.split('__');
     var id_p = arrId[0];
@@ -238,5 +222,5 @@ export class EditApplicationComponent implements OnInit {
 
   blur1(){
     $('#exis').hide();
-  }
+  } */
 }

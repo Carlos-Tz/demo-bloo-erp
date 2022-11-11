@@ -120,7 +120,7 @@ export class NewApplicationComponent implements OnInit {
           let n2: string = $('input#'+p.value+'__'+s+'__2').val().toString();
           let nn1 = parseFloat(n1);
           let nn2 = parseFloat(n2);
-          sectors_d[s] = { sector: nn1, dosis: nn2 }
+          sectors_d[s] = { sector: nn1, dosis: nn2, delivered: false }
         }
       });
       products_d[p.value] = sectors_d

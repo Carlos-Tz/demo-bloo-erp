@@ -5,6 +5,7 @@ import { ApplicationsComponent } from './components/applications/applications.co
 import { CategoriesComponent } from './components/categories/categories.component';
 import { CiclesComponent } from './components/cicles/cicles.component';
 import { CompanyComponent } from './components/company/company.component';
+import { DeliverApplicationComponent } from './components/deliver-application/deliver-application.component';
 import { DeliveryComponent } from './components/delivery/delivery.component';
 import { EditApplicationComponent } from './components/edit-application/edit-application.component';
 import { LoginComponent } from './components/login/login.component';
@@ -18,6 +19,7 @@ import { ProvidersComponent } from './components/providers/providers.component';
 import { RanchesComponent } from './components/ranches/ranches.component';
 import { ReceptionComponent } from './components/reception/reception.component';
 import { RequisitionsComponent } from './components/requisitions/requisitions.component';
+import { RunApplicationComponent } from './components/run-application/run-application.component';
 import { RunApplicationsComponent } from './components/run-applications/run-applications.component';
 import { WarehouseReportComponent } from './components/warehouse-report/warehouse-report.component';
 import { AuthGuard } from './services/auth.guard';
@@ -45,6 +47,8 @@ const routes: Routes = [
   {path: 'applications-report', component: ApplicationsReportComponent , canActivate: [AuthGuard]},
   {path: 'new-application', component: NewApplicationComponent , canActivate: [AuthGuard]},
   {path: 'edit-application/:id', component: EditApplicationComponent , canActivate: [AuthGuard]},
+  {path: 'deliver-application/:id', component: DeliverApplicationComponent , canActivate: [AuthGuard]},
+  {path: 'run-application/:id', component: RunApplicationComponent , canActivate: [AuthGuard]},
   {path: 'login', component: LoginComponent, canActivate: [SecureInnerPagesGuard]},
 ];
 
