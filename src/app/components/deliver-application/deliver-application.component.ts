@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Select2Data } from 'ng-select2-component';
@@ -26,6 +26,7 @@ export class DeliverApplicationComponent implements OnInit {
   public sectors: Select2Data = [];
   public ranches: Ranch[] = [];
   public tab = false;
+  @ViewChild('tbody') ttb: ElementRef<HTMLElement>;
 
   constructor(
     private fb: FormBuilder,
@@ -177,6 +178,48 @@ export class DeliverApplicationComponent implements OnInit {
         }
       });
     });
+  }
+
+  all(){
+    //var sum = 0;
+    /* var arrId = ev.srcElement.id.split('__');
+    var id_p = arrId[0];
+    var id_s = arrId[1];
+    var id_c = arrId[2]; */
+    
+    //console.log(tb.rows)
+    this.products1.forEach(p => {
+      this.sectors1.forEach(s => {
+        if(!s.startsWith('sector__') && !$('input#'+p.value+'__'+s+'__3').prop('checked') && !$('input#'+p.value+'__'+s+'__3').prop('disabled')){
+          //$('input#'+p.value+'__'+s+'__3').prop('checked', true);
+          $('input#'+p.value+'__'+s+'__3').trigger('click');
+
+
+
+          //let n1: string = $('input#'+p.value+'__'+s+'__1').val().toString();
+          //let n2: string = $('input#'+p.value+'__'+s+'__2').val().toString();
+          //let nn1 = parseFloat(n1);
+          //sum += nn1;
+          //$('p#'+id_p+'___p').text('Total: '+sum.toFixed(2));
+          //let nn2 = parseFloat(n2);
+          //sectors_d[s] = { sector: nn1, dosis: nn2 }
+        }
+      });
+    });
+    /* let tb: HTMLElement = this.ttb.nativeElement
+    tb.childNodes.forEach(c => {
+      c.childNodes.forEach(cc => {
+        //console.log(cc.firstChild);
+        if(cc.childNodes[2] && cc.childNodes[2]['type'] == 'checkbox'){
+          $(cc.childNodes[2]).trigger('click')
+          //console.log(cc.childNodes[2])
+          console.log(cc.childNodes[2]['id'])
+          console.log(cc.childNodes[2]['value'])
+          console.log(cc.childNodes[2]['type'])
+        }
+        //console.log(cc.nodeName);
+      })
+    }) */
   }
 
   /* change1(ev){
