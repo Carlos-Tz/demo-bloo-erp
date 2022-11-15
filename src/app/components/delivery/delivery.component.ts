@@ -58,7 +58,7 @@ export class DeliveryComponent implements OnInit {
       this.applications = [];
       data.forEach(item => {
         const r = item.payload.val();     
-        if(r.status == 1){
+        if(r.status <= 3 ){
           const app = {'id': item.key, 'id_ranch': r.id_ranch, 'date': r.date, 'status': r.status, 'justification': r.justification };        
           this.applications.push(app as Application);
         }   

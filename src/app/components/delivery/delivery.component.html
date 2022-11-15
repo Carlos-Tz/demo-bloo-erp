@@ -30,8 +30,9 @@
                             <mat-header-cell *matHeaderCellDef mat-sort-header >Folio</mat-header-cell>
                             <mat-cell *matCellDef="let element">{{element.id}}
                                 <span class="ms-3" *ngIf="element.status == 1">Programada</span>
-                                <!-- <span class="me-3" *ngIf="element.status == 2">Entregada</span>
-                                <span class="me-3" *ngIf="element.status == 3">Realizada</span> -->
+                                <span class="ms-3" *ngIf="element.status == 2">Incompleta</span>
+                                <span class="ms-3" *ngIf="element.status == 3">Entregada</span>
+                                <!-- <span class="me-3" *ngIf="element.status == 3">Realizada</span> -->
                             </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="id_ranch">
@@ -52,6 +53,12 @@
                             <mat-cell *matCellDef="let element; let i = index;">
                                 <button *ngIf="element.status == 1" class="btn btn-outline-success me-2 w-100" style="padding: 0 0.2rem;" [routerLink]="['/deliver-application', element.id]">
                                     <span class="material-icons">outbox</span>Surtir
+                                </button>
+                                <button *ngIf="element.status == 2" class="btn btn-outline-warning me-2 w-100" style="padding: 0 0.2rem;" [routerLink]="['/deliver-application', element.id]">
+                                    <span class="material-icons">outbox</span>Surtir
+                                </button>
+                                <button *ngIf="element.status == 3" class="btn btn-outline-info me-2 w-100" style="padding: 0 0.2rem;" >
+                                    <span class="material-icons">outbox</span>Resurtir
                                 </button>
                             </mat-cell>
                         </ng-container>

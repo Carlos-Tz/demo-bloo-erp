@@ -128,22 +128,42 @@ export class DeliverApplicationComponent implements OnInit {
 
   submitSurveyData = () => {
     let products_d = {};
+    let status_a = [];
     this.products1.forEach(p => {
       let sectors_d = {};
       this.sectors1.forEach(s => {
         if(!s.startsWith('sector__')){
           let n1: string = $('input#'+p.value+'__'+s+'__1').val().toString();
           let n2: string = $('input#'+p.value+'__'+s+'__2').val().toString();
+          let n3: boolean = true;
+          if(!$('input#'+p.value+'__'+s+'__3').prop('checked') && !$('input#'+p.value+'__'+s+'__3').prop('disabled')){
+            //console.log('active unchecked');
+            n3 = false;
+            status_a.push(false);
+          }else if($('input#'+p.value+'__'+s+'__3').prop('disabled') && $('input#'+p.value+'__'+s+'__3').prop('checked')) {
+            //console.log('inactive checked');
+            n3 = true;
+            status_a.push(true);
+          }else{
+            //console.log('active checked');
+            n3 = true;
+            status_a.push(true);
+          }
           let nn1 = parseFloat(n1);
           let nn2 = parseFloat(n2);
-          sectors_d[s] = { sector: nn1, dosis: nn2 }
+          sectors_d[s] = { sector: nn1, dosis: nn2, delivered: n3 }
         }
       });
       products_d[p.value] = sectors_d
     });
+    //console.log(products_d);
+    if(status_a.every((e) => e)){
+      this.myForm.patchValue({ 'status': 3 });
+    }else {
+      this.myForm.patchValue({ 'status': 2 });
+    }
     this.myForm.patchValue({ 'products': products_d });
-    this.apiA.UpdateApplication(this.myForm.value, this.key)
-    //this.apiA.AddApplication(this.myForm.value);
+    this.apiA.UpdateApplication(this.myForm.value, this.key);
   }
 
   /* allSec(){
