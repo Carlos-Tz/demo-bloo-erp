@@ -74,6 +74,10 @@
                             <mat-header-cell *matHeaderCellDef mat-sort-header class="pad-l">Justificación</mat-header-cell>
                             <mat-cell *matCellDef="let element" class="pad-l">{{element.justification}}</mat-cell>
                         </ng-container>
+                        <ng-container matColumnDef="comments">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="pad-l">Comentarios</mat-header-cell>
+                            <mat-cell *matCellDef="let element" class="pad-l">{{element.comments}}</mat-cell>
+                        </ng-container>
 
                         <ng-container matColumnDef="action">
                             <mat-header-cell *matHeaderCellDef> Acción </mat-header-cell>

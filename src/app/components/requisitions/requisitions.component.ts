@@ -36,8 +36,8 @@ export class RequisitionsComponent implements OnInit {
     'date',
     'cicle',
     'priority',
-    /* 'status', */
     'justification',
+    'comments',
     'action',
   ];
   //public categories: Select2Data = [];

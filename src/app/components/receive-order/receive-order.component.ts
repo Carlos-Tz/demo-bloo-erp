@@ -99,11 +99,13 @@ export class ReceiveOrderComponent implements OnInit {
     if(quantity == quantity_received || quantity < quantity_received){
       this.myForm.patchValue({ 'status_reception': 3 });
       this.myForm.patchValue({ 'quantity_remaining': 0 });
+      this.myForm.patchValue({ 'quantity_received': this.myForm.get('quantity').value - this.myForm.get('quantity_remaining').value });
   
       await p.then((v: number) => { 
           let mo = {
             id: v++,
             id_req: key_r,
+            id_app: '',
             date: fechaObj.format(new Date(), 'DD[/]MM[/]YYYY'),
             type: 'ENTRADA',
             quantity: quantity,
@@ -126,6 +128,7 @@ export class ReceiveOrderComponent implements OnInit {
         let mo = {
           id: v++,
           id_req: key_r,
+          id_app: '',
           date: fechaObj.format(new Date(), 'DD[/]MM[/]YYYY'),
           type: 'ENTRADA',
           quantity: quantity_received,

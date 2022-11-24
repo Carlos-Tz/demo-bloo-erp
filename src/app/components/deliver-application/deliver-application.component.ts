@@ -8,6 +8,10 @@ import { ApiApplicationService } from 'src/app/services/api-application.service'
 import { ApiProductService } from 'src/app/services/api-product.service';
 import { ApiRanchService } from 'src/app/services/api-ranch.service';
 import * as $ from 'jquery';
+import 'fecha';
+import fechaObj from 'fecha';
+import { ApiMovementService } from 'src/app/services/api-movement.service';
+import { Product } from 'src/app/models/product';
 
 @Component({
   selector: 'app-deliver-application',
@@ -33,6 +37,7 @@ export class DeliverApplicationComponent implements OnInit {
     public apiRa: ApiRanchService,
     public apiA: ApiApplicationService,
     public apiP: ApiProductService,
+    public apiM: ApiMovementService,
     public toastr: ToastrService,
     private actRouter: ActivatedRoute
   ) { }
@@ -44,7 +49,7 @@ export class DeliverApplicationComponent implements OnInit {
       data.forEach(item => {
         const p = item.payload.val();
         if((p.category == 'FERTILIZANTES' || p.category == 'AGROQUIMICOS') && p.existence >= 0.01){
-          const pro = {'value': item.key!, 'label': p.name, 'data': { 'existence': p.existence, 'unit': p.unit }};
+          const pro = {'value': item.key!, 'label': p.name, 'data': { 'existence': p.existence, 'unit': p.unit, 'category': p.category, 'price': p.avcost }};
           this.products.push(pro);
         }
       });
@@ -135,6 +140,8 @@ export class DeliverApplicationComponent implements OnInit {
         if(!s.startsWith('sector__')){
           let n1: string = $('input#'+p.value+'__'+s+'__1').val().toString();
           let n2: string = $('input#'+p.value+'__'+s+'__2').val().toString();
+          let nn1 = parseFloat(n1);
+          let nn2 = parseFloat(n2);
           let n3: boolean = true;
           if(!$('input#'+p.value+'__'+s+'__3').prop('checked') && !$('input#'+p.value+'__'+s+'__3').prop('disabled')){
             //console.log('active unchecked');
@@ -148,9 +155,48 @@ export class DeliverApplicationComponent implements OnInit {
             //console.log('active checked');
             n3 = true;
             status_a.push(true);
+            let mo = {
+              id: 0,
+              id_req: '',
+              id_app: this.key,
+              date: fechaObj.format(new Date(), 'DD[/]MM[/]YYYY'),
+              type: 'SALIDA',
+              quantity: nn1,
+              price: p.data.price,
+              id_prod: p.value,
+              name_prod: p.label,
+              category: p.data.category
+            }
+            this.addMov(mo);
+            this.upExis(p.value, nn1);
+            /* const promise2 = new Promise((resolve, reject) => {
+              this.apiM.GetLastMovement().subscribe(res => {
+                let id = 0;
+                if(res[0]){ id = Number(res[0].id) + 1; } else { id = 1; }
+                resolve(id);
+              });
+            });              
+            let quantity = nn1;
+            let price = p.data.price;
+            let key = p.value;
+            let name = p.label;
+            let category = p.data.category;
+            await promise2.then((v: number) => { 
+                let mo = {
+                  id: v++,
+                  id_req: '',
+                  id_app: this.key,
+                  date: fechaObj.format(new Date(), 'DD[/]MM[/]YYYY'),
+                  type: 'SALIDA',
+                  quantity: quantity,
+                  price: price,
+                  id_prod: key,
+                  name_prod: name,
+                  category: category
+                }
+                this.apiM.AddMovement(mo);
+            }); */
           }
-          let nn1 = parseFloat(n1);
-          let nn2 = parseFloat(n2);
           sectors_d[s] = { sector: nn1, dosis: nn2, delivered: n3 }
         }
       });
@@ -164,6 +210,41 @@ export class DeliverApplicationComponent implements OnInit {
     }
     this.myForm.patchValue({ 'products': products_d });
     this.apiA.UpdateApplication(this.myForm.value, this.key);
+  }
+
+  async addMov(mov){
+    const promise2 = new Promise((resolve, reject) => {
+      this.apiM.GetLastMovement().subscribe(res => {
+        let id = 0;
+        if(res[0]){ id = Number(res[0].id) + 1; } else { id = 1; }
+        resolve(id);
+      });
+    });
+    await promise2.then((v: number) => {
+        mov['id'] = v;
+        this.apiM.AddMovement(mov);
+    });
+  }
+
+  async upExis(id_prod, quantity){
+    const promise3 = new Promise((resolve, reject) => {
+      this.apiP.GetProduct(id_prod).valueChanges().subscribe(res => {
+          resolve(res);
+      });
+    });
+    await promise3.then(async (pro: Product) => {
+      let prod = pro;
+      let existence_c = pro.existence; 
+      //let avcost_c = pro.avcost;
+      let existence_n = existence_c - quantity;
+      //let price_c = price + price*iva;
+      //let avcost_n = (avcost_c*existence_c + quantity*price_c) / existence_n; 
+      //prod['avcost'] = avcost_n;
+      prod['existence'] = existence_n;
+      
+      this.apiP.UpdateProduct(prod, id_prod);
+      //this.apiM.AddMovement(mo);
+    });
   }
 
   /* allSec(){

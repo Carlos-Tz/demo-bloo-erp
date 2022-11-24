@@ -151,7 +151,7 @@ export class ReceivedOrdersComponent implements OnInit {
     });
   }
 
-  openPaymentsDialog(order: Order) {
+  /* openPaymentsDialog(order: Order) {
     const dialogRef = this.dialog.open(ViewPaymentComponent, {
       data: {
         order: order
@@ -159,6 +159,6 @@ export class ReceivedOrdersComponent implements OnInit {
       autoFocus: false,
       width: '60%',
     });
-  }
+  } */
 }
 
