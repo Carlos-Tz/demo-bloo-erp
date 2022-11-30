@@ -98,8 +98,16 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="col-sm-12" id="exis" style="display: none;">
-                                Existencia: <span id="existence"></span><span id="unit" class="me-3"></span> Programada: <span id="scheduled"></span> <span id="unit1" class="me-3"></span> Disponible: <span id="available"></span><span id="unit2"></span>
+                            <div class="row" id="exis" style="display: none;">
+                                <div class="col-sm-4">
+                                    Existencia: <input type="number" id="existence" readonly style="border: none; max-width: 6rem;"><span id="unit" class="me-3"></span>     
+                                </div>
+                                <div class="col-sm 4">
+                                    Programada: <input type="number" id="scheduled" readonly style="border: none; max-width: 6rem;"><span id="unit1" class="me-3"></span>
+                                </div>
+                                <div class="col-sm-4">
+                                    Disponible: <input type="number" id="available" readonly style="border: none; max-width: 6rem;"><span id="unit2"></span>
+                                </div>
                             </div>
                             <!-- <div class="col">
                                 <table class="table table-bordered">

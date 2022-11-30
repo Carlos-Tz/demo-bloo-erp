@@ -238,8 +238,38 @@ export class NewApplicationComponent implements OnInit {
 
   focus1(pro){
     //console.log(pro);
-    $('#exis').show()
-    $('#existence').html(pro.data.existence);
+    let scheduled = 0;
+    this.sectors1.forEach(s => {
+      if(!s.startsWith('sector__')){
+        let n1: string = $('input#'+pro.value+'__'+s+'__1').val().toString();
+        let nn1 = parseFloat(n1);
+        scheduled += nn1;
+      }
+    });
+    this.apiA.GetApplicationList().snapshotChanges().subscribe(data => {
+      data.forEach(item => {
+        const r = item.payload.val();     
+        if(r.status < 3){
+          if(r.products){
+            Object.entries(r.products).forEach(([key, value], index) => {
+              if(key == pro.value){
+                Object.entries(value).forEach(([k,v], i) => {
+                  if(!v.delivered){
+                    //console.log(v);
+                    scheduled += v.sector;
+                  }
+                });
+              }
+              
+            });
+          }
+        }   
+      });
+      $('#existence').val(pro.data.existence.toFixed(2));
+      $('#scheduled').val(scheduled.toFixed(2));
+      $('#available').val((pro.data.existence - scheduled).toFixed(2));
+    });
+    $('#exis').show();
     $('#unit').html(pro.data.unit);
     $('#unit1').html(pro.data.unit);
     $('#unit2').html(pro.data.unit);

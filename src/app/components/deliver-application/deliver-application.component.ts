@@ -135,6 +135,8 @@ export class DeliverApplicationComponent implements OnInit {
     let products_d = {};
     let status_a = [];
     this.products1.forEach(p => {
+      let movements = [];
+      let total = 0;
       let sectors_d = {};
       this.sectors1.forEach(s => {
         if(!s.startsWith('sector__')){
@@ -167,8 +169,10 @@ export class DeliverApplicationComponent implements OnInit {
               name_prod: p.label,
               category: p.data.category
             }
-            this.addMov(mo);
-            this.upExis(p.value, nn1);
+            movements.push(mo);
+            total += nn1;
+            //this.addMov(mo);
+            //this.upExis(p.value, nn1);
             /* const promise2 = new Promise((resolve, reject) => {
               this.apiM.GetLastMovement().subscribe(res => {
                 let id = 0;
@@ -200,6 +204,8 @@ export class DeliverApplicationComponent implements OnInit {
           sectors_d[s] = { sector: nn1, dosis: nn2, delivered: n3 }
         }
       });
+      this.addMov(movements);
+      this.upExis(p.value, total);
       products_d[p.value] = sectors_d
     });
     //console.log(products_d);
@@ -212,7 +218,7 @@ export class DeliverApplicationComponent implements OnInit {
     this.apiA.UpdateApplication(this.myForm.value, this.key);
   }
 
-  async addMov(mov){
+  async addMov(movements){
     const promise2 = new Promise((resolve, reject) => {
       this.apiM.GetLastMovement().subscribe(res => {
         let id = 0;
@@ -221,8 +227,13 @@ export class DeliverApplicationComponent implements OnInit {
       });
     });
     await promise2.then((v: number) => {
-        mov['id'] = v;
-        this.apiM.AddMovement(mov);
+      movements.forEach(m => {
+        console.log(m, v);
+        m['id'] = v;
+        this.apiM.AddMovement(m);
+        v++;
+      });
+        //mov['id'] = v;
     });
   }
 
