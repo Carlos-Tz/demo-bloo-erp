@@ -211,7 +211,12 @@ export class NewApplicationComponent implements OnInit {
     var id_s = arrId[1];
     var id_c = arrId[2];
     var s = this.sectors.find((el) => { return el.label == id_s; });
-    $('input#'+id_p+'__'+id_s+'__2').val((ev.srcElement.value/s.data).toFixed(2));
+    if(ev.srcElement.value <= $('#available').val()){
+      $('input#'+id_p+'__'+id_s+'__2').val((ev.srcElement.value/s.data).toFixed(2));
+    }else {
+      $('input#'+id_p+'__'+id_s+'__1').val(0);
+      $('input#'+id_p+'__'+id_s+'__2').val(0);
+    }
     this.calculate(id_p);
   }
 
@@ -221,7 +226,12 @@ export class NewApplicationComponent implements OnInit {
     var id_s = arrId[1];
     var id_c = arrId[2];
     var s = this.sectors.find((el) => { return el.label == id_s; });
-    $('input#'+id_p+'__'+id_s+'__1').val((ev.srcElement.value*s.data).toFixed(2));
+    if(ev.srcElement.value*s.data <= $('#available').val()){
+      $('input#'+id_p+'__'+id_s+'__1').val((ev.srcElement.value*s.data).toFixed(2));
+    }else {
+      $('input#'+id_p+'__'+id_s+'__1').val(0);
+      $('input#'+id_p+'__'+id_s+'__2').val(0);
+    }
     this.calculate(id_p);
   }
 

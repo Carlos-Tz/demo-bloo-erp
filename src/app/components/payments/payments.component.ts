@@ -17,6 +17,7 @@ import { MakePaymentComponent } from '../make-payment/make-payment.component';
 import { ViewPaymentComponent } from '../view-payment/view-payment.component';
 import { PaidOrdersComponent } from '../paid-orders/paid-orders.component';
 import { NewOrderComponent } from '../new-order/new-order.component';
+import { DebtsToPayComponent } from '../debts-to-pay/debts-to-pay.component';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;  
 
 @Component({
@@ -201,6 +202,16 @@ export class PaymentsComponent implements OnInit {
 
   openNewOrderDialog() {
     const dialogRef = this.dialog.open(NewOrderComponent, {
+      /* data: {
+        order: order
+      }, */
+      /* autoFocus: false, */
+      width: '80%',
+    });
+  }
+
+  debtsToPayDialog() {
+    const dialogRef = this.dialog.open(DebtsToPayComponent, {
       /* data: {
         order: order
       }, */

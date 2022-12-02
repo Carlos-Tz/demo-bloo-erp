@@ -1,0 +1,21 @@
+
+<h2 mat-dialog-title style="margin-bottom: 0.5rem;">Descargar pagos</h2>
+<form [formGroup]="myForm" novalidate autocomplete="off">
+    <mat-dialog-content class="w-100 m-0">
+        <div class="row mb-5">
+            <mat-form-field appearance="fill" class="col-sm-12 col-md-6">
+                <mat-label>Fecha inicial</mat-label>
+                <input matInput type="date" formControlName="initial_date" useValueAsDate>
+            </mat-form-field>
+            <mat-form-field appearance="fill" class="col-sm-12 col-md-6">
+                <mat-label>Fecha final</mat-label>
+                <input matInput type="date" formControlName="final_date" useValueAsDate>
+            </mat-form-field>
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>Cancelar</button>
+        <button mat-button [mat-dialog-close]="true" (click)="submitSurveyData()" [disabled]="!myForm.valid" class="btn btn-outline-info">Descargar</button>
+    </mat-dialog-actions>
+</form>
+
