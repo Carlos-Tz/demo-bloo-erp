@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angular/fire/compat/database';
 import { ToastrService } from 'ngx-toastr';
@@ -13,7 +14,7 @@ export class ApiOrdersService {
   public orderObject!: AngularFireObject<any>;
   public lastOrderRef!: Observable<any[]>;
 
-  constructor(private db: AngularFireDatabase, public toastr: ToastrService) { }
+  constructor(private db: AngularFireDatabase, public toastr: ToastrService, private http: HttpClient) { }
 
   GetOrdersList() {
     this.orderList = this.db.list('blooming/order-list');
@@ -27,5 +28,9 @@ export class ApiOrdersService {
 
   UpdateOrder(order: Order, key: number) {
     this.db.object('blooming/order-list/' + key).update(order);
+  }
+
+  excel(data: any, url: string): Observable<any>{
+    return this.http.post<any>(`${url}debtsToPay.php`, data);
   }
 }

@@ -1,14 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, Provider } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Select2Data } from 'ng-select2-component';
-import { ToastrService } from 'ngx-toastr';
-import { Cicle } from 'src/app/models/cicle';
-import { ApiCicleService } from 'src/app/services/api-cicle.service';
 import { ApiOrdersService } from 'src/app/services/api-orders.service';
-import { ApiProductService } from 'src/app/services/api-product.service';
 import { ApiProviderService } from 'src/app/services/api-provider.service';
-import { ApiQuoteService } from 'src/app/services/api-quote.service';
 //import 'fecha';
 //import fechaObj from 'fecha';
 
@@ -73,12 +67,14 @@ export class DebtsToPayComponent implements OnInit {
   }
 
   submitSurveyData() {
-    //this.apiQ.addO(this.myForm.value)
-    //this.toastr.success('Orden guardada!');
     console.log(this.myForm.value);
-    let url='http://localhost:4200/';
-    return this.http.post(`${url}debtsToPay.php`, JSON.stringify({}));
-    
+    let url='http://localhost:8080/local/dev/adm/php-back/';
+    this.apiO.excel(this.myForm.value, url).subscribe(res => {
+      console.log(res);
+      window.location.href = `${url}helloxworld.xlsx`;
+    }, err => {
+      console.log(err);
+    });
     
   }
 
