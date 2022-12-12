@@ -18,6 +18,7 @@ import { ProductsComponent } from './components/products/products.component';
 import { ProvidersComponent } from './components/providers/providers.component';
 import { RanchesComponent } from './components/ranches/ranches.component';
 import { ReceptionComponent } from './components/reception/reception.component';
+import { RedeliverApplicationComponent } from './components/redeliver-application/redeliver-application.component';
 import { RequisitionsComponent } from './components/requisitions/requisitions.component';
 import { RunApplicationComponent } from './components/run-application/run-application.component';
 import { RunApplicationsComponent } from './components/run-applications/run-applications.component';
@@ -48,6 +49,7 @@ const routes: Routes = [
   {path: 'new-application', component: NewApplicationComponent , canActivate: [AuthGuard]},
   {path: 'edit-application/:id', component: EditApplicationComponent , canActivate: [AuthGuard]},
   {path: 'deliver-application/:id', component: DeliverApplicationComponent , canActivate: [AuthGuard]},
+  {path: 'redeliver-application/:id', component: RedeliverApplicationComponent , canActivate: [AuthGuard]},
   {path: 'run-application/:id', component: RunApplicationComponent , canActivate: [AuthGuard]},
   {path: 'login', component: LoginComponent, canActivate: [SecureInnerPagesGuard]},
 ];

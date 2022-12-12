@@ -50,7 +50,7 @@ export class MakePaymentComponent implements OnInit {
       date: ['', Validators.required],
       paymenttype: ['', Validators.required],
       document: [''],
-      folio: [null],
+      folio: [''],
       amount: [null, Validators.required],
     });
     this.myForm2 = this.fb.group({
@@ -65,7 +65,7 @@ export class MakePaymentComponent implements OnInit {
       provider: ['', [Validators.required]],
       quantity: [null, [Validators.required]],
       unit: ['', [Validators.required]],
-      folio: [null],
+      folio: [''],
       paymentdate: ['', [Validators.required]],
       paymenttype: ['', [Validators.required]],
       status: ['', [Validators.required]],
@@ -95,6 +95,6 @@ export class MakePaymentComponent implements OnInit {
     this.myForm2.patchValue({ 'balance': this.balance - amount });
     this.apiO.UpdateOrder(this.myForm2.value, this.data.order.id);
     this.ResetForm();
-    this.toastr.success('Pago realizado!');
+    this.toastr.success('Pago registrado!');
   }
 }

@@ -92,6 +92,7 @@ import { NgInitDirective } from './directives/ng-init.directive';
 import { DeliverApplicationComponent } from './components/deliver-application/deliver-application.component';
 import { RunApplicationComponent } from './components/run-application/run-application.component';
 import { DebtsToPayComponent } from './components/debts-to-pay/debts-to-pay.component';
+import { RedeliverApplicationComponent } from './components/redeliver-application/redeliver-application.component';
 
 @NgModule({
   declarations: [
@@ -145,7 +146,8 @@ import { DebtsToPayComponent } from './components/debts-to-pay/debts-to-pay.comp
     NgInitDirective,
     DeliverApplicationComponent,
     RunApplicationComponent,
-    DebtsToPayComponent
+    DebtsToPayComponent,
+    RedeliverApplicationComponent
   ],
   imports: [
     BrowserModule,

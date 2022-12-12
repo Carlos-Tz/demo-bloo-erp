@@ -4,7 +4,8 @@ header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Content-Range, Content-Disposition, Content-Description');
 
-require 'phpspreadsheet/vendor/autoload.php';
+//require 'phpspreadsheet/vendor/autoload.php';
+require 'vendor/autoload.php';
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -48,7 +49,7 @@ $estado = 2 ;
 	    $sheet->setCellValue('H'.$fila, "SALDO") ;
 	    $sheet->getStyle('A1:H1')->getFont()->setBold(true)->setSize(12);
         $sheet->getStyle('A1:H1')->getAlignment()->setHorizontal('center');
-        $sheet->getStyle('A1:H1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('009900');
+        $sheet->getStyle('A1:H1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('155A89');
         $sheet->getStyle('A1:H1')->getFont()->getColor()->setRGB('FFFFFF');
         $sheet->getStyle('E:H')->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_CURRENCY_USD_SIMPLE);
 
@@ -59,7 +60,7 @@ $estado = 2 ;
 	    /* while($row = mysqli_fetch_array($orden)){*/
 	        if($row->status == $estado) {
 	            if(!$vuelta) {
-	                $sheet->getStyle('A'.$fila.':H'.$fila)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('DAF7A6');
+	                $sheet->getStyle('A'.$fila.':H'.$fila)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('8ac8f0');
 	            }
         	    //$sheet->setCellValue('A'.$fila, $row["status"]);
         	    $sheet->setCellValue('A'.$fila, "OC-".$row->id);
@@ -71,33 +72,30 @@ $estado = 2 ;
         	    $sheet->setCellValue('G'.$fila, strval(($row->price*$row->quantity)+($row->price*$row->quantity*$row->iva)));
         	    $sheet->setCellValue('H'.$fila, strval($row->balance));
         	    $sub_encabezado = true ;
-                /* while($row2 = mysqli_fetch_array($detalle)){
-                    if($row["id_requisicion"] == $row2["id_requisicion"] && $row["consecutivo"] == $row2["consecutivo"]){
-                        if ($sub_encabezado){
-                            $color = new \PhpOffice\PhpSpreadsheet\Style\Color('000000');
-                            $sheet->getStyle('A'.$fila.':H'.$fila)->getBorders()->getTop()->setColor($color);
-                            $sheet->getStyle('A'.$fila.':H'.$fila)->getBorders()->getTop()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THICK);
-                            $fila++ ;
-                            $sheet->setCellValue('B'.$fila, "FECHA DE PAGO") ;
-                            $sheet->setCellValue('C'.$fila, "FOLIO") ;
-                            $sheet->setCellValue('D'.$fila, "METODO DE PAGO") ;
-                            $sheet->setCellValue('E'.$fila, "MONTO") ;
-                            $sheet->setCellValue('F'.$fila, "DOCUMENTO") ;
-                            $sheet->getStyle('B'.$fila.':F'.$fila)->getFont()->setBold(true)->setSize(11);
-                            $sheet->getStyle('B'.$fila.':F'.$fila)->getAlignment()->setHorizontal('center');
-                            $sheet->getStyle('B'.$fila.':F'.$fila)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('33CC66');
-                            $sheet->getStyle('B'.$fila.':F'.$fila)->getFont()->getColor()->setRGB('FFFFFF');
-                        }
-                        $fila ++ ;
-                        //$sheet->setCellValue('B'.$fila, $row2["id_requisicion"]." - ".$row2["consecutivo"]);
-        	            $sheet->setCellValue('B'.$fila, $row2["fecha"]);
-        	            $sheet->setCellValue('C'.$fila, $row2["folio"]);
-        	            $sheet->setCellValue('D'.$fila, $row2["metodo_pago"]);
-        	            $sheet->setCellValue('E'.$fila, $row2["monto"]);
-        	            $sheet->setCellValue('F'.$fila, $row2["documento"]);
-        	            $sub_encabezado = false ;
+                foreach($row->payments as $pay){
+                    if ($sub_encabezado){
+                        $color = new \PhpOffice\PhpSpreadsheet\Style\Color('000000');
+                        $sheet->getStyle('A'.$fila.':H'.$fila)->getBorders()->getTop()->setColor($color);
+                        $sheet->getStyle('A'.$fila.':H'.$fila)->getBorders()->getTop()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THICK);
+                        $fila++ ;
+                        $sheet->setCellValue('B'.$fila, "FECHA DE PAGO") ;
+                        $sheet->setCellValue('C'.$fila, "FOLIO") ;
+                        $sheet->setCellValue('D'.$fila, "METODO DE PAGO") ;
+                        $sheet->setCellValue('E'.$fila, "MONTO") ;
+                        $sheet->setCellValue('F'.$fila, "DOCUMENTO") ;
+                        $sheet->getStyle('B'.$fila.':F'.$fila)->getFont()->setBold(true)->setSize(11);
+                        $sheet->getStyle('B'.$fila.':F'.$fila)->getAlignment()->setHorizontal('center');
+                        $sheet->getStyle('B'.$fila.':F'.$fila)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('3da6e1');
+                        $sheet->getStyle('B'.$fila.':F'.$fila)->getFont()->getColor()->setRGB('FFFFFF');
                     }
-                } */
+                    $fila ++ ;
+                    $sheet->setCellValue('B'.$fila, $pay->date);
+                    if($pay->folio) $sheet->setCellValue('C'.$fila, $pay->folio);
+                    $sheet->setCellValue('D'.$fila, $pay->paymenttype);
+                    $sheet->setCellValue('E'.$fila, $pay->amount);
+                    if($pay->document) $sheet->setCellValue('F'.$fila, $pay->document);
+                    $sub_encabezado = false ;
+                }
                 if(!$sub_encabezado) {
                     $color = new \PhpOffice\PhpSpreadsheet\Style\Color('000000');
                     $sheet->getStyle('A'.$fila.':H'.$fila)->getBorders()->getBottom()->setColor($color);

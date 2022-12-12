@@ -68,7 +68,8 @@ export class DebtsToPayComponent implements OnInit {
   }
 
   submitSurveyData() {
-    let url='http://localhost/blooming-tec/';
+    //let url='http://localhost/blooming-tec/';
+    let url='http://localhost:8080/local/dev/adm/php-back/';
     let n_orders: any[] = this.orders.filter((e) => {
       return e.paymentdate >= this.myForm.get('initial_date').value && e.paymentdate <= this.myForm.get('final_date').value
     });
@@ -82,10 +83,10 @@ export class DebtsToPayComponent implements OnInit {
       nn_orders.push(n_o);
     });
     this.myForm.patchValue({ 'orders': nn_orders });
-    console.log(nn_orders);
+    //console.log(nn_orders);
     
     this.apiO.excel(nn_orders, url).subscribe(res => {
-      console.log(res);
+      //console.log(res);
       window.location.href = `${url}cuentasXpagar.xlsx`;
     }, err => {
       console.log(err);
