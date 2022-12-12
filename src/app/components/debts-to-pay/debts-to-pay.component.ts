@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, Provider } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Order } from 'src/app/models/order';
 import { ApiOrdersService } from 'src/app/services/api-orders.service';
 import { ApiProviderService } from 'src/app/services/api-provider.service';
 //import 'fecha';
@@ -15,7 +16,7 @@ export class DebtsToPayComponent implements OnInit {
 
   public myForm!: FormGroup;
   public providers: Provider[];
-  public orders: Provider[];
+  public orders: Order[];
   constructor(
     private fb: FormBuilder,
     public apiP: ApiProviderService,
@@ -38,7 +39,7 @@ export class DebtsToPayComponent implements OnInit {
       data.forEach(item => {
         const o = item.payload.val();
         if(o.status > 1){
-          this.orders.push(o as Provider);
+          this.orders.push(o as Order);
         }
       });
       this.myForm.patchValue({ 'orders': this.orders });
@@ -50,7 +51,7 @@ export class DebtsToPayComponent implements OnInit {
       initial_date: ['', [Validators.required]],
       final_date: ['', [Validators.required]],
       orders: [],
-      providers: [],
+      //providers: [],
     }, {validator: this.dateLessThan('initial_date', 'final_date')});
   }
   dateLessThan(from: string, to: string) {
@@ -67,11 +68,25 @@ export class DebtsToPayComponent implements OnInit {
   }
 
   submitSurveyData() {
-    console.log(this.myForm.value);
-    let url='http://localhost:8080/local/dev/adm/php-back/';
-    this.apiO.excel(this.myForm.value, url).subscribe(res => {
+    let url='http://localhost/blooming-tec/';
+    let n_orders: any[] = this.orders.filter((e) => {
+      return e.paymentdate >= this.myForm.get('initial_date').value && e.paymentdate <= this.myForm.get('final_date').value
+    });
+    let nn_orders: any[] = [];
+    n_orders.forEach(o => {
+      const p = this.providers.filter((pro) => {
+          return pro['id'] == o.provider;
+      });
+      let n_o = o;
+      n_o['provider_name'] = p[0]['name'];
+      nn_orders.push(n_o);
+    });
+    this.myForm.patchValue({ 'orders': nn_orders });
+    console.log(nn_orders);
+    
+    this.apiO.excel(nn_orders, url).subscribe(res => {
       console.log(res);
-      window.location.href = `${url}helloxworld.xlsx`;
+      window.location.href = `${url}cuentasXpagar.xlsx`;
     }, err => {
       console.log(err);
     });

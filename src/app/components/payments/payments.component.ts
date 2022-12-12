@@ -61,7 +61,7 @@ export class PaymentsComponent implements OnInit {
       this.orders = [];
       data.forEach(item => {
         const o = item.payload.val();
-        if(o.status != 3){
+        if(o.status != 4){
           this.orders.push(o as Order);
         }
       });

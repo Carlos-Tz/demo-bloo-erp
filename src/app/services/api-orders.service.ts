@@ -31,6 +31,6 @@ export class ApiOrdersService {
   }
 
   excel(data: any, url: string): Observable<any>{
-    return this.http.post<any>(`${url}debtsToPay.php`, data);
+    return this.http.post<any>(`${url}debtsToPay.php`, { orders: data });
   }
 }

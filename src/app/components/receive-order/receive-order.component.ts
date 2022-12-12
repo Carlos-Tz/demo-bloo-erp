@@ -155,7 +155,7 @@ export class ReceiveOrderComponent implements OnInit {
       prod['avcost'] = avcost_n;
       prod['existence'] = existence_n; console.log(prod);
       
-      this.apiP.UpdateProduct(prod, key);
+      this.apiP.UpdateProduct(prod);
       //this.apiM.AddMovement(mo);
     });
     this.apiO.UpdateOrder(this.myForm.value, this.data.order.id);

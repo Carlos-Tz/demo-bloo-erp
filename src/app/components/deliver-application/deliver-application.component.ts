@@ -134,8 +134,9 @@ export class DeliverApplicationComponent implements OnInit {
   submitSurveyData = () => {
     let products_d = {};
     let status_a = [];
+    let movements = [];
+    let existences = [];
     this.products1.forEach(p => {
-      let movements = [];
       let total = 0;
       let sectors_d = {};
       this.sectors1.forEach(s => {
@@ -171,44 +172,25 @@ export class DeliverApplicationComponent implements OnInit {
             }
             movements.push(mo);
             total += nn1;
-            //this.addMov(mo);
-            //this.upExis(p.value, nn1);
-            /* const promise2 = new Promise((resolve, reject) => {
-              this.apiM.GetLastMovement().subscribe(res => {
-                let id = 0;
-                if(res[0]){ id = Number(res[0].id) + 1; } else { id = 1; }
-                resolve(id);
-              });
-            });              
-            let quantity = nn1;
-            let price = p.data.price;
-            let key = p.value;
-            let name = p.label;
-            let category = p.data.category;
-            await promise2.then((v: number) => { 
-                let mo = {
-                  id: v++,
-                  id_req: '',
-                  id_app: this.key,
-                  date: fechaObj.format(new Date(), 'DD[/]MM[/]YYYY'),
-                  type: 'SALIDA',
-                  quantity: quantity,
-                  price: price,
-                  id_prod: key,
-                  name_prod: name,
-                  category: category
-                }
-                this.apiM.AddMovement(mo);
-            }); */
           }
           sectors_d[s] = { sector: nn1, dosis: nn2, delivered: n3 }
         }
       });
-      this.addMov(movements);
-      this.upExis(p.value, total);
+      let ex = {
+        id: p.value,
+        quantity: total
+      };
+      if(total > 0){
+        existences.push(ex);
+      }
       products_d[p.value] = sectors_d
     });
-    //console.log(products_d);
+    if(movements.length > 0){
+      this.addMov(movements);
+    }
+    if(existences.length > 0){
+      this.upExis(existences);
+    }
     if(status_a.every((e) => e)){
       this.myForm.patchValue({ 'status': 3 });
     }else {
@@ -228,7 +210,7 @@ export class DeliverApplicationComponent implements OnInit {
     });
     await promise2.then((v: number) => {
       movements.forEach(m => {
-        console.log(m, v);
+        //console.log(m, v);
         m['id'] = v;
         this.apiM.AddMovement(m);
         v++;
@@ -237,25 +219,22 @@ export class DeliverApplicationComponent implements OnInit {
     });
   }
 
-  async upExis(id_prod, quantity){
-    const promise3 = new Promise((resolve, reject) => {
-      this.apiP.GetProduct(id_prod).valueChanges().subscribe(res => {
-          resolve(res);
-      });
-    });
-    await promise3.then(async (pro: Product) => {
-      let prod = pro;
-      let existence_c = pro.existence; 
-      //let avcost_c = pro.avcost;
-      let existence_n = existence_c - quantity;
-      //let price_c = price + price*iva;
-      //let avcost_n = (avcost_c*existence_c + quantity*price_c) / existence_n; 
-      //prod['avcost'] = avcost_n;
-      prod['existence'] = existence_n;
-      
-      this.apiP.UpdateProduct(prod, id_prod);
-      //this.apiM.AddMovement(mo);
-    });
+  upExis(existences){
+    this.apiP.UpdateExistences(existences);
+      /* existences.forEach(async e => {
+        const promise3 = new Promise((resolve, reject) => {
+          this.apiP.GetProduct(e.id).valueChanges().subscribe(res => {
+              resolve(res);
+          });
+        });
+        await promise3.then((pro: Product) => {
+          let prod = pro;
+          let existence_c = pro.existence; 
+          let existence_n = existence_c - e.quantity;
+          prod['existence'] = existence_n;
+          this.apiP.UpdateProduct(prod);
+        });
+      }); */
   }
 
   /* allSec(){

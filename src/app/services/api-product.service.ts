@@ -35,10 +35,37 @@ export class ApiProductService {
     return this.lastProductRef;
   }
 
-  UpdateProduct(product: Product, key: string) {
+  UpdateProduct(product: Product) {
     //this.db.object('blooming/product-list/' + key)
     this.productObject
     .update(product);
+  }
+
+  UpdateExistences(existences: any[]){
+    existences.forEach(async e => {
+      const promise3 = new Promise((resolve, reject) => {
+        this.GetProduct(e.id).valueChanges().subscribe(res => {
+            //resolve(res);
+            let prod = res;
+            let existence_c = res.existence; 
+            let existence_n = existence_c - e.quantity;
+            prod['existence'] = existence_n;
+            //console.log(prod);
+            resolve(prod);
+        });
+      });
+      await promise3.then(async (pro: Product) => {
+        const promise4 = new Promise((resolve, reject) => {
+          let ob : AngularFireObject<any> = this.db.object('blooming/product-list/' + pro.id);
+          ob.update(pro).then(e => {
+            resolve(e)
+          })
+        });
+        await promise4.then((e: any) => {
+          console.log(e);
+        });
+      });
+    }); 
   }
 
   DeleteProduct(key: string) {

@@ -94,7 +94,7 @@ export class EditProductComponent implements OnInit, OnDestroy {
   }
 
   submitSurveyData = () => {
-    this.apiP.UpdateProduct(this.myForm.value, this.data.key);
+    this.apiP.UpdateProduct(this.myForm.value);
     this.toastr.success('Producto actualizado!');
   }
 

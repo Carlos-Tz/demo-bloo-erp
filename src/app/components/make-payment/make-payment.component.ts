@@ -85,6 +85,8 @@ export class MakePaymentComponent implements OnInit {
     this.payments.push(this.myForm.value as Payment);
     let amount = this.myForm.get('amount').value;
     if(amount == this.balance){
+      this.myForm2.patchValue({ 'status': 4 });
+    }else {
       this.myForm2.patchValue({ 'status': 3 });
     }
     let paid = this.myForm2.get('paidout').value;

@@ -48,7 +48,7 @@
                                 <span (click)="PDF(element.id)" style="color: #fff; background-color: green; border-radius: 20%; padding: 0.2rem; margin-left: 0.3rem; cursor: pointer; font-size: 0.7rem;" class="me-2">PDF</span>
                                 <span *ngIf="element.status == 1"> Pedida</span>
                                 <span *ngIf="element.status == 2"> Programada</span>
-                                <span *ngIf="element.status == 3"> Pagada</span>
+                                <span *ngIf="element.status == 3"> Parcial</span>
                             </mat-cell>
                         </ng-container>
 
@@ -82,7 +82,7 @@
                                 <button *ngIf="element.status == 1" class="btn btn-outline-success me-2 w-100" style="padding: 0 0.2rem;" (click)="openSchedulePaymentDialog(element)" >
                                     <span class="material-icons">pending_actions</span>Programar pago
                                 </button>
-                                <button *ngIf="element.status == 2" class="btn btn-outline-success me-2 w-100" style="padding: 0 0.2rem;" (click)="openMakePaymentDialog(element)" >
+                                <button *ngIf="element.status == 2 || element.status == 3" class="btn btn-outline-success me-2 w-100" style="padding: 0 0.2rem;" (click)="openMakePaymentDialog(element)" >
                                     <span class="material-icons">paid</span>Pagar
                                 </button>
                                 <button *ngIf="element.status > 1" class="btn btn-outline-secondary me-2 w-100" style="padding: 0 0.2rem;" (click)="openPaymentsDialog(element)" >
