@@ -38,6 +38,8 @@ export class NewApplicationComponent implements OnInit {
   //public displayedColumns = ['product', 'quantity'];
   public ord = 0;
   public sectors: Select2Data = [];
+  public scheduled = 0;
+
 
 
   constructor(
@@ -211,8 +213,8 @@ export class NewApplicationComponent implements OnInit {
     var id_s = arrId[1];
     var id_c = arrId[2];
     var s = this.sectors.find((el) => { return el.label == id_s; });
-    if(ev.srcElement.value <= $('#available').val()){
-      $('input#'+id_p+'__'+id_s+'__2').val((ev.srcElement.value/s.data).toFixed(2));
+    if(parseFloat(ev.srcElement.value) <= parseFloat($('#available').val().toString())){
+      $('input#'+id_p+'__'+id_s+'__2').val((parseFloat(ev.srcElement.value)/s.data).toFixed(2));
     }else {
       $('input#'+id_p+'__'+id_s+'__1').val(0);
       $('input#'+id_p+'__'+id_s+'__2').val(0);
@@ -226,8 +228,8 @@ export class NewApplicationComponent implements OnInit {
     var id_s = arrId[1];
     var id_c = arrId[2];
     var s = this.sectors.find((el) => { return el.label == id_s; });
-    if(ev.srcElement.value*s.data <= $('#available').val()){
-      $('input#'+id_p+'__'+id_s+'__1').val((ev.srcElement.value*s.data).toFixed(2));
+    if(parseFloat(ev.srcElement.value)*s.data <= $('#available').val()){
+      $('input#'+id_p+'__'+id_s+'__1').val((parseFloat(ev.srcElement.value)*s.data).toFixed(2));
     }else {
       $('input#'+id_p+'__'+id_s+'__1').val(0);
       $('input#'+id_p+'__'+id_s+'__2').val(0);
@@ -275,11 +277,11 @@ export class NewApplicationComponent implements OnInit {
           }
         }   
       });
-      $('#existence').val(pro.data.existence.toFixed(2));
-      $('#scheduled').val(scheduled.toFixed(2));
-      $('#available').val((pro.data.existence - scheduled).toFixed(2));
+      //$('#scheduled').val(scheduled.toFixed(2));
     });
     $('#exis').show();
+    $('#existence').val(pro.data.existence.toFixed(2));
+    $('#available').val((pro.data.existence - parseFloat($('#scheduled').val().toString())).toFixed(2));
     $('#unit').html(pro.data.unit);
     $('#unit1').html(pro.data.unit);
     $('#unit2').html(pro.data.unit);

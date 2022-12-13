@@ -25,6 +25,7 @@ export class EditApplicationComponent implements OnInit {
   public sectors: Select2Data = [];
   public ranches: Ranch[] = [];
   public tab = false;
+  public scheduled = 0;
 
   constructor(
     private fb: FormBuilder,
@@ -202,7 +203,17 @@ export class EditApplicationComponent implements OnInit {
     var id_s = arrId[1];
     var id_c = arrId[2];
     var s = this.sectors.find((el) => { return el.label == id_s; });
-    $('input#'+id_p+'__'+id_s+'__2').val((ev.srcElement.value/s.data).toFixed(2));
+    //$('input#'+id_p+'__'+id_s+'__2').val((ev.srcElement.value/s.data).toFixed(2));
+    console.log(parseFloat($('#available').val().toString()));
+    console.log(parseFloat(ev.srcElement.value));
+    
+    if(parseFloat(ev.srcElement.value) <= parseFloat($('#available').val().toString())){
+      $('input#'+id_p+'__'+id_s+'__2').val((parseFloat(ev.srcElement.value)/s.data).toFixed(2)); console.log('ok');
+      
+    }else {
+      $('input#'+id_p+'__'+id_s+'__1').val(0);
+      $('input#'+id_p+'__'+id_s+'__2').val(0);
+    }
     this.calculate(id_p);
   }
 
@@ -212,7 +223,13 @@ export class EditApplicationComponent implements OnInit {
     var id_s = arrId[1];
     var id_c = arrId[2];
     var s = this.sectors.find((el) => { return el.label == id_s; });
-    $('input#'+id_p+'__'+id_s+'__1').val((ev.srcElement.value*s.data).toFixed(2));
+    //$('input#'+id_p+'__'+id_s+'__1').val((parseFloat(ev.srcElement.value)*s.data).toFixed(2));
+    if(parseFloat(ev.srcElement.value)*s.data <= parseFloat($('#available').val().toString())){
+      $('input#'+id_p+'__'+id_s+'__1').val((parseFloat(ev.srcElement.value)*s.data).toFixed(2));
+    }else {
+      $('input#'+id_p+'__'+id_s+'__1').val(0);
+      $('input#'+id_p+'__'+id_s+'__2').val(0);
+    }
     this.calculate(id_p);
   }
 
@@ -229,8 +246,40 @@ export class EditApplicationComponent implements OnInit {
 
   focus1(pro){
     //console.log(pro);
+    this.scheduled = 0;
+    this.sectors1.forEach(s => {
+      if(!s.startsWith('sector__')){
+        let n1: string = $('input#'+pro.value+'__'+s+'__1').val().toString();
+        let nn1 = parseFloat(n1);
+        this.scheduled += nn1;
+      }
+    });
+    this.apiA.GetApplicationList().snapshotChanges().subscribe(data => {
+      data.forEach(item => {
+        const r = item.payload.val();     
+        if(r.status < 3){
+          if(r.products){
+            Object.entries(r.products).forEach(([key, value], index) => {
+              if(key == pro.value){
+                Object.entries(value).forEach(([k,v], i) => {
+                  if(!v.delivered){
+                    //console.log(v);
+                    this.scheduled += v.sector;
+                  }
+                });
+              }
+              
+            });
+          }
+        }   
+      });console.log(this.scheduled);
+      
+      //$('#scheduled').val(scheduled.toFixed(2));
+    });
     $('#exis').show()
-    $('#existence').html(pro.data.existence);
+    $('#existence').val(pro.data.existence.toFixed(2));
+    $('#available').val((pro.data.existence - parseFloat($('#scheduled').val().toString())).toFixed(2));
+    //$('#existence').html(pro.data.existence);
     $('#unit').html(pro.data.unit);
     $('#unit1').html(pro.data.unit);
     $('#unit2').html(pro.data.unit);
