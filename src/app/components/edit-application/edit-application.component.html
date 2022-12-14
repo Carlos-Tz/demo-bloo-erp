@@ -94,8 +94,8 @@
                                         <tr *ngFor="let pro of products1; let lastp = last">
                                             <td>{{ pro.label }}</td>
                                             <td *ngFor="let sec of sectors1; let lasts = last" [isLast]="lastp && lasts" (ngInit)="table()">
-                                                <input type="number" matInput *ngIf="sec.startsWith('sector__')" id="{{ pro.value }}__{{ sec | slice:8 }}__1" value="0" min="0" step="0.01" (blur)="blur1()" (focus)="focus1(pro)" (change)="change1($event)">
-                                                <input type="number" matInput *ngIf="!sec.startsWith('sector__')" id="{{ pro.value }}__{{ sec }}__2" value="0" min="0" step="0.01" (blur)="blur1()" (focus)="focus1(pro)" (change)="change2($event)"></td>
+                                                <input type="number" matInput *ngIf="sec.startsWith('sector__')" id="{{ pro.value }}__{{ sec | slice:8 }}__1" min="0" step="0.01" (blur)="blur1()" (focus)="focus1(pro)" (change)="change1($event)">
+                                                <input type="number" matInput *ngIf="!sec.startsWith('sector__')" id="{{ pro.value }}__{{ sec }}__2" min="0" step="0.01" (blur)="blur1()" (focus)="focus1(pro)" (change)="change2($event)"></td>
                                             <!-- <td *ngFor="let sec of sectors1">{{ pro }}-{{ sec }}</td> -->
                                         </tr>
                                     </tbody>
@@ -106,7 +106,7 @@
                                     Existencia: <input type="number" id="existence" readonly style="border: none; max-width: 6rem;"><span id="unit" class="me-3"></span>     
                                 </div>
                                 <div class="col-sm 4">
-                                    Programada: <input type="number" id="scheduled" readonly style="border: none; max-width: 6rem;" [value]="scheduled"><span id="unit1" class="me-3"></span>
+                                    Programada: <input type="number" id="scheduled" readonly style="border: none; max-width: 6rem;" value="{{scheduled | number:'1.2-2'}}" step="0.01"><span id="unit1" class="me-3"></span>
                                 </div>
                                 <div class="col-sm-4">
                                     Disponible: <input type="number" id="available" readonly style="border: none; max-width: 6rem;"><span id="unit2"></span>

@@ -204,8 +204,8 @@ export class EditApplicationComponent implements OnInit {
     var id_c = arrId[2];
     var s = this.sectors.find((el) => { return el.label == id_s; });
     //$('input#'+id_p+'__'+id_s+'__2').val((ev.srcElement.value/s.data).toFixed(2));
-    console.log(parseFloat($('#available').val().toString()));
-    console.log(parseFloat(ev.srcElement.value));
+    //console.log(parseFloat($('#available').val().toString()));
+    //console.log(parseFloat(ev.srcElement.value));
     
     if(parseFloat(ev.srcElement.value) <= parseFloat($('#available').val().toString())){
       $('input#'+id_p+'__'+id_s+'__2').val((parseFloat(ev.srcElement.value)/s.data).toFixed(2)); console.log('ok');
@@ -263,7 +263,7 @@ export class EditApplicationComponent implements OnInit {
               if(key == pro.value){
                 Object.entries(value).forEach(([k,v], i) => {
                   if(!v.delivered){
-                    //console.log(v);
+                    console.log(r);
                     this.scheduled += v.sector;
                   }
                 });
@@ -272,10 +272,11 @@ export class EditApplicationComponent implements OnInit {
             });
           }
         }   
-      });console.log(this.scheduled);
+      });
       
       //$('#scheduled').val(scheduled.toFixed(2));
     });
+    console.log(this.scheduled);
     $('#exis').show()
     $('#existence').val(pro.data.existence.toFixed(2));
     $('#available').val((pro.data.existence - parseFloat($('#scheduled').val().toString())).toFixed(2));

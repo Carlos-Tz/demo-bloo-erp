@@ -57,7 +57,7 @@
                                 <button *ngIf="element.status == 2" class="btn btn-outline-warning me-2 w-100" style="padding: 0 0.2rem;" [routerLink]="['/deliver-application', element.id]">
                                     <span class="material-icons">outbox</span>Surtir
                                 </button>
-                                <button *ngIf="element.status == 3" class="btn btn-outline-info me-2 w-100" style="padding: 0 0.2rem;" >
+                                <button *ngIf="element.status == 3" class="btn btn-outline-info me-2 w-100" style="padding: 0 0.2rem;" [routerLink]="['/redeliver-application', element.id]">
                                     <span class="material-icons">outbox</span>Resurtir
                                 </button>
                             </mat-cell>

@@ -250,12 +250,12 @@ export class NewApplicationComponent implements OnInit {
 
   focus1(pro){
     //console.log(pro);
-    let scheduled = 0;
+    this.scheduled = 0;
     this.sectors1.forEach(s => {
       if(!s.startsWith('sector__')){
         let n1: string = $('input#'+pro.value+'__'+s+'__1').val().toString();
         let nn1 = parseFloat(n1);
-        scheduled += nn1;
+        this.scheduled += nn1;
       }
     });
     this.apiA.GetApplicationList().snapshotChanges().subscribe(data => {
@@ -267,8 +267,8 @@ export class NewApplicationComponent implements OnInit {
               if(key == pro.value){
                 Object.entries(value).forEach(([k,v], i) => {
                   if(!v.delivered){
-                    //console.log(v);
-                    scheduled += v.sector;
+                    //console.log(v.sector, r);
+                    this.scheduled += v.sector;
                   }
                 });
               }
@@ -279,6 +279,7 @@ export class NewApplicationComponent implements OnInit {
       });
       //$('#scheduled').val(scheduled.toFixed(2));
     });
+    //console.log(this.scheduled);
     $('#exis').show();
     $('#existence').val(pro.data.existence.toFixed(2));
     $('#available').val((pro.data.existence - parseFloat($('#scheduled').val().toString())).toFixed(2));
