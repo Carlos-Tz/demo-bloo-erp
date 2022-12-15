@@ -244,7 +244,7 @@ export class EditApplicationComponent implements OnInit {
     //console.log(sum);
   }
 
-  focus1(pro){
+  async focus1(pro){
     //console.log(pro);
     this.scheduled = 0;
     this.sectors1.forEach(s => {
@@ -254,16 +254,44 @@ export class EditApplicationComponent implements OnInit {
         this.scheduled += nn1;
       }
     });
-    this.apiA.GetApplicationList().snapshotChanges().subscribe(data => {
-      data.forEach(item => {
-        const r = item.payload.val();     
+    //const promise5 = new Promise((resolve, reject) => {
+      this.apiA.GetApplicationList().snapshotChanges().subscribe(data => {
+        data.forEach(item => {
+          const r = item.payload.val();     
+          if(r.status < 3 && r.id != this.key){
+            if(r.products){
+              Object.entries(r.products).forEach(([key, value], index) => {
+                if(key == pro.value){
+                  Object.entries(value).forEach(([k,v], i) => {
+                    if(!v.delivered){
+                      //console.log(r);
+                      this.scheduled += v.sector;
+                    }
+                  });
+                }
+                
+              });
+            }
+          }   
+        });
+        //resolve(data);
+        $('#scheduled').val(this.scheduled.toFixed(2));
+        $('#available').val((pro.data.existence - this.scheduled).toFixed(2));
+        //$('#available').val((pro.data.existence - parseFloat($('#scheduled').val().toString())).toFixed(2));
+        //$('#scheduled').val(scheduled.toFixed(2));
+      });
+    //});
+    //await promise5.then((data: any) => {
+      /* data.forEach(item => {
+        const r = item.payload.val();    console.log(r);
+         
         if(r.status < 3){
           if(r.products){
             Object.entries(r.products).forEach(([key, value], index) => {
               if(key == pro.value){
                 Object.entries(value).forEach(([k,v], i) => {
                   if(!v.delivered){
-                    console.log(r);
+                    //console.log(r);
                     this.scheduled += v.sector;
                   }
                 });
@@ -272,14 +300,15 @@ export class EditApplicationComponent implements OnInit {
             });
           }
         }   
-      });
-      
-      //$('#scheduled').val(scheduled.toFixed(2));
-    });
-    console.log(this.scheduled);
+      }); */
+      //console.log(data);
+    //});
+    //console.log(pro.data.existence);
     $('#exis').show()
     $('#existence').val(pro.data.existence.toFixed(2));
-    $('#available').val((pro.data.existence - parseFloat($('#scheduled').val().toString())).toFixed(2));
+    //$('#scheduled').val(this.scheduled.toFixed(2));
+    //$('#available').val((pro.data.existence - parseFloat($('#scheduled').val().toString())).toFixed(2));
+    //$('#available').val((pro.data.existence - this.scheduled).toFixed(2));
     //$('#existence').html(pro.data.existence);
     $('#unit').html(pro.data.unit);
     $('#unit1').html(pro.data.unit);

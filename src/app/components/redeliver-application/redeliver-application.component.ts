@@ -102,9 +102,40 @@ export class RedeliverApplicationComponent implements OnInit {
   }
 
   table(){
+    const promise = new Promise((resolve, reject) => {
+      this.apiA.GetApplicationList().snapshotChanges().subscribe(datal => {});
+    });
     this.apiA.GetApplication(this.key).valueChanges().subscribe(data => {
+      /* this.apiA.GetApplicationList().snapshotChanges().subscribe(datal => {
+        datal.forEach(item => {
+          const r = item.payload.val();     
+          if(r.status < 3 && r.id != this.key){
+            if(r.products){
+              Object.entries(r.products).forEach(([key, value], index) => {
+                if(key == pro.value){
+                  Object.entries(value).forEach(([k,v], i) => {
+                    if(!v.delivered){
+                      //console.log(v);
+                      this.scheduled += v.sector;
+                    }
+                  });
+                }
+                
+              });
+            }
+          }   
+        });
+      }); */
       for (const p1 in data.products) {
         if (Object.prototype.hasOwnProperty.call(data.products, p1)) {
+          let schedu = 0;
+          this.sectors1.forEach(s => {
+            if(!s.startsWith('sector__')){
+              let n1: string = $('input#'+p1+'__'+s+'__1').val().toString();
+              let nn1 = parseFloat(n1);
+              schedu += nn1;
+            }
+          });
           const element1 = data.products[p1];
           for (const s1 in element1){
             $('input#'+p1+'__'+s1+'__1').val((element1[s1].sector).toFixed(2));
@@ -230,7 +261,7 @@ export class RedeliverApplicationComponent implements OnInit {
     this.apiA.GetApplicationList().snapshotChanges().subscribe(data => {
       data.forEach(item => {
         const r = item.payload.val();     
-        if(r.status < 3){
+        if(r.status < 3 && r.id != this.key){
           if(r.products){
             Object.entries(r.products).forEach(([key, value], index) => {
               if(key == pro.value){
@@ -245,13 +276,14 @@ export class RedeliverApplicationComponent implements OnInit {
             });
           }
         }   
-      });console.log(this.scheduled);
-      
+      });
+      $('#scheduled').val(this.scheduled.toFixed(2));
+      $('#available').val((pro.data.existence - this.scheduled).toFixed(2));
       //$('#scheduled').val(scheduled.toFixed(2));
     });
     $('#exis').show()
     $('#existence').val(pro.data.existence.toFixed(2));
-    $('#available').val((pro.data.existence - parseFloat($('#scheduled').val().toString())).toFixed(2));
+    //$('#available').val((pro.data.existence - parseFloat($('#scheduled').val().toString())).toFixed(2));
     //$('#existence').html(pro.data.existence);
     $('#unit').html(pro.data.unit);
     $('#unit1').html(pro.data.unit);

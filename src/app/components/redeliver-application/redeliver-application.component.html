@@ -9,7 +9,7 @@
                             <div class="d-flex">
                                 <button mat-button class="btn btn-outline-success" (click)="allSec()">Todos los sectores</button>
                                 <button mat-button [routerLink]="['/delivery']">Cancelar</button>
-                                <button mat-button (click)="submitSurveyData()" [routerLink]="['/delivery']" [disabled]="!myForm.valid" class="btn btn-outline-info">Guardar</button>
+                                <button mat-button (click)="submitSurveyData()" [routerLink]="['/delivery']" [disabled]="!myForm.valid || !((avai.value | number) >= (0 | number))" class="btn btn-outline-info">Guardar</button>
                             </div>
                         </div>
                     </nav>
@@ -106,10 +106,10 @@
                                     Existencia: <input type="number" id="existence" readonly style="border: none; max-width: 6rem;"><span id="unit" class="me-3"></span>     
                                 </div>
                                 <div class="col-sm 4">
-                                    Programada: <input type="number" id="scheduled" readonly style="border: none; max-width: 6rem;" value="{{scheduled | number:'1.2-2'}}" step="0.01"><span id="unit1" class="me-3"></span>
+                                    Programada: <input type="number" id="scheduled" readonly style="border: none; max-width: 6rem;" [ngStyle]="{color: ((avai.value | number) > (0 | number)) ? 'black': 'red'}"><span id="unit1" class="me-3"></span>
                                 </div>
                                 <div class="col-sm-4">
-                                    Disponible: <input type="number" id="available" readonly style="border: none; max-width: 6rem;"><span id="unit2"></span>
+                                    Disponible: <input type="number" id="available" readonly style="border: none; max-width: 6rem;" #avai><span id="unit2"></span>
                                 </div>
                             </div>
                         </div>
