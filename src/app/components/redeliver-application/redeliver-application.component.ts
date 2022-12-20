@@ -103,47 +103,59 @@ export class RedeliverApplicationComponent implements OnInit {
 
   async table(){
     const promise6 = new Promise((resolve, reject) => {
+      this.apiA.GetApplicationList().snapshotChanges().subscribe(datal => {
+        //resolve(datal);
+        const appl = [];
+        datal.forEach(item => {
+          const r = item.payload.val();     
+          if(r.status < 3 && r.id != this.key){
+            if(r.products){
+              appl.push(r);
+            }
+          }  
+        });
+        resolve(appl);
+      });
+    });
+    await promise6.then((appll: any[]) => {
       this.apiA.GetApplication(this.key).valueChanges().subscribe(data => {
         for (const p1 in data.products) {
           if (Object.prototype.hasOwnProperty.call(data.products, p1)) {
-            /* let schedu = 0;
-            this.sectors1.forEach(s => {
-              if(!s.startsWith('sector__')){
-                let n1: string = $('input#'+p1+'__'+s+'__1').val().toString();
-                let nn1 = parseFloat(n1);
-                schedu += nn1;
-              }
-            }); */
+            let schedu = 0;
             const element1 = data.products[p1];
             for (const s1 in element1){
               $('input#'+p1+'__'+s1+'__1').val((element1[s1].sector).toFixed(2));
               $('input#'+p1+'__'+s1+'__2').val((element1[s1].dosis).toFixed(2));
+              let n1: string = $('input#'+p1+'__'+s1+'__1').val().toString();
+              let nn1 = parseFloat(n1);
+              schedu += nn1;
+            }
+            //console.log(schedu);
+            let sch = 0;
+            appll.forEach(a => {
+              if(a.products){
+                Object.entries(a.products).forEach(([key, value], index) => {
+                  if(key == p1){
+                    Object.entries(value).forEach(([k,v], i) => {
+                      if(!v.delivered){
+                        //console.log(p1, v.sector);
+                        sch += v.sector;
+                      }
+                    });                        
+                  }
+                }); 
+              }
+            });
+
+            let csc = this.products1.filter(pp => { return pp.value == p1 });
+            if(csc[0].data.existence < sch + schedu){
+              for (const s2 in element1){
+                $('input#'+p1+'__'+s2+'__1').val(0);
+                $('input#'+p1+'__'+s2+'__2').val(0);
+              }
             }
           }
         }
-      });
-      /* this.apiA.GetApplicationList().snapshotChanges().subscribe(datal => {
-        resolve(datal);
-      }); */
-    });
-    await promise6.then((datal: any) => {
-      datal.forEach(item => {
-        const r = item.payload.val();     
-        if(r.status < 3 && r.id != this.key){
-          if(r.products){
-            Object.entries(r.products).forEach(([key, value], index) => {
-              if(key == pro.value){
-                Object.entries(value).forEach(([k,v], i) => {
-                  if(!v.delivered){
-                    //console.log(v);
-                    this.scheduled += v.sector;
-                  }
-                });
-              }
-              
-            });
-          }
-        }   
       });
     });
     
@@ -162,7 +174,7 @@ export class RedeliverApplicationComponent implements OnInit {
     });
   }
 
-  submitSurveyData = () => {
+  submitSurveyData = async () => {
     let products_d = {};
     this.products1.forEach(p => {
       let sectors_d = {};
@@ -178,15 +190,22 @@ export class RedeliverApplicationComponent implements OnInit {
       products_d[p.value] = sectors_d
     });
     this.myForm.patchValue({ 'products': products_d });
+    this.myForm.patchValue({ 'status': 1 });
     //this.apiA.UpdateApplication(this.myForm.value, this.key)
-    this.apiA.GetLastApplication().subscribe(res=> {
-      if(res[0]){
-        this.ord = Number(res[0].id);
-        this.myForm.patchValue({ id: this.ord + 1 });      
-      } else {
-        this.myForm.patchValue({ id: 1 });      
-      }
-      this.apiA.AddApplication(this.myForm.value);
+    const promise7 = new Promise((resolve, reject) => {
+      this.apiA.GetLastApplication().subscribe(res=> {
+        if(res[0]){
+          this.ord = Number(res[0].id);
+          this.myForm.patchValue({ id: this.ord + 1 });      
+        } else {
+          this.myForm.patchValue({ id: 1 });      
+        }
+        resolve(this.myForm.value)
+      });
+      
+    });
+    await promise7.then((form: any) => {
+      this.apiA.AddApplication(form);
     });
   }
 
