@@ -103,6 +103,7 @@ export class NewApplicationComponent implements OnInit {
       manager: ['', [Validators.required]],
       equipment: ['', [Validators.required]],
       products: [],
+      sectors: [],
     });
   }
   /* sForm1() {

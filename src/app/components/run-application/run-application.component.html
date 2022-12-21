@@ -100,17 +100,44 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <!-- <div class="row" id="exis" style="display: none;">
-                                <div class="col-sm-4">
-                                    Existencia: <input type="number" id="existence" readonly style="border: none; max-width: 6rem;"><span id="unit" class="me-3"></span>     
-                                </div>
-                                <div class="col-sm 4">
-                                    Programada: <input type="number" id="scheduled" readonly style="border: none; max-width: 6rem;" ><span id="unit1" class="me-3"></span>
-                                </div>
-                                <div class="col-sm-4">
-                                    Disponible: <input type="number" id="available" readonly style="border: none; max-width: 6rem;"><span id="unit2"></span>
-                                </div>
-                            </div> -->
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <table class="table table-bordered" style="font-size: 0.8rem;">
+                                    <thead>
+                                        <th>Fecha</th>
+                                        <th>Sector</th>
+                                        <th>Hora de inicio</th>
+                                        <th>Hora de termino</th>
+                                        <th>Minutos de riego</th>
+                                        <th>PH</th>
+                                        <th>Operario</th>
+                                        <th>Maquinaria</th>
+                                        <th>Método de aplicación</th>
+                                        <th>Condiciones meteorológicas</th>
+                                        <th>Firma del responsable</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let sec of sectors2; let i = index">
+                                            <td *ngIf="i != 0"><input matInput type="date" id="{{sec}}___date"></td>
+                                            <td *ngIf="i == 0"><input matInput type="date" id="{{sec}}___date" (change)="changeD($event)"></td>
+                                            <td>{{ sec }}</td>
+                                            <td *ngIf="i != 0"><input matInput type="time" id="{{sec}}___initial"></td>
+                                            <td *ngIf="i == 0"><input matInput type="time" id="{{sec}}___initial" (change)="changeI($event)"></td>
+                                            <td *ngIf="i != 0"><input matInput type="time" id="{{sec}}___final"></td>
+                                            <td *ngIf="i == 0"><input matInput type="time" id="{{sec}}___final" (change)="changeF($event)"></td>
+                                            <td *ngIf="i != 0"><input matInput type="number" id="{{sec}}___minutes"></td>
+                                            <td *ngIf="i == 0"><input matInput type="number" id="{{sec}}___minutes" (change)="changeM($event)"></td>
+                                            <td><input matInput type="text" id="{{sec}}___"></td>
+                                            <td><input matInput type="text" id="{{sec}}___"></td>
+                                            <td><input matInput type="text" id="{{sec}}___"></td>
+                                            <td><input matInput type="text" id="{{sec}}___"></td>
+                                            <td><input matInput type="text" id="{{sec}}___"></td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </form>
                 </div>

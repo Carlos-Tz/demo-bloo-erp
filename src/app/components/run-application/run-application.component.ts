@@ -21,6 +21,7 @@ export class RunApplicationComponent implements OnInit {
   public products: Select2Data = [];
   public products1: any[] = [];
   public sectors1: any[] = [];
+  public sectors2: any[] = [];
   public sec: string[] = [];
   public prod: string[] = [];
   public sectors: Select2Data = [];
@@ -118,27 +119,22 @@ export class RunApplicationComponent implements OnInit {
       manager: ['', [Validators.required]],
       equipment: ['', [Validators.required]],
       products: [],
+      sectors: [],
     });
   }
 
   submitSurveyData = () => {
-    let products_d = {};
-    this.products1.forEach(p => {
-      let sectors_d = {};
-      this.sectors1.forEach(s => {
-        if(!s.startsWith('sector__')){
-          let n1: string = $('input#'+p.value+'__'+s+'__1').val().toString();
-          let n2: string = $('input#'+p.value+'__'+s+'__2').val().toString();
-          let nn1 = parseFloat(n1);
-          let nn2 = parseFloat(n2);
-          sectors_d[s] = { sector: nn1, dosis: nn2, delivered: false }
-        }
-      });
-      products_d[p.value] = sectors_d
+    let sectors_d = {};
+    this.sectors2.forEach(s => {
+      let date: string = $('input#'+s+'___date').val().toString();
+      let initial: string = $('input#'+s+'___initial').val().toString();
+      let final: string = $('input#'+s+'___final').val().toString();
+      let minutes: number = parseFloat($('input#'+s+'___minutes').val().toString());
+      sectors_d[s] = { sector: s, date: date, initial: initial, final: final, minutes: minutes };
     });
-    this.myForm.patchValue({ 'products': products_d });
-    this.apiA.UpdateApplication(this.myForm.value, this.key)
-    //this.apiA.AddApplication(this.myForm.value);
+    this.myForm.patchValue({ 'sectors': sectors_d });
+    this.myForm.patchValue({ 'status': 4 });
+    this.apiA.UpdateApplication(this.myForm.value, this.key);
   }
 
   allSec(){
@@ -148,6 +144,7 @@ export class RunApplicationComponent implements OnInit {
 
   updateS(ev){
     this.sectors1 = ev.value.flatMap((e, i) => ['sector__'+e, e]);
+    this.sectors2 = ev.value.flatMap((e, i) => [e]);
   }
 
   updateP(ev){
@@ -199,48 +196,28 @@ export class RunApplicationComponent implements OnInit {
     //console.log(sum);
   }
 
-  /* async focus1(pro){
-    //console.log(pro);
-    this.scheduled = 0;
-    this.sectors1.forEach(s => {
-      if(!s.startsWith('sector__')){
-        let n1: string = $('input#'+pro.value+'__'+s+'__1').val().toString();
-        let nn1 = parseFloat(n1);
-        this.scheduled += nn1;
-      }
+  changeD(ev){
+    this.sectors2.forEach(s => {
+      $('input#'+s+'___date').val(ev.srcElement.value);
     });
-    //const promise5 = new Promise((resolve, reject) => {
-      this.apiA.GetApplicationList().snapshotChanges().subscribe(data => {
-        data.forEach(item => {
-          const r = item.payload.val();     
-          if(r.status < 3 && r.id != this.key){
-            if(r.products){
-              Object.entries(r.products).forEach(([key, value], index) => {
-                if(key == pro.value){
-                  Object.entries(value).forEach(([k,v], i) => {
-                    if(!v.delivered){
-                      //console.log(r);
-                      this.scheduled += v.sector;
-                    }
-                  });
-                }
-                
-              });
-            }
-          }   
-        });
-        //resolve(data);
-        $('#scheduled').val(this.scheduled.toFixed(2));
-        $('#available').val((pro.data.existence - this.scheduled).toFixed(2));
-      });
-    $('#exis').show()
-    $('#existence').val(pro.data.existence.toFixed(2));
-    $('#unit').html(pro.data.unit);
-    $('#unit1').html(pro.data.unit);
-    $('#unit2').html(pro.data.unit);
   }
 
-  blur1(){
-    $('#exis').hide();
-  }*/
+  changeI(ev){
+    this.sectors2.forEach(s => {
+      $('input#'+s+'___initial').val(ev.srcElement.value);
+    });
+  }
+
+  changeF(ev){
+    this.sectors2.forEach(s => {
+      $('input#'+s+'___final').val(ev.srcElement.value);
+    });
+  }
+
+  changeM(ev){
+    this.sectors2.forEach(s => {
+      $('input#'+s+'___minutes').val(ev.srcElement.value);
+    });
+  }
+
 }

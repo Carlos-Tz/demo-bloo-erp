@@ -128,6 +128,7 @@ export class DeliverApplicationComponent implements OnInit {
       manager: ['', [Validators.required]],
       equipment: ['', [Validators.required]],
       products: [],
+      sectors: [],
     });
   }
 
