@@ -14,6 +14,7 @@ import { NewApplicationComponent } from './components/new-application/new-applic
 import { NewRequisitionComponent } from './components/new-requisition/new-requisition.component';
 import { OutputComponent } from './components/output/output.component';
 import { PaymentsComponent } from './components/payments/payments.component';
+import { PresentationsComponent } from './components/presentations/presentations.component';
 import { ProductsComponent } from './components/products/products.component';
 import { ProvidersComponent } from './components/providers/providers.component';
 import { RanchesComponent } from './components/ranches/ranches.component';
@@ -33,6 +34,7 @@ const routes: Routes = [
   {path: 'products', component: ProductsComponent, canActivate: [AuthGuard]},
   {path: 'providers', component: ProvidersComponent , canActivate: [AuthGuard]},
   {path: 'classifications', component: CategoriesComponent , canActivate: [AuthGuard]},
+  {path: 'presentations', component: PresentationsComponent , canActivate: [AuthGuard]},
   {path: 'requisitions', component: RequisitionsComponent , canActivate: [AuthGuard]},
   {path: 'cicles', component: CiclesComponent , canActivate: [AuthGuard]},
   {path: 'ranches', component: RanchesComponent , canActivate: [AuthGuard]},

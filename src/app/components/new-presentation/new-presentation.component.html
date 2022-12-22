@@ -1,0 +1,22 @@
+<h2 mat-dialog-title>Nueva presentación</h2>
+<form [formGroup]="myForm" novalidate autocomplete="off">
+    <mat-dialog-content class="w-100 m-0">
+        <mat-form-field appearance="fill" class="w-100">
+            <mat-label>ID</mat-label>
+            <input matInput type="text" formControlName="id" required autofocus>
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Nombre</mat-label>
+            <input matInput type="text" formControlName="name" required>
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Descripción</mat-label>
+            <input matInput type="text" formControlName="description" required>
+        </mat-form-field>
+
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>Cancelar</button>
+        <button mat-button [mat-dialog-close]="true" (click)="submitSurveyData()" [disabled]="!myForm.valid" class="btn btn-outline-info">Guardar</button>
+    </mat-dialog-actions>
+</form>

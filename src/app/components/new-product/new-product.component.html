@@ -2,7 +2,7 @@
 <form [formGroup]="myForm" novalidate autocomplete="off">
     <mat-dialog-content class="w-100 m-0">
         <div class="row">
-            <mat-form-field appearance="fill" class="col-sm-12 col-md-6">
+            <mat-form-field appearance="fill" class="col-sm-12">
                 <mat-label>Nombre</mat-label>
                 <input matInput type="text" formControlName="name" required autofocus>
             </mat-form-field>
@@ -20,7 +20,19 @@
                     <!-- <ng-template #template let-data="data"><strong>{{data?.color}}</strong>: {{data?.name}}</ng-template> -->
                 </select2>
             </div>
-            <mat-form-field appearance="fill" class="col-sm-12 col-md-4">
+            <div class="col-sm-12 col-md-6">
+                <select2 class="w-100" 
+                    [data]="presentations"
+                    displaySearchStatus="always"
+                    listPosition="below"
+                    styleMode="material"
+                    resettable
+                    formControlName="presentation"
+                    resultMaxHeight="200px">
+                    <select2-hint>Presentación *</select2-hint>
+                </select2>
+            </div>
+            <!-- <mat-form-field appearance="fill" class="col-sm-12 col-md-4">
                 <mat-label>Marca</mat-label>
                 <input matInput type="text" formControlName="brand">
             </mat-form-field>
@@ -34,8 +46,8 @@
                     <mat-option [value]="false">No</mat-option>
                     <mat-option [value]="true">Si</mat-option>
                 </mat-select>
-            </mat-form-field>
-            <mat-form-field appearance="fill" class="col-sm-12 col-md-4">
+            </mat-form-field> -->
+            <mat-form-field appearance="fill" class="col-sm-12 col-md-6">
                 <mat-label>Unidad de medida</mat-label>
                 <mat-select matInput name="unit" id="unit" formControlName="unit">
                     <mat-option value="Kilogramo">Kilogramo</mat-option>
@@ -56,11 +68,11 @@
                 <mat-label>Unidad de medida</mat-label>
                 <input matInput type="text" formControlName="unit">
             </mat-form-field> -->
-            <mat-form-field appearance="fill" class="col-sm-12 col-md-4">
+            <!-- <mat-form-field appearance="fill" class="col-sm-12 col-md-4">
                 <mat-label>Costo promedio</mat-label>
                 <input matInput type="number" formControlName="avcost">
-            </mat-form-field>
-            <mat-form-field appearance="fill" class="col-sm-12 col-md-4">
+            </mat-form-field> -->
+            <mat-form-field appearance="fill" class="col-sm-12 col-md-6">
                 <mat-label>Existencia</mat-label>
                 <input matInput type="number" formControlName="existence">
             </mat-form-field>
@@ -80,7 +92,7 @@
                 </select2>
             </div>
             
-            <div *ngIf="myForm.value.category == 'AGROQUIMICOS' || myForm.value.category == 'FERTILIZANTES'">
+            <!-- <div *ngIf="myForm.value.category == 'AGROQUIMICOS' || myForm.value.category == 'FERTILIZANTES'">
                 <h6 style="margin-bottom: 0.5rem;">Características agroquímicos/fertilizantes</h6>
                 <mat-form-field appearance="fill" class="col-sm-12 col-md-3">
                     <mat-label>Clase</mat-label>
@@ -146,7 +158,7 @@
                     <mat-checkbox color="primary" formControlName="raspberry"><span style="padding-right: 2rem;">Frambuesa </span></mat-checkbox>
                     <mat-checkbox color="primary" formControlName="blackberry"><span style="padding-right: 2rem;">Zarzamora </span></mat-checkbox>
                 </section>
-            </div>
+            </div> -->
         </div>
     </mat-dialog-content>
     <mat-dialog-actions align="end">

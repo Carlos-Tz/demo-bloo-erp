@@ -16,27 +16,27 @@ export class ApiProductService {
   constructor(private db: AngularFireDatabase, public toastr: ToastrService) { }
 
   AddProduct(product: Product) {
-    this.db.database.ref().child('blooming/product-list/'+ product.id).set(product);
-    //this.db.list('blooming/product-list').push(product);
+    this.db.database.ref().child('blooming-erp/product-list/'+ product.id).set(product);
+    //this.db.list('blooming-erp/product-list').push(product);
   }
 
   GetProductList() {
-    this.productList = this.db.list('blooming/product-list');
+    this.productList = this.db.list('blooming-erp/product-list');
     return this.productList;
   }
 
   GetProduct(key: string) {
-    this.productObject = this.db.object('blooming/product-list/' + key);
+    this.productObject = this.db.object('blooming-erp/product-list/' + key);
     return this.productObject;
   }
 
   GetLastProduct(){
-    this.lastProductRef = this.db.list('blooming/product-list/', ref => ref.limitToLast(1)).valueChanges();
+    this.lastProductRef = this.db.list('blooming-erp/product-list/', ref => ref.limitToLast(1)).valueChanges();
     return this.lastProductRef;
   }
 
   UpdateProduct(product: Product) {
-    //this.db.object('blooming/product-list/' + key)
+    //this.db.object('blooming-erp/product-list/' + key)
     this.productObject
     .update(product);
   }
@@ -56,7 +56,7 @@ export class ApiProductService {
       });
       await promise3.then(async (pro: Product) => {
         const promise4 = new Promise((resolve, reject) => {
-          let ob : AngularFireObject<any> = this.db.object('blooming/product-list/' + pro.id);
+          let ob : AngularFireObject<any> = this.db.object('blooming-erp/product-list/' + pro.id);
           ob.update(pro).then(e => {
             resolve(e)
           })
@@ -69,7 +69,7 @@ export class ApiProductService {
   }
 
   DeleteProduct(key: string) {
-    this.productObject = this.db.object('blooming/product-list/' + key);
+    this.productObject = this.db.object('blooming-erp/product-list/' + key);
     this.productObject.remove();
   }
 }

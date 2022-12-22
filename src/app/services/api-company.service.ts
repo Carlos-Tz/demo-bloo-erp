@@ -12,13 +12,13 @@ export class ApiCompanyService {
   constructor(private db: AngularFireDatabase, public toastr: ToastrService) { }
 
   UpdateCompary(company: Company) {
-    this.db.database.ref().child('blooming/company/company_id').set(company);
+    this.db.database.ref().child('blooming-erp/company/company_id').set(company);
     //this.toastr.success('Guardado!');
     return false;
   }
 
   GetCompany() {
-    this.companyObject = this.db.object('blooming/company/company_id');
+    this.companyObject = this.db.object('blooming-erp/company/company_id');
     return this.companyObject;
   }
 }

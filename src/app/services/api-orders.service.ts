@@ -17,17 +17,17 @@ export class ApiOrdersService {
   constructor(private db: AngularFireDatabase, public toastr: ToastrService, private http: HttpClient) { }
 
   GetOrdersList() {
-    this.orderList = this.db.list('blooming/order-list');
+    this.orderList = this.db.list('blooming-erp/order-list');
     return this.orderList;
   }
 
   GetOrder(key: string) {
-    this.orderObject = this.db.object('blooming/order-list/' + key);
+    this.orderObject = this.db.object('blooming-erp/order-list/' + key);
     return this.orderObject;
   }
 
   UpdateOrder(order: Order, key: number) {
-    this.db.object('blooming/order-list/' + key).update(order);
+    this.db.object('blooming-erp/order-list/' + key).update(order);
   }
 
   excel(data: any, url: string): Observable<any>{

@@ -16,22 +16,22 @@ export class ApiMovementService {
   constructor(private db: AngularFireDatabase, public toastr: ToastrService) { }
 
   AddMovement(movement: Movement) {
-    this.db.database.ref().child('blooming/movement-list/'+ movement.id).set(movement);
-    //this.db.list('blooming/movement-list').push(movement);
+    this.db.database.ref().child('blooming-erp/movement-list/'+ movement.id).set(movement);
+    //this.db.list('blooming-erp/movement-list').push(movement);
   }
 
   GetMovementList() {
-    this.movementList = this.db.list('blooming/movement-list');
+    this.movementList = this.db.list('blooming-erp/movement-list');
     return this.movementList;
   }
 
   GetMovement(key: string) {
-    this.movementObject = this.db.object('blooming/movement-list/' + key);
+    this.movementObject = this.db.object('blooming-erp/movement-list/' + key);
     return this.movementObject;
   }
 
   GetLastMovement(){
-    this.lastMovementRef = this.db.list('blooming/movement-list/', ref => ref.limitToLast(1)).valueChanges();
+    this.lastMovementRef = this.db.list('blooming-erp/movement-list/', ref => ref.limitToLast(1)).valueChanges();
     return this.lastMovementRef;
   }
 }

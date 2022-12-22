@@ -16,22 +16,22 @@ export class ApiRequisitionService {
   constructor(private db: AngularFireDatabase, public toastr: ToastrService) { }
 
   AddRequisition(requisition: Requisition) {
-    this.db.database.ref().child('blooming/requisition-list/'+ requisition.id).set(requisition);
-    //this.db.list('blooming/requisition-list').push(requisition);
+    this.db.database.ref().child('blooming-erp/requisition-list/'+ requisition.id).set(requisition);
+    //this.db.list('blooming-erp/requisition-list').push(requisition);
   }
 
   GetRequisitionList() {
-    this.requisitionList = this.db.list('blooming/requisition-list');
+    this.requisitionList = this.db.list('blooming-erp/requisition-list');
     return this.requisitionList;
   }
 
   GetRequisition(key: string) {
-    this.requisitionObject = this.db.object('blooming/requisition-list/' + key);
+    this.requisitionObject = this.db.object('blooming-erp/requisition-list/' + key);
     return this.requisitionObject;
   }
 
   GetLastRequisition(){
-    this.lastRequisitionRef = this.db.list('blooming/requisition-list/', ref => ref.limitToLast(1)).valueChanges();
+    this.lastRequisitionRef = this.db.list('blooming-erp/requisition-list/', ref => ref.limitToLast(1)).valueChanges();
     return this.lastRequisitionRef;
   }
 
@@ -41,13 +41,13 @@ export class ApiRequisitionService {
   }
 
   AssignProvider(key: string, pro: any, index: number) {
-    this.db.object('blooming/requisition-list/' + key + '/products/' + index).update(pro);
+    this.db.object('blooming-erp/requisition-list/' + key + '/products/' + index).update(pro);
     /* this.requisitionObject
     .update(requisition); */
   }
 
   DeleteRequisition(key: string) {
-    this.requisitionObject = this.db.object('blooming/requisition-list/' + key);
+    this.requisitionObject = this.db.object('blooming-erp/requisition-list/' + key);
     this.requisitionObject.remove();
   }
 }

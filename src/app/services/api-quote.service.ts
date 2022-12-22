@@ -73,7 +73,7 @@ export class ApiQuoteService {
                   quotation.email = prov.email;
                   quotation.petitioner = 'Demo';
                   quotation.products.push(product);
-                  this.db.list('blooming/quotation-list').push(quotation);
+                  this.db.list('blooming-erp/quotation-list').push(quotation);
                   //await new Promise((resolve, reject) => setTimeout(resolve, 3000));
                   //this.add(quotation, id_requisition); console.log('add', quotation.id);
                   //console.log('3sec');
@@ -89,7 +89,7 @@ export class ApiQuoteService {
                     });
                   });
                   await p2.then((quotations: any[]) => {
-                    this.db.object('blooming/requisition-list/' + id_requisition).update({ 'quotations': quotations });
+                    this.db.object('blooming-erp/requisition-list/' + id_requisition).update({ 'quotations': quotations });
                   }); 
                 });  */           
               }
@@ -102,20 +102,20 @@ export class ApiQuoteService {
   }
 
   add(quotation){
-    this.db.database.ref().child('blooming/quotation-list/'+ quotation.id).set(quotation);
+    this.db.database.ref().child('blooming-erp/quotation-list/'+ quotation.id).set(quotation);
   }
 
   addO(order){
-    this.db.database.ref().child('blooming/order-list/'+ order.id).set(order);
+    this.db.database.ref().child('blooming-erp/order-list/'+ order.id).set(order);
   }
 
   GetLastQuotation(){
-    this.lastQuotationRef = this.db.list('blooming/quotation-list/', ref => ref.limitToLast(1)).valueChanges();
+    this.lastQuotationRef = this.db.list('blooming-erp/quotation-list/', ref => ref.limitToLast(1)).valueChanges();
     return this.lastQuotationRef;
   }
 
   GetLastOrder(){
-    this.lastOrderRef = this.db.list('blooming/order-list/', ref => ref.limitToLast(1)).valueChanges();
+    this.lastOrderRef = this.db.list('blooming-erp/order-list/', ref => ref.limitToLast(1)).valueChanges();
     return this.lastOrderRef;
   }
 }

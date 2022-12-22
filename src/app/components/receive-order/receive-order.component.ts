@@ -148,7 +148,8 @@ export class ReceiveOrderComponent implements OnInit {
     await p1.then(async (pro: Product) => {
       let prod = pro;
       let existence_c = pro.existence; 
-      let avcost_c = pro.avcost;
+      //let avcost_c = pro.avcost;
+      let avcost_c = 0;
       let existence_n = existence_c + quantity_received;
       let price_c = price + price*iva;
       let avcost_n = (avcost_c*existence_c + quantity_received*price_c) / existence_n; 

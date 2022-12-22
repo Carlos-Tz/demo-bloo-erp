@@ -16,22 +16,22 @@ export class ApiApplicationService {
   constructor(private db: AngularFireDatabase, public toastr: ToastrService) { }
 
   AddApplication(application: Application) {
-    this.db.database.ref().child('blooming/application-list/'+ application.id).set(application);
-    //this.db.list('blooming/application-list').push(application);
+    this.db.database.ref().child('blooming-erp/application-list/'+ application.id).set(application);
+    //this.db.list('blooming-erp/application-list').push(application);
   }
 
   GetApplicationList() {
-    this.applicationList = this.db.list('blooming/application-list');
+    this.applicationList = this.db.list('blooming-erp/application-list');
     return this.applicationList;
   }
 
   GetApplication(key: string) {
-    this.applicationObject = this.db.object('blooming/application-list/' + key);
+    this.applicationObject = this.db.object('blooming-erp/application-list/' + key);
     return this.applicationObject;
   }
 
   GetLastApplication(){
-    this.lastApplicationRef = this.db.list('blooming/application-list/', ref => ref.limitToLast(1)).valueChanges();
+    this.lastApplicationRef = this.db.list('blooming-erp/application-list/', ref => ref.limitToLast(1)).valueChanges();
     return this.lastApplicationRef;
   }
 
@@ -41,13 +41,13 @@ export class ApiApplicationService {
   }
 
   AssignProvider(key: string, pro: any, index: number) {
-    this.db.object('blooming/application-list/' + key + '/products/' + index).update(pro);
+    this.db.object('blooming-erp/application-list/' + key + '/products/' + index).update(pro);
     /* this.applicationObject
     .update(application); */
   }
 
   DeleteApplication(key: string) {
-    this.applicationObject = this.db.object('blooming/application-list/' + key);
+    this.applicationObject = this.db.object('blooming-erp/application-list/' + key);
     this.applicationObject.remove();
   }
 }

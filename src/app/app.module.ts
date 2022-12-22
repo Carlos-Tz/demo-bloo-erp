@@ -93,6 +93,9 @@ import { DeliverApplicationComponent } from './components/deliver-application/de
 import { RunApplicationComponent } from './components/run-application/run-application.component';
 import { DebtsToPayComponent } from './components/debts-to-pay/debts-to-pay.component';
 import { RedeliverApplicationComponent } from './components/redeliver-application/redeliver-application.component';
+import { PresentationsComponent } from './components/presentations/presentations.component';
+import { NewPresentationComponent } from './components/new-presentation/new-presentation.component';
+import { EditPresentationComponent } from './components/edit-presentation/edit-presentation.component';
 
 @NgModule({
   declarations: [
@@ -147,7 +150,10 @@ import { RedeliverApplicationComponent } from './components/redeliver-applicatio
     DeliverApplicationComponent,
     RunApplicationComponent,
     DebtsToPayComponent,
-    RedeliverApplicationComponent
+    RedeliverApplicationComponent,
+    PresentationsComponent,
+    NewPresentationComponent,
+    EditPresentationComponent
   ],
   imports: [
     BrowserModule,
