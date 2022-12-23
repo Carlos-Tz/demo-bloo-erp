@@ -15,10 +15,12 @@ import { ApiProviderService } from 'src/app/services/api-provider.service';
 export class NewProductComponent implements OnInit {
 
   public myForm!: FormGroup;
+  public myForm1!: FormGroup;
   public categories: Select2Data = [];
   public presentations: Select2Data = [];
   public providers: Select2Data = [];
   public ord = 0;
+  public costs: any[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -31,6 +33,7 @@ export class NewProductComponent implements OnInit {
 
   ngOnInit(): void {
     this.sForm();
+    this.sForm1();
     this.apiC.GetCategoryList().snapshotChanges().subscribe(data => {
       data.forEach(item => {
         //const p = item.payload.toJSON();
@@ -95,6 +98,13 @@ export class NewProductComponent implements OnInit {
     });
   }
 
+  sForm1() {
+    this.myForm1 = this.fb.group({
+      key: [''],
+      cost: ['',[Validators.required]],
+    });
+  }
+
   submitSurveyData = () => {
     this.apiP.AddProduct(this.myForm.value);
     this.ResetForm();
@@ -103,6 +113,49 @@ export class NewProductComponent implements OnInit {
 
   ResetForm() {
     this.myForm.reset();
+  }
+
+  addCost(){
+    //const c = {};
+    //c['cost'] = this.myForm1.get('cost')!.value;
+    //this.costs.push(c);
+    
+    if (this.costs.find(e => e.key === this.myForm1.get('key')!.value)) {
+      const c = this.costs.find(e => e.key === this.myForm1.get('key')!.value);
+      c['cost'] = this.myForm1.get('cost')!.value;
+      this.costs = this.costs.map(e => e.key !== this.myForm1.get('key')!.value ? e : c);
+    }else {
+      const c = {};
+      if(this.costs.length > 0){
+        let last = this.costs.pop();
+        console.log(last)
+      }
+      c['key'] = this.costs.length + 1;
+      c['cost'] = this.myForm1.get('cost')!.value;
+      this.costs.push(c);
+    }
+    console.log(this.costs, this.costs.length);
+    
+    /* const c = {};
+    c['cost'] = this.myForm1.get('cost')!.value;
+    c['key'] = this.costs.length;
+    this.costs.push(c); */
+    this.myForm1.reset();
+  
+  }
+
+  editCost(key: string, cost: number){
+    this.myForm1.patchValue({ key: key , cost: cost})
+  }
+
+  deleteCost(key: string){
+    const index = this.costs.findIndex((object) => {
+      return object.key === key;
+    });
+    
+    if (index !== -1) {
+      this.costs.splice(index, 1);
+    }
   }
 
 }
