@@ -2,7 +2,7 @@
 <form [formGroup]="myForm" novalidate autocomplete="off">
     <mat-dialog-content class="w-100 m-0">
         <div class="row">
-            <mat-form-field appearance="fill" class="col-sm-12 col-md-6">
+            <mat-form-field appearance="fill" class="col-sm-12">
                 <mat-label>Nombre</mat-label>
                 <input matInput type="text" formControlName="name" required autofocus>
             </mat-form-field>
@@ -21,30 +21,37 @@
                     <!-- <ng-template #template let-data="data"><strong>{{data?.color}}</strong>: {{data?.name}}</ng-template> -->
                 </select2>
             </div>
-            <mat-form-field appearance="fill" class="col-sm-12 col-md-4">
-                <mat-label>Marca</mat-label>
-                <input matInput type="text" formControlName="brand">
-            </mat-form-field>
-            <mat-form-field appearance="fill" class="col-sm-12 col-md-4">
-                <mat-label>Modelo</mat-label>
-                <input matInput type="text" formControlName="model">
-            </mat-form-field>
-            <mat-form-field appearance="fill" class="col-sm-12 col-md-4">
-                <mat-label>Prorrateo</mat-label>
-                <mat-select matInput name="proration" id="proration" formControlName="proration" required>
-                    <mat-option [value]="false">No</mat-option>
-                    <mat-option [value]="true">Si</mat-option>
+            <div class="col-sm-12 col-md-6">
+                <select2 class="w-100" 
+                    [data]="presentations"
+                    [value]="pre"
+                    displaySearchStatus="always"
+                    listPosition="below"
+                    styleMode="material"
+                    resettable
+                    formControlName="presentation"
+                    resultMaxHeight="200px">
+                    <select2-hint>Presentación *</select2-hint>
+                </select2>
+            </div>
+            <mat-form-field appearance="fill" class="col-sm-12 col-md-6">
+                <mat-label>Unidad de medida</mat-label>
+                <mat-select matInput name="unit" id="unit" formControlName="unit">
+                    <mat-option value="Kilogramo">Kilogramo</mat-option>
+                    <mat-option value="Gramo">Gramo</mat-option>
+                    <mat-option value="Litro">Litro</mat-option>
+                    <mat-option value="Mililitro">Mililitro</mat-option>
+                    <mat-option value="Paquete">Paquete</mat-option>
+                    <mat-option value="Caja">Caja</mat-option>
+                    <mat-option value="Pieza">Pieza</mat-option>
+                    <mat-option value="Rollo">Rollo</mat-option>
+                    <mat-option value="Metro">Metro</mat-option>
+                    <mat-option value="Servicio">Servicio</mat-option>
+                    <mat-option value="Otro">Otro</mat-option>
+                    <mat-option value="N/A">N/A</mat-option>
                 </mat-select>
             </mat-form-field>
-            <mat-form-field appearance="fill" class="col-sm-12 col-md-4">
-                <mat-label>Unidad de medida</mat-label>
-                <input matInput type="text" formControlName="unit">
-            </mat-form-field>
-            <mat-form-field appearance="fill" class="col-sm-12 col-md-4">
-                <mat-label>Costo promedio</mat-label>
-                <input matInput type="number" formControlName="avcost">
-            </mat-form-field>
-            <mat-form-field appearance="fill" class="col-sm-12 col-md-4">
+            <mat-form-field appearance="fill" class="col-sm-12 col-md-6">
                 <mat-label>Existencia</mat-label>
                 <input matInput type="number" formControlName="existence">
             </mat-form-field>
@@ -65,72 +72,22 @@
                     <!-- <ng-template #template let-data="data"><strong>{{data?.color}}</strong>: {{data?.name}}</ng-template> -->
                 </select2>
             </div>
-            <div *ngIf="myForm.value.category == 'AGROQUIMICOS' || myForm.value.category == 'FERTILIZANTES'">
-                <h6 style="margin-bottom: 0.5rem;">Características agroquímicos/fertilizantes</h6>
-                <mat-form-field appearance="fill" class="col-sm-12 col-md-3">
-                    <mat-label>Clase</mat-label>
-                    <mat-select matInput name="class" id="class" formControlName="class">
-                    <mat-option value="fertilizante">Fertilizante</mat-option>
-                    <mat-option value="plaguicida">Plaguicida</mat-option>
-                </mat-select>
-                </mat-form-field>
-                <mat-form-field appearance="fill" class="col-sm-12 col-md-3">
-                    <mat-label>Tipo</mat-label>
-                    <mat-select matInput name="type" id="type" formControlName="type">
-                        <mat-option value="organico">Orgánico</mat-option>
-                        <mat-option value="convencional">Convencional</mat-option>
-                    </mat-select>
-                </mat-form-field>
-                <mat-form-field appearance="fill" class="col-sm-12 col-md-3">
-                    <mat-label>RSCO</mat-label>
-                    <input matInput type="text" formControlName="rsco">
-                </mat-form-field>
-                <mat-form-field appearance="fill" class="col-sm-12 col-md-3">
-                    <mat-label>Ingrediente activo</mat-label>
-                    <input matInput type="text" formControlName="activeingredient">
-                </mat-form-field>
-                <mat-form-field appearance="fill" class="col-sm-12 col-md-3">
-                    <mat-label>Dosis por acre</mat-label>
-                    <input matInput type="number" formControlName="doseacre">
-                </mat-form-field>
-                <mat-form-field appearance="fill" class="col-sm-12 col-md-3">
-                    <mat-label>Periodo de reentrada</mat-label>
-                    <input matInput type="number" formControlName="periodreentry">
-                </mat-form-field>
-                <mat-form-field appearance="fill" class="col-sm-12 col-md-3">
-                    <mat-label>Plazo de reentrada</mat-label>
-                    <mat-select matInput name="termreentry" id="termreentry" formControlName="termreentry">
-                        <mat-option value="horas">Horas</mat-option>
-                        <mat-option value="dias">Días</mat-option>
-                    </mat-select>
-                </mat-form-field>
-                <mat-form-field appearance="fill" class="col-sm-12 col-md-3">
-                    <mat-label>Intervalo de seguridad</mat-label>
-                    <input matInput type="number" formControlName="safetyinterval">
-                </mat-form-field>
-                <mat-form-field appearance="fill" class="col-sm-12 col-md-3">
-                    <mat-label>Plazo de intervalo de seguridad</mat-label>
-                    <mat-select matInput name="termsafetyinterval" id="termsafetyinterval" formControlName="termsafetyinterval">
-                        <mat-option value="horas">Horas</mat-option>
-                        <mat-option value="dias">Días</mat-option>
-                    </mat-select>
-                </mat-form-field>
-                <mat-form-field appearance="fill" class="col-sm-12 col-md-3">
-                    <mat-label>Categoría toxicológica</mat-label>
-                    <mat-select matInput name="toxicologicalcategory" id="toxicologicalcategory" formControlName="toxicologicalcategory">
-                        <mat-option value="1">Ligeramente tóxico</mat-option>
-                        <mat-option value="2">Medianamente tóxico</mat-option>
-                        <mat-option value="3">Altamente tóxico</mat-option>
-                        <mat-option value="4">Extremadamente tóxico</mat-option>
-                    </mat-select>
-                </mat-form-field>
-                <h6 style="margin-bottom: 0.5rem;">Tipo de cultivo a que se aplica</h6>
-                <section class="col-sm-12 col-md-8">
-                    <mat-checkbox color="primary" formControlName="blueberry"><span style="padding-right: 2rem;">Arandano </span></mat-checkbox>
-                    <mat-checkbox color="primary" formControlName="strawberry"><span style="padding-right: 2rem;">Fresa </span></mat-checkbox>
-                    <mat-checkbox color="primary" formControlName="raspberry"><span style="padding-right: 2rem;">Frambuesa </span></mat-checkbox>
-                    <mat-checkbox color="primary" formControlName="blackberry"><span style="padding-right: 2rem;">Zarzamora </span></mat-checkbox>
-                </section>
+            <mat-label style="padding: 2rem 0 0 0;">Variación de costos</mat-label>
+            <div class="col-sm-12">
+                <table class="table table-bordered">
+                    <thead >
+                        <!-- <th>ID</th> -->
+                        <th>Costo</th>
+                        <th>Opciones</th>
+                    </thead>
+                    <tr *ngFor="let cost of costs">
+                        <!-- <td>{{ cost.key }}</td> -->
+                        <td>{{ cost.cost }}</td>
+                        <td>
+                            <button class="btn btn-outline-info me-2" style="padding: 0 0.2rem;" (click)="editCost(cost.id, cost.cost)"><span class="material-icons">edit</span></button>
+                            <button class="btn btn-outline-danger" style="padding: 0 0.2rem;" (click)="deleteCost(cost.id)"><span class="material-icons">delete</span></button></td>
+                    </tr>
+                </table>
             </div>
         </div>
     </mat-dialog-content>
@@ -140,3 +97,19 @@
     </mat-dialog-actions>
 </form>
 
+<form [formGroup]="myForm1" novalidate autocomplete="off">
+    <div class="row">
+        <mat-form-field appearance="fill" class="col-sm-12 col-md-2" hidden>
+            <mat-label>ID</mat-label>
+            <input matInput type="number" formControlName="id" readonly>
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="col-sm-12 col-md-2">
+            <mat-label>Costo</mat-label>
+            <input matInput type="number" formControlName="cost" required>
+        </mat-form-field>
+        <div class="col-sm-12 col-md-2">
+            <button mat-button class="btn btn-outline-success" (click)="addCost()"
+                [disabled]="!myForm1.valid">Agregar</button>
+        </div>
+    </div>
+</form>

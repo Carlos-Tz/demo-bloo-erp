@@ -74,38 +74,28 @@ export class NewProductComponent implements OnInit {
       name: ['', [Validators.required]],
       category: ['', [Validators.required]],
       presentation: ['', [Validators.required]],
-      //brand: [''],
-      //model: [''],
       unit: [''],
-      //avcost: [''],
       existence: [''],
-      //proration: [null],
-      //class: [''],
-      //type: [''],
-      //rsco: [''],
-      //activeingredient: [''],
-      //doseacre: [''],
-      //periodreentry: [''],
-      //termreentry: [''],
-      //safetyinterval: [''],
-      //termsafetyinterval: [''],
-      //toxicologicalcategory: [''],
-      //blueberry: [null],
-      //strawberry: [null],
-      //raspberry: [null],
-      //blackberry: [null],
-      providers: []
+      providers: [],
+      costs: []
     });
   }
 
   sForm1() {
     this.myForm1 = this.fb.group({
-      key: [''],
+      id: [''],
       cost: ['',[Validators.required]],
     });
   }
 
   submitSurveyData = () => {
+    let costs_ : any[] = [];
+    this.costs.forEach((c, i) => {
+      //console.log(c);
+      costs_.push({ id: i, cost: c.cost })
+    });
+    //console.log(costs_);
+    this.myForm.patchValue({ 'costs': costs_ })
     this.apiP.AddProduct(this.myForm.value);
     this.ResetForm();
     this.toastr.success('Producto guardado!');
@@ -116,41 +106,30 @@ export class NewProductComponent implements OnInit {
   }
 
   addCost(){
-    //const c = {};
-    //c['cost'] = this.myForm1.get('cost')!.value;
-    //this.costs.push(c);
-    
-    if (this.costs.find(e => e.key === this.myForm1.get('key')!.value)) {
-      const c = this.costs.find(e => e.key === this.myForm1.get('key')!.value);
+    if (this.costs.find(e => e.id === this.myForm1.get('id')!.value)) {
+      const c = this.costs.find(e => e.id === this.myForm1.get('id')!.value);
       c['cost'] = this.myForm1.get('cost')!.value;
-      this.costs = this.costs.map(e => e.key !== this.myForm1.get('key')!.value ? e : c);
+      this.costs = this.costs.map(e => e.id !== this.myForm1.get('id')!.value ? e : c);
     }else {
       const c = {};
       if(this.costs.length > 0){
-        let last = this.costs.pop();
-        console.log(last)
+        c['id'] = this.costs[this.costs.length - 1].id + 1;
+      }else{
+        c['id'] = 1;
       }
-      c['key'] = this.costs.length + 1;
       c['cost'] = this.myForm1.get('cost')!.value;
       this.costs.push(c);
     }
-    console.log(this.costs, this.costs.length);
-    
-    /* const c = {};
-    c['cost'] = this.myForm1.get('cost')!.value;
-    c['key'] = this.costs.length;
-    this.costs.push(c); */
     this.myForm1.reset();
-  
   }
 
-  editCost(key: string, cost: number){
-    this.myForm1.patchValue({ key: key , cost: cost})
+  editCost(id: string, cost: number){
+    this.myForm1.patchValue({ id: id , cost: cost})
   }
 
-  deleteCost(key: string){
+  deleteCost(id: string){
     const index = this.costs.findIndex((object) => {
-      return object.key === key;
+      return object.id === id;
     });
     
     if (index !== -1) {

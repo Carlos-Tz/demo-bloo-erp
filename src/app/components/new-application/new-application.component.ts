@@ -7,12 +7,10 @@ import 'fecha';
 import fechaObj from 'fecha';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
-//import { AuthService } from 'src/app/services/auth.service';
-import { Ranch } from 'src/app/models/ranch';
-import { ApiRanchService } from 'src/app/services/api-ranch.service';
 import { ApiApplicationService } from 'src/app/services/api-application.service';
-//declare var $: any;
 import * as $ from 'jquery';
+import { Customer } from 'src/app/models/customer';
+import { ApiCustomerService } from 'src/app/services/api-customer.service';
 
 @Component({
   selector: 'app-new-application',
@@ -25,53 +23,40 @@ export class NewApplicationComponent implements OnInit {
   public myForm1!: FormGroup;
   public date = '';
   public dataSource = new MatTableDataSource<any>();
-  public sec: string[] = [];
+  public cro: string[] = [];
   @ViewChild(MatPaginator, {static: false}) paginator!: MatPaginator;
 
-  //public categories: Select2Data = [];
-  //public providers: Select2Data = [];
-  public ranches: Ranch[] = [];
-  public products: Select2Data = [];
-  public products1: any[] = [];
-  public sectors1: any[] = [];
-  //public products_l: any[] = [];
-  //public displayedColumns = ['product', 'quantity'];
+  public customers: Customer[] = [];
   public ord = 0;
-  public sectors: Select2Data = [];
-  public scheduled = 0;
-
-
+  public crops: Select2Data = [];
+  public indications: any[] = [];
 
   constructor(
     private fb: FormBuilder,
-    //public apiR: ApiRequisitionService,
-    //public apiC: ApiCicleService,
-    public apiRa: ApiRanchService,
+    public apiC: ApiCustomerService,
     public apiA: ApiApplicationService,
     public apiP: ApiProductService,
     public toastr: ToastrService,
-    //public authService: AuthService, 
   ) { }
 
   ngOnInit(): void {
     this.sForm();
-    
-    /* this.sForm1(); */
+    this.sForm1();
     this.date = fechaObj.format(new Date(), 'DD[/]MM[/]YYYY');
     //this.myForm.patchValue({ date: new Date().toISOString() });
     this.myForm.patchValue({ date: this.date });
     //this.myForm.patchValue({ petitioner: 'Demo' });
-    this.apiRa.GetRanchList().snapshotChanges().subscribe(data => {
+    this.apiC.GetCustomerList().snapshotChanges().subscribe(data => {
       data.forEach(item => {
         //const p = item.payload.toJSON();
-        const r = item.payload.val();
-        if(r.status){
-          const ran = {'id': r.id, 'status': r.status, 'sectors': []};        
-          this.ranches.push(ran);
-        }
+        const c = item.payload.val();
+        //if(c.status){
+          const cus = c;/* {'id': c.id, 'crops': c.crops}; */        
+          this.customers.push(cus);
+        //}
       });
     });
-    this.apiP.GetProductList().snapshotChanges().subscribe(data => {
+    /* this.apiP.GetProductList().snapshotChanges().subscribe(data => {
       data.forEach(item => {
         const p = item.payload.val();
         if((p.category == 'FERTILIZANTES' || p.category == 'AGROQUIMICOS') && p.existence >= 0.01){
@@ -81,7 +66,7 @@ export class NewApplicationComponent implements OnInit {
           //this.products1.push(p1);
         }
       });
-    });
+    }); */
 
     this.apiA.GetLastApplication().subscribe(res=> {
       if(res[0]){
@@ -97,24 +82,24 @@ export class NewApplicationComponent implements OnInit {
     this.myForm = this.fb.group({
       id: [null, [Validators.required]],
       date: ['', [Validators.required]],
-      id_ranch: ['', [Validators.required]],
+      id_customer: ['', [Validators.required]],
       status: [1],
       justification: ['', [Validators.required]],
-      manager: ['', [Validators.required]],
-      equipment: ['', [Validators.required]],
-      products: [],
-      sectors: [],
+      address: ['', [Validators.required]],
+      city: ['', [Validators.required]],
+      crops: [],
     });
   }
-  /* sForm1() {
+
+  sForm1() {
     this.myForm1 = this.fb.group({
-      product: ['',[Validators.required]],
-      quantity: ['', [Validators.required]]
+      id: [''],
+      indication: ['',[Validators.required]],
     });
-  } */
+  }
 
   submitSurveyData = () => {
-    let products_d = {};
+    /* let products_d = {};
     this.products1.forEach(p => {
       let sectors_d = {};
       this.sectors1.forEach(s => {
@@ -128,11 +113,8 @@ export class NewApplicationComponent implements OnInit {
       });
       products_d[p.value] = sectors_d
     });
-    this.myForm.patchValue({ 'products': products_d });
+    this.myForm.patchValue({ 'products': products_d }); */
     this.apiA.AddApplication(this.myForm.value);
-    //this.apiP.AddProduct(this.myForm.value);
-    //this.myForm.patchValue({ products: this.products_l });
-    //this.apiR.AddRequisition(this.myForm.value);
     this.ResetForm();
   }
 
@@ -140,156 +122,59 @@ export class NewApplicationComponent implements OnInit {
     this.myForm.reset();
   }
 
-  /* addProduct(){
-    const p = this.products1.find(e => e.key === this.myForm1.get('product')!.value);
-    p['quantity'] = this.myForm1.get('quantity')!.value;
-    if (this.products_l.find(e => e.key === this.myForm1.get('product')!.value)) {
-      this.products_l = this.products_l.map(e => e.key !== this.myForm1.get('product')!.value ? e : p);
+
+  customer(ev){
+    console.log(ev.value);
+    this.myForm.patchValue({ 'address': ev.value.street + ' # ' + ev.value.num + ' ' + ev.value.colony});
+    this.myForm.patchValue({ 'city': ev.value.city });
+    /* this.crops = [];
+    this.apiC.GetCustomer(ev.value).valueChanges().subscribe(data => {
+      if(data.crops){*/
+        for (const e in ev.value.crops) {
+          if (Object.prototype.hasOwnProperty.call(ev.value.crops, e)) {
+            const element = ev.value.crops[e];
+            const cro = {'value': element, 'label': element};   
+            this.crops.push(cro);
+          }
+        }
+      /*}
+    }); */
+  }
+
+  allCrops(){
+    this.cro = [];
+    this.crops.forEach(e => this.cro.push(e['value']));
+  }
+
+  addIndication(){
+    if (this.indications.find(e => e.id === this.myForm1.get('id')!.value)) {
+      const c = this.indications.find(e => e.id === this.myForm1.get('id')!.value);
+      c['indication'] = this.myForm1.get('indication')!.value;
+      this.indications = this.indications.map(e => e.id !== this.myForm1.get('id')!.value ? e : c);
     }else {
-      this.products_l.push(p);
+      const c = {};
+      if(this.indications.length > 0){
+        c['id'] = this.indications[this.indications.length - 1].id + 1;
+      }else{
+        c['id'] = 1;
+      }
+      c['indication'] = this.myForm1.get('indication')!.value;
+      this.indications.push(c);
     }
     this.myForm1.reset();
   }
 
-  editPro(key: string, quantity: number){
-    this.myForm1.patchValue({ product: key , quantity: quantity})
+  editIndication(id: string, indication: string){
+    this.myForm1.patchValue({ id: id , indication: indication})
   }
 
-  deletePro(key: string){
-    const index = this.products_l.findIndex((object) => {
-      return object.key === key;
+  deleteIndication(id: string){
+    const index = this.indications.findIndex((object) => {
+      return object.id === id;
     });
     
     if (index !== -1) {
-      this.products_l.splice(index, 1);
+      this.indications.splice(index, 1);
     }
-  } */
-
-  ranch(ev){
-    //console.log(ev.value);
-    this.sectors = [];
-    this.apiRa.GetRanch(ev.value).valueChanges().subscribe(data => {
-      //this.myForm.patchValue(data);
-      if(data.sectors){
-        for (const e in data.sectors) {
-          if (Object.prototype.hasOwnProperty.call(data.sectors, e)) {
-            const element = data.sectors[e];
-            const sec = {'value': element.id, 'label': element.name, 'data': element.hectares};   
-            this.sectors.push(sec);
-          }
-        }
-      }
-    });
-    /* this.apiPv.GetProviderList().snapshotChanges().subscribe(data => {
-      data.forEach(item => {
-        //const p = item.payload.toJSON();
-        const p = item.payload.val();
-        const pro = {'value': p.id, 'label': p.name};        
-        this.providers.push(pro);
-      });
-    }); */
-  }
-
-  allSec(){
-    this.sec = [];
-    this.sectors.forEach(e => this.sec.push(e['value']));
-  }
-
-  updateS(ev){
-    //this.sectors1 = ev.value.map((e, i) => e)
-    /* this.sectors1 = ev.value.flatMap((e, i) => ['sector__'+e, e+'__'+i]); */
-    this.sectors1 = ev.value.flatMap((e, i) => ['sector__'+e, e]);
-    //console.log(this.sectors1);
-    //this.sectors1 = [...ev.value];
-  }
-
-  updateP(ev){
-    this.products1 = [...ev.options];
-  }
-
-  change1(ev){
-    //console.log(ev.srcElement)
-    var arrId = ev.srcElement.id.split('__');
-    var id_p = arrId[0];
-    var id_s = arrId[1];
-    var id_c = arrId[2];
-    var s = this.sectors.find((el) => { return el.label == id_s; });
-    if(parseFloat(ev.srcElement.value) <= parseFloat($('#available').val().toString())){
-      $('input#'+id_p+'__'+id_s+'__2').val((parseFloat(ev.srcElement.value)/s.data).toFixed(2));
-    }else {
-      $('input#'+id_p+'__'+id_s+'__1').val(0);
-      $('input#'+id_p+'__'+id_s+'__2').val(0);
-    }
-    this.calculate(id_p);
-  }
-
-  change2(ev){
-    var arrId = ev.srcElement.id.split('__');
-    var id_p = arrId[0];
-    var id_s = arrId[1];
-    var id_c = arrId[2];
-    var s = this.sectors.find((el) => { return el.label == id_s; });
-    if(parseFloat(ev.srcElement.value)*s.data <= $('#available').val()){
-      $('input#'+id_p+'__'+id_s+'__1').val((parseFloat(ev.srcElement.value)*s.data).toFixed(2));
-    }else {
-      $('input#'+id_p+'__'+id_s+'__1').val(0);
-      $('input#'+id_p+'__'+id_s+'__2').val(0);
-    }
-    this.calculate(id_p);
-  }
-
-  calculate(id_p){
-    let sum = 0;
-    this.sectors1.forEach(p => {
-      if(!p.startsWith('sector__')){
-        let n: string = $('input#'+id_p+'__'+p+'__1').val().toString();
-        sum += parseFloat(n);
-      }
-    });
-    //console.log(sum);
-  }
-
-  focus1(pro){
-    //console.log(pro);
-    this.scheduled = 0;
-    this.sectors1.forEach(s => {
-      if(!s.startsWith('sector__')){
-        let n1: string = $('input#'+pro.value+'__'+s+'__1').val().toString();
-        let nn1 = parseFloat(n1);
-        this.scheduled += nn1;
-      }
-    });
-    this.apiA.GetApplicationList().snapshotChanges().subscribe(data => {
-      data.forEach(item => {
-        const r = item.payload.val();     
-        if(r.status < 3){
-          if(r.products){
-            Object.entries(r.products).forEach(([key, value], index) => {
-              if(key == pro.value){
-                Object.entries(value).forEach(([k,v], i) => {
-                  if(!v.delivered){
-                    //console.log(v.sector, r);
-                    this.scheduled += v.sector;
-                  }
-                });
-              }
-              
-            });
-          }
-        }   
-      });
-      //$('#scheduled').val(scheduled.toFixed(2));
-    });
-    //console.log(this.scheduled);
-    $('#exis').show();
-    $('#existence').val(pro.data.existence.toFixed(2));
-    $('#available').val((pro.data.existence - parseFloat($('#scheduled').val().toString())).toFixed(2));
-    $('#unit').html(pro.data.unit);
-    $('#unit1').html(pro.data.unit);
-    $('#unit2').html(pro.data.unit);
-  }
-
-  blur1(){
-    $('#exis').hide();
   }
 }

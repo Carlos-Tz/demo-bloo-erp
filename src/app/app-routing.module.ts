@@ -5,12 +5,18 @@ import { ApplicationsComponent } from './components/applications/applications.co
 import { CategoriesComponent } from './components/categories/categories.component';
 import { CiclesComponent } from './components/cicles/cicles.component';
 import { CompanyComponent } from './components/company/company.component';
+import { CropsComponent } from './components/crops/crops.component';
+import { CustomersComponent } from './components/customers/customers.component';
 import { DeliverApplicationComponent } from './components/deliver-application/deliver-application.component';
 import { DeliveryComponent } from './components/delivery/delivery.component';
 import { EditApplicationComponent } from './components/edit-application/edit-application.component';
+import { EditCropComponent } from './components/edit-crop/edit-crop.component';
+import { EditCustomerComponent } from './components/edit-customer/edit-customer.component';
 import { LoginComponent } from './components/login/login.component';
 import { MainComponent } from './components/main/main.component';
 import { NewApplicationComponent } from './components/new-application/new-application.component';
+import { NewCropComponent } from './components/new-crop/new-crop.component';
+import { NewCustomerComponent } from './components/new-customer/new-customer.component';
 import { NewRequisitionComponent } from './components/new-requisition/new-requisition.component';
 import { OutputComponent } from './components/output/output.component';
 import { PaymentsComponent } from './components/payments/payments.component';
@@ -35,6 +41,8 @@ const routes: Routes = [
   {path: 'providers', component: ProvidersComponent , canActivate: [AuthGuard]},
   {path: 'classifications', component: CategoriesComponent , canActivate: [AuthGuard]},
   {path: 'presentations', component: PresentationsComponent , canActivate: [AuthGuard]},
+  {path: 'crops', component: CropsComponent , canActivate: [AuthGuard]},
+  {path: 'customers', component: CustomersComponent , canActivate: [AuthGuard]},
   {path: 'requisitions', component: RequisitionsComponent , canActivate: [AuthGuard]},
   {path: 'cicles', component: CiclesComponent , canActivate: [AuthGuard]},
   {path: 'ranches', component: RanchesComponent , canActivate: [AuthGuard]},
@@ -53,6 +61,10 @@ const routes: Routes = [
   {path: 'deliver-application/:id', component: DeliverApplicationComponent , canActivate: [AuthGuard]},
   {path: 'redeliver-application/:id', component: RedeliverApplicationComponent , canActivate: [AuthGuard]},
   {path: 'run-application/:id', component: RunApplicationComponent , canActivate: [AuthGuard]},
+  {path: 'new-crop', component: NewCropComponent, canActivate: [AuthGuard]},
+  {path: 'edit-crop/:id', component: EditCropComponent , canActivate: [AuthGuard]},
+  {path: 'new-customer', component: NewCustomerComponent, canActivate: [AuthGuard]},
+  {path: 'edit-customer/:id', component: EditCustomerComponent , canActivate: [AuthGuard]},
   {path: 'login', component: LoginComponent, canActivate: [SecureInnerPagesGuard]},
 ];
 

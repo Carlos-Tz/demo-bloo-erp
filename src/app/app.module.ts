@@ -96,6 +96,12 @@ import { RedeliverApplicationComponent } from './components/redeliver-applicatio
 import { PresentationsComponent } from './components/presentations/presentations.component';
 import { NewPresentationComponent } from './components/new-presentation/new-presentation.component';
 import { EditPresentationComponent } from './components/edit-presentation/edit-presentation.component';
+import { CustomersComponent } from './components/customers/customers.component';
+import { CropsComponent } from './components/crops/crops.component';
+import { NewCropComponent } from './components/new-crop/new-crop.component';
+import { EditCropComponent } from './components/edit-crop/edit-crop.component';
+import { NewCustomerComponent } from './components/new-customer/new-customer.component';
+import { EditCustomerComponent } from './components/edit-customer/edit-customer.component';
 
 @NgModule({
   declarations: [
@@ -153,7 +159,13 @@ import { EditPresentationComponent } from './components/edit-presentation/edit-p
     RedeliverApplicationComponent,
     PresentationsComponent,
     NewPresentationComponent,
-    EditPresentationComponent
+    EditPresentationComponent,
+    CustomersComponent,
+    CropsComponent,
+    NewCropComponent,
+    EditCropComponent,
+    NewCustomerComponent,
+    EditCustomerComponent
   ],
   imports: [
     BrowserModule,

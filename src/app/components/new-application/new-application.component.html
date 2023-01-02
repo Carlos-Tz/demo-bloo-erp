@@ -7,7 +7,7 @@
                         <div class="container-fluid">
                             <a class="navbar-brand">Nueva receta</a>
                             <div class="d-flex">
-                                <button mat-button class="btn btn-outline-success" (click)="allSec()">Todos los sectores</button>
+                                <button mat-button class="btn btn-outline-success" (click)="allCrops()">Todos los cultivos</button>
                                 <button mat-button [routerLink]="['/applications']">Cancelar</button>
                                 <button mat-button (click)="submitSurveyData()" [routerLink]="['/applications']" [disabled]="!myForm.valid" class="btn btn-outline-info">Guardar</button>
                             </div>
@@ -27,24 +27,20 @@
                                     <mat-option [value]="1">Programada</mat-option>
                                 </mat-select>
                             </mat-form-field>
-                            <mat-form-field appearance="fill" class="col-sm-12 col-md-6">
-                                <mat-label>Rancho</mat-label>
-                                <mat-select matInput name="ranch" id="ranch" formControlName="id_ranch" required (selectionChange)="ranch($event)">
-                                    <mat-option *ngFor="let ranch of ranches" [value]="ranch.id">{{ ranch.id }}
+                            <mat-form-field appearance="fill" class="col-sm-12">
+                                <mat-label>Cliente</mat-label>
+                                <mat-select matInput name="customer" id="customer" formControlName="id_customer" required (selectionChange)="customer($event)">
+                                    <mat-option *ngFor="let customer of customers" [value]="customer">{{ customer.name }}
                                     </mat-option>
                                 </mat-select>
                             </mat-form-field>
                             <mat-form-field appearance="fill" class="col-sm-12 col-md-6">
-                                <mat-label>Clasificación</mat-label>
-                                <input matInput type="text" value="Fertilizante y Agroquímico" readonly>
+                                <mat-label>Domicilio</mat-label>
+                                <input matInput type="text" formControlName="address" required readonly>
                             </mat-form-field>
                             <mat-form-field appearance="fill" class="col-sm-12 col-md-6">
-                                <mat-label>Encargado</mat-label>
-                                <input matInput type="text" formControlName="manager" required>
-                            </mat-form-field>
-                            <mat-form-field appearance="fill" class="col-sm-12 col-md-6">
-                                <mat-label>Equipo de aplicación</mat-label>
-                                <input matInput type="text" formControlName="equipment" required>
+                                <mat-label>Ciudad</mat-label>
+                                <input matInput type="text" formControlName="city" required readonly>
                             </mat-form-field>
                             <mat-form-field appearance="fill" class="col-sm-12">
                                 <mat-label>Justificación</mat-label>
@@ -52,100 +48,52 @@
                             </mat-form-field>
                             <div class="col-sm-12">
                                 <select2 class="w-100" 
-                                    [data]="sectors"
-                                    [value]="sec"
+                                    [data]="crops"
+                                    [value]="cro"
                                     multiple
                                     [overlay]="false"
                                     displaySearchStatus="always"
                                     listPosition="above"
                                     styleMode="material"
                                     resettable
-                                    (update)="updateS($event)"
                                     resultMaxHeight="200px">
-                                    <!-- formControlName="sectors" -->
-                                    <select2-hint>Sectores</select2-hint>
+                                    <select2-hint>Cultivos</select2-hint>
                                 </select2>
                             </div>
                             <div class="col-sm-12">
-                                <select2 class="w-100" 
-                                    [data]="products"
-                                    multiple
-                                    [overlay]="false"
-                                    displaySearchStatus="always"
-                                    listPosition="above"
-                                    styleMode="material"
-                                    resettable
-                                    (update)="updateP($event)"
-                                    resultMaxHeight="200px">
-                                    <!-- formControlName="products" -->
-                                    <select2-hint>Productos</select2-hint>
-                                </select2>
-                            </div>
-                            <div class="col">
-                                <table class="table table-bordered" style="font-size: 0.8rem;">
-                                    <thead>
-                                        <th>Nombre del producto</th>
-                                        <th *ngFor="let sec of sectors1" [ngStyle]="{'background-color': sec.startsWith('sector__') ? '#155a89': '#fff'}"><span *ngIf="sec.startsWith('sector__')"  style="color: #fff; font-weight: 400;">Sector {{ sec | slice:8 }}</span><span *ngIf="!sec.startsWith('sector__')">Dosis Ha</span></th>
-                                    </thead>
-                                    <tbody>
-                                        <tr *ngFor="let pro of products1">
-                                            <td>{{ pro.label }}</td>
-                                            <td *ngFor="let sec of sectors1">
-                                                <input type="number" matInput *ngIf="sec.startsWith('sector__')" id="{{ pro.value }}__{{ sec | slice:8 }}__1" value="0" min="0" step="0.01" (blur)="blur1()" (focus)="focus1(pro)" (change)="change1($event)">
-                                                <input type="number" matInput *ngIf="!sec.startsWith('sector__')" id="{{ pro.value }}__{{ sec }}__2" value="0" min="0" step="0.01" (blur)="blur1()" (focus)="focus1(pro)" (change)="change2($event)"></td>
-                                            <!-- <td *ngFor="let sec of sectors1">{{ pro }}-{{ sec }}</td> -->
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="row" id="exis" style="display: none;">
-                                <div class="col-sm-4">
-                                    Existencia: <input type="number" id="existence" readonly style="border: none; max-width: 6rem;"><span id="unit" class="me-3"></span>     
-                                </div>
-                                <div class="col-sm 4">
-                                    Programada: <input type="number" id="scheduled" readonly style="border: none; max-width: 6rem;" value="{{scheduled | number:'1.2-2'}}" step="0.01"><span id="unit1" class="me-3"></span>
-                                </div>
-                                <div class="col-sm-4">
-                                    Disponible: <input type="number" id="available" readonly style="border: none; max-width: 6rem;"><span id="unit2"></span>
-                                </div>
-                            </div>
-                            <!-- <div class="col">
                                 <table class="table table-bordered">
                                     <thead >
-                                        <th>Producto</th>
-                                        <th>Cantidad</th>
+                                        <th>Indicación</th>
                                         <th>Opciones</th>
                                     </thead>
-                                    <tr *ngFor="let pro of products_l">
-                                        <td>{{ pro.name }}</td>
-                                        <td>{{ pro.quantity }}</td>
+                                    <tr *ngFor="let indication of indications">
+                                        <td>{{ indication.indication }}</td>
                                         <td>
-                                            <button class="btn btn-outline-info me-2" style="padding: 0 0.2rem;" (click)="editPro(pro.key, pro.quantity)"><span class="material-icons">edit</span></button>
-                                            <button class="btn btn-outline-danger" style="padding: 0 0.2rem;" (click)="deletePro(pro.key)"><span class="material-icons">delete</span></button></td>
+                                            <button class="btn btn-outline-info me-2" style="padding: 0 0.2rem;" (click)="editIndication(indication.id, indication.indication)"><span class="material-icons">edit</span></button>
+                                            <button class="btn btn-outline-danger" style="padding: 0 0.2rem;" (click)="deleteIndication(indication.id)"><span class="material-icons">delete</span></button>
+                                        </td>
                                     </tr>
                                 </table>
-                            </div> -->
+                            </div>
                         </div>
                     </form>
-                    <!-- <form [formGroup]="myForm1" novalidate autocomplete="off">
+                    <form [formGroup]="myForm1" novalidate autocomplete="off">
                         <div class="row">
-                            <div class="col-sm-12 col-md-4">
-                                <select2 class="w-100" [data]="products" displaySearchStatus="always"
-                                    listPosition="above" styleMode="material" resettable formControlName="product"
-                                    resultMaxHeight="200px">
-                                    <select2-hint>Productos</select2-hint>
-                                </select2>
-                            </div>
-                            <mat-form-field appearance="fill" class="col-sm-12 col-md-2">
-                                <mat-label>Cantidad</mat-label>
-                                <input matInput type="number" formControlName="quantity" required>
+                            <mat-form-field appearance="fill" class="col-sm-12 col-md-2" hidden>
+                                <mat-label>ID</mat-label>
+                                <input matInput type="number" formControlName="id" readonly>
                             </mat-form-field>
-                            <div class="col-sm-12 col-md-2">
-                                <button mat-button class="btn btn-outline-success" (click)="addProduct()"
+                            <mat-form-field appearance="fill" class="col-sm-10">
+                                <mat-label>Indicación</mat-label>
+                                <!-- <input matInput type="text" formControlName="indication" required> -->
+                                <textarea matInput cols="30" rows="3" formControlName="indication" required></textarea>
+                            </mat-form-field>
+                            <div class="col-sm-2">
+                                <button mat-button class="btn btn-outline-success" (click)="addIndication()"
                                     [disabled]="!myForm1.valid">Agregar</button>
                             </div>
                         </div>
-                    </form> -->
+                    </form>
                 </div>
             </div>
         </div>

@@ -1,0 +1,62 @@
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card mt-2">
+                <div class="card-header">
+                    <nav class="navbar bg-light">
+                        <div class="container-fluid">
+                            <a class="navbar-brand">Gestión de clientes</a>
+                            <div class="d-flex">
+                                <button class="btn btn-outline-info me-2" (click)="openDialog()">Nuevo cliente</button>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+                <div class="card-body" *ngIf="data">
+                    <div class="row">
+                        <div class="col s4">
+                            <mat-form-field>
+                              <input matInput type="text" (keyup)="doFilter($event.target)" placeholder="Buscar">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <mat-table class="mat-elevation-z8" [dataSource]="dataSource" matSort matSortActive="name" matSortDirection="desc" matSortDisableClear (matSortChange)="sortData($event)">
+
+                        <ng-container matColumnDef="id">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="pad-l">RFC</mat-header-cell>
+                            <mat-cell *matCellDef="let element" class="pad-l">{{element.id}}</mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="name">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header >Nombre</mat-header-cell>
+                            <mat-cell *matCellDef="let element">{{element.name}}
+                            </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="phone">
+                            <mat-header-cell *matHeaderCellDef class="pad-l">Teléfono</mat-header-cell>
+                            <mat-cell *matCellDef="let element" class="pad-l">{{element.phone}}
+                            </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="email">
+                            <mat-header-cell *matHeaderCellDef class="pad-l">Correo</mat-header-cell>
+                            <mat-cell *matCellDef="let element" class="pad-l">{{element.email}}
+                            </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="action">
+                            <mat-header-cell *matHeaderCellDef> Acción </mat-header-cell>
+                            <mat-cell *matCellDef="let element; let i = index;">
+
+                                <button class="btn btn-outline-info me-2" style="padding: 0 0.2rem;" (click)="openEditDialog(element.id)"><span class="material-icons">edit</span></button>
+                                <button class="btn btn-outline-danger" style="padding: 0 0.2rem;" (click)="openDeleteDialog(element.id)"><span class="material-icons">delete</span></button>
+                            </mat-cell>
+                        </ng-container>
+
+                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+
+                    </mat-table>
+                    <mat-paginator [pageSizeOptions]="[10, 20]" showFirstLastButtons></mat-paginator>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
