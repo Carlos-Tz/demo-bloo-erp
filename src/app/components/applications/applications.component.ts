@@ -36,7 +36,7 @@ export class ApplicationsComponent implements OnInit {
   displayedColumns: any[] = [
     'id',
     'date',
-    'id_ranch',
+    'customer',
     /* 'status', */
     'justification',
     'action',
@@ -59,7 +59,7 @@ export class ApplicationsComponent implements OnInit {
       data.forEach(item => {
         const r = item.payload.val();     
         if(r.status == 1){
-          const app = {'id': item.key, 'id_ranch': r.id_ranch, 'date': r.date, 'status': r.status, 'justification': r.justification };        
+          const app = {'id': item.key, 'customer': r.customer.name, 'date': r.date, 'status': r.status, 'justification': r.justification };        
           this.applications.push(app as Application);
         }   
       });

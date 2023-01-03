@@ -29,7 +29,7 @@
                             </mat-form-field>
                             <mat-form-field appearance="fill" class="col-sm-12">
                                 <mat-label>Cliente</mat-label>
-                                <mat-select matInput name="customer" id="customer" formControlName="id_customer" required (selectionChange)="customer($event)">
+                                <mat-select matInput name="customer" id="customer" formControlName="customer" required (selectionChange)="customer($event)">
                                     <mat-option *ngFor="let customer of customers" [value]="customer">{{ customer.name }}
                                     </mat-option>
                                 </mat-select>
@@ -56,6 +56,7 @@
                                     listPosition="above"
                                     styleMode="material"
                                     resettable
+                                    formControlName="crops"
                                     resultMaxHeight="200px">
                                     <select2-hint>Cultivos</select2-hint>
                                 </select2>

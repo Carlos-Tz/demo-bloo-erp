@@ -54,7 +54,7 @@ export class RunApplicationsComponent implements OnInit {
       data.forEach(item => {
         const r = item.payload.val();     
         if(r.status == 3 ){
-          const app = {'id': item.key, 'id_ranch': r.id_ranch, 'date': r.date, 'status': r.status, 'justification': r.justification };        
+          const app = {'id': item.key, 'customer': r.customer, 'date': r.date, 'status': r.status, 'justification': r.justification };        
           this.applications.push(app as Application);
         }   
       });

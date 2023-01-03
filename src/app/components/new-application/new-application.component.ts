@@ -56,17 +56,6 @@ export class NewApplicationComponent implements OnInit {
         //}
       });
     });
-    /* this.apiP.GetProductList().snapshotChanges().subscribe(data => {
-      data.forEach(item => {
-        const p = item.payload.val();
-        if((p.category == 'FERTILIZANTES' || p.category == 'AGROQUIMICOS') && p.existence >= 0.01){
-          const pro = {'value': item.key!, 'label': p.name, 'data': { 'existence': p.existence, 'unit': p.unit }};
-          this.products.push(pro);
-          //const p1 = { 'key': item.key, 'name': p.name, 'unit': p.unit, 'avcost': p.avcost, 'category': p.category }
-          //this.products1.push(p1);
-        }
-      });
-    }); */
 
     this.apiA.GetLastApplication().subscribe(res=> {
       if(res[0]){
@@ -82,12 +71,13 @@ export class NewApplicationComponent implements OnInit {
     this.myForm = this.fb.group({
       id: [null, [Validators.required]],
       date: ['', [Validators.required]],
-      id_customer: ['', [Validators.required]],
+      customer: ['', [Validators.required]],
       status: [1],
       justification: ['', [Validators.required]],
       address: ['', [Validators.required]],
       city: ['', [Validators.required]],
       crops: [],
+      indications: [],
     });
   }
 
@@ -99,23 +89,16 @@ export class NewApplicationComponent implements OnInit {
   }
 
   submitSurveyData = () => {
-    /* let products_d = {};
-    this.products1.forEach(p => {
-      let sectors_d = {};
-      this.sectors1.forEach(s => {
-        if(!s.startsWith('sector__')){
-          let n1: string = $('input#'+p.value+'__'+s+'__1').val().toString();
-          let n2: string = $('input#'+p.value+'__'+s+'__2').val().toString();
-          let nn1 = parseFloat(n1);
-          let nn2 = parseFloat(n2);
-          sectors_d[s] = { sector: nn1, dosis: nn2, delivered: false }
-        }
-      });
-      products_d[p.value] = sectors_d
+    let indications_ : any[] = [];
+    this.indications.forEach((c, i) => {
+      //console.log(c);
+      indications_.push({ id: i, indication: c.indication })
     });
-    this.myForm.patchValue({ 'products': products_d }); */
+    //console.log(indications_);
+    this.myForm.patchValue({ 'indications': indications_ })
     this.apiA.AddApplication(this.myForm.value);
     this.ResetForm();
+    this.toastr.success('Receta guardada!');
   }
 
   ResetForm() {
@@ -124,7 +107,7 @@ export class NewApplicationComponent implements OnInit {
 
 
   customer(ev){
-    console.log(ev.value);
+    //console.log(ev.value);
     this.myForm.patchValue({ 'address': ev.value.street + ' # ' + ev.value.num + ' ' + ev.value.colony});
     this.myForm.patchValue({ 'city': ev.value.city });
     /* this.crops = [];
