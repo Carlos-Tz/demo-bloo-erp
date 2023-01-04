@@ -35,7 +35,7 @@ export class SchedulePaymentComponent implements OnInit {
 
   sForm() {
     this.myForm = this.fb.group({
-      avcost: [null, [Validators.required]],
+      //avcost: [null, [Validators.required]],
       id: [null, [Validators.required]],
       iva: [null, [Validators.required]],
       key: ['', [Validators.required]],

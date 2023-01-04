@@ -46,7 +46,7 @@ export class AssignProviderComponent implements OnInit {
       provider: ['', [Validators.required]],
       price: [null, [Validators.required]],
       iva: [null, [Validators.required]],
-      avcost: [null, [Validators.required]],
+      //avcost: [null, [Validators.required]],
       key: ['', [Validators.required]],
       name: ['', [Validators.required]],
       quantity: [null, [Validators.required]],

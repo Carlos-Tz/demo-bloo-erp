@@ -8,6 +8,8 @@ import { ApiApplicationService } from 'src/app/services/api-application.service'
 import { ApiProductService } from 'src/app/services/api-product.service';
 import { ApiRanchService } from 'src/app/services/api-ranch.service';
 import * as $ from 'jquery';
+import { ApiCustomerService } from 'src/app/services/api-customer.service';
+import { Customer } from 'src/app/models/customer';
 @Component({
   selector: 'app-edit-application',
   templateUrl: './edit-application.component.html',
@@ -15,23 +17,21 @@ import * as $ from 'jquery';
 })
 export class EditApplicationComponent implements OnInit {
   public myForm!: FormGroup;
+  public myForm1!: FormGroup;
   public key = '';
-  public pro: string[] = [];
-  public products: Select2Data = [];
-  public products1: any[] = [];
-  public sectors1: any[] = [];
-  public sec: string[] = [];
-  public prod: string[] = [];
-  public sectors: Select2Data = [];
-  public ranches: Ranch[] = [];
+  public cro: string[] = [];
+  public cus = "";
+  public crops: any[] = [];
   public tab = false;
   public scheduled = 0;
+  public indications: any[] = [];
+  public customers: any[] = [];
 
   constructor(
     private fb: FormBuilder,
     public apiRa: ApiRanchService,
     public apiA: ApiApplicationService,
-    public apiP: ApiProductService,
+    public apiC: ApiCustomerService,
     public toastr: ToastrService,
     private actRouter: ActivatedRoute
   ) { }
@@ -39,93 +39,33 @@ export class EditApplicationComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     this.key = this.actRouter.snapshot.paramMap.get('id');
     this.sForm();
-    this.apiP.GetProductList().snapshotChanges().subscribe(data => {
-      data.forEach(item => {
-        const p = item.payload.val();
-        if((p.category == 'FERTILIZANTES' || p.category == 'AGROQUIMICOS') && p.existence >= 0.01){
-          const pro = {'value': item.key!, 'label': p.name, 'data': { 'existence': p.existence, 'unit': p.unit }};
-          this.products.push(pro);
-        }
-      });
-    });
-    const promise = new Promise((resolve, reject) => {
-      this.apiA.GetApplication(this.key).valueChanges().subscribe(data => {
-        this.myForm.patchValue(data);        
-        if(data.id_ranch){
-          this.sectors = [];
-          this.apiRa.GetRanch(data.id_ranch).valueChanges().subscribe(data1 => {
-            if(data1.sectors){
-              for (const e in data1.sectors) {
-                if (Object.prototype.hasOwnProperty.call(data1.sectors, e)) {
-                  const element = data1.sectors[e];
-                  const sec = {'value': element.id, 'label': element.name, 'data': element.hectares};   
-                  this.sectors.push(sec);
-                }
-              }
-            }
-            resolve(data.products);
-          });
-        }
-      });
-    });
-
-    await promise.then((p_l: any) => {
-      //const promise1 = new Promise((resolve, reject) => {
-        if(p_l){
-          let ind = 0;
-          this.prod = [];
-          this.sec = [];
-          for (const p in p_l) {
-            this.prod.push(p);
-            if (Object.prototype.hasOwnProperty.call(p_l, p)) {
-              const element = p_l[p];
-              for (const s in element){
-                if(ind == 0){
-                  this.sec.push(s)
-                }
-              }
-            }
-            ind++;
-          }
-          //resolve(p_l);
-        }
-      //}); 
-      /* await promise1.then((p_l1: any) => {
-        this.tab = true;
-      }); */
-
-      /* await promise1.then((p_l1: any) => {
-        for (const p1 in p_l1) {
-          if (Object.prototype.hasOwnProperty.call(p_l1, p1)) {
-            const element1 = p_l1[p1];
-            for (const s1 in element1){
-              console.log(p1, s1);
-              //console.log(this.sec);
-              
-              console.log($('input#'+p1+'__'+s1+'__1').val());
-              //console.log($('input#'+p1+'__'+s1+'__2').val());
-              $('input#'+p1+'__'+s1+'__1').val((element1[s1].sector).toFixed(2));
-              $('input#'+p1+'__'+s1+'__2').val((element1[s1].dosis).toFixed(2));
-              //console.log(element1[s1]);
-            }
-          }
-        }
-      }); */
-    });
-
-  }
-
-  table(){
+    this.sForm1();
     this.apiA.GetApplication(this.key).valueChanges().subscribe(data => {
-      for (const p1 in data.products) {
-        if (Object.prototype.hasOwnProperty.call(data.products, p1)) {
-          const element1 = data.products[p1];
-          for (const s1 in element1){
-            $('input#'+p1+'__'+s1+'__1').val((element1[s1].sector).toFixed(2));
-            $('input#'+p1+'__'+s1+'__2').val((element1[s1].dosis).toFixed(2));
-          }
-        }
+      this.myForm.patchValue(data);
+      this.cus = data.customer.name;
+      if(data.crops){
+        data.crops.forEach(item => {
+          //const c = item.payload.val();
+          const cro = {'value': item, 'label': item};        
+          this.crops.push(cro);
+        });
+        //this.crops = data.crops;
+        
+        this.cro = data.crops
       }
+      if(data.indications){
+        this.indications = data.indications;
+      }
+    });
+    this.apiC.GetCustomerList().snapshotChanges().subscribe(data => {
+      data.forEach(item => {
+        //const p = item.payload.toJSON();
+        const c = item.payload.val();
+        //if(c.status){
+          const cus = c;/* = {'value': c, 'label': c.name};  */    
+          this.customers.push(cus);
+        //}
+      });
     });
   }
 
@@ -133,190 +73,87 @@ export class EditApplicationComponent implements OnInit {
     this.myForm = this.fb.group({
       id: [null, [Validators.required]],
       date: ['', [Validators.required]],
-      id_ranch: ['', [Validators.required]],
+      customer: ['', [Validators.required]],
       status: [''],
       justification: ['', [Validators.required]],
-      manager: ['', [Validators.required]],
-      equipment: ['', [Validators.required]],
-      products: [],
-      sectors: [],
+      address: ['', [Validators.required]],
+      city: ['', [Validators.required]],
+      crops: [],
+      indications: [],
     });
   }
 
-  submitSurveyData = () => {
-    let products_d = {};
-    this.products1.forEach(p => {
-      let sectors_d = {};
-      this.sectors1.forEach(s => {
-        if(!s.startsWith('sector__')){
-          let n1: string = $('input#'+p.value+'__'+s+'__1').val().toString();
-          let n2: string = $('input#'+p.value+'__'+s+'__2').val().toString();
-          let nn1 = parseFloat(n1);
-          let nn2 = parseFloat(n2);
-          sectors_d[s] = { sector: nn1, dosis: nn2, delivered: false }
-        }
-      });
-      products_d[p.value] = sectors_d
+  sForm1() {
+    this.myForm1 = this.fb.group({
+      id: [''],
+      indication: ['',[Validators.required]],
     });
-    this.myForm.patchValue({ 'products': products_d });
+  }
+
+  customer(ev){
+    //console.log(ev.value);
+    this.myForm.patchValue({ 'address': ev.value.street + ' # ' + ev.value.num + ' ' + ev.value.colony});
+    this.myForm.patchValue({ 'city': ev.value.city });
+    /* this.crops = [];
+    this.apiC.GetCustomer(ev.value).valueChanges().subscribe(data => {
+      if(data.crops){*/
+        for (const e in ev.value.crops) {
+          if (Object.prototype.hasOwnProperty.call(ev.value.crops, e)) {
+            const element = ev.value.crops[e];
+            const cro = {'value': element, 'label': element};   
+            this.crops.push(cro);
+          }
+        }
+      /*}
+    }); */
+  }
+
+  submitSurveyData = () => {
+    let indications_ : any[] = [];
+    this.indications.forEach((c, i) => {
+      //console.log(c);
+      indications_.push({ id: i, indication: c.indication })
+    });
+    //console.log(indications_);
+    this.myForm.patchValue({ 'indications': indications_ })
     this.apiA.UpdateApplication(this.myForm.value, this.key)
     //this.apiA.AddApplication(this.myForm.value);
   }
 
-  /* ranch(ev){
-    //console.log(ev.value);
-    this.sectors = [];
-    this.apiRa.GetRanch(ev.value).valueChanges().subscribe(data => {
-      //this.myForm.patchValue(data);
-      if(data.sectors){
-        for (const e in data.sectors) {
-          if (Object.prototype.hasOwnProperty.call(data.sectors, e)) {
-            const element = data.sectors[e];
-            const sec = {'value': element.id, 'label': element.name, 'data': element.hectares};   
-            this.sectors.push(sec);
-          }
-        }
+  allCrops(){
+    this.cro = [];
+    this.crops.forEach(e => this.cro.push(e['value']));
+  }
+
+  addIndication(){
+    if (this.indications.find(e => e.id === this.myForm1.get('id')!.value)) {
+      const c = this.indications.find(e => e.id === this.myForm1.get('id')!.value);
+      c['indication'] = this.myForm1.get('indication')!.value;
+      this.indications = this.indications.map(e => e.id !== this.myForm1.get('id')!.value ? e : c);
+    }else {
+      const c = {};
+      if(this.indications.length > 0){
+        c['id'] = this.indications[this.indications.length - 1].id + 1;
+      }else{
+        c['id'] = 1;
       }
+      c['indication'] = this.myForm1.get('indication')!.value;
+      this.indications.push(c);
+    }
+    this.myForm1.reset();
+  }
+
+  editIndication(id: string, indication: string){
+    this.myForm1.patchValue({ id: id , indication: indication})
+  }
+
+  deleteIndication(id: string){
+    const index = this.indications.findIndex((object) => {
+      return object.id === id;
     });
-  } */
-
-  allSec(){
-    this.sec = [];
-    this.sectors.forEach(e => this.sec.push(e['value']));
-  }
-
-  updateS(ev){
-    //this.sectors1 = ev.value.map((e, i) => e)
-    /* this.sectors1 = ev.value.flatMap((e, i) => ['sector__'+e, e+'__'+i]); */
-    this.sectors1 = ev.value.flatMap((e, i) => ['sector__'+e, e]);
-    //console.log(this.sectors1);
-    //this.sectors1 = [...ev.value];
-  }
-
-  updateP(ev){
-    this.products1 = [...ev.options];
-  }
-
-  change1(ev){
-    //console.log(ev.srcElement)
-    var arrId = ev.srcElement.id.split('__');
-    var id_p = arrId[0];
-    var id_s = arrId[1];
-    var id_c = arrId[2];
-    var s = this.sectors.find((el) => { return el.label == id_s; });
-    //$('input#'+id_p+'__'+id_s+'__2').val((ev.srcElement.value/s.data).toFixed(2));
-    //console.log(parseFloat($('#available').val().toString()));
-    //console.log(parseFloat(ev.srcElement.value));
     
-    if(parseFloat(ev.srcElement.value) <= parseFloat($('#available').val().toString())){
-      $('input#'+id_p+'__'+id_s+'__2').val((parseFloat(ev.srcElement.value)/s.data).toFixed(2)); console.log('ok');
-      
-    }else {
-      $('input#'+id_p+'__'+id_s+'__1').val(0);
-      $('input#'+id_p+'__'+id_s+'__2').val(0);
+    if (index !== -1) {
+      this.indications.splice(index, 1);
     }
-    this.calculate(id_p);
-  }
-
-  change2(ev){
-    var arrId = ev.srcElement.id.split('__');
-    var id_p = arrId[0];
-    var id_s = arrId[1];
-    var id_c = arrId[2];
-    var s = this.sectors.find((el) => { return el.label == id_s; });
-    //$('input#'+id_p+'__'+id_s+'__1').val((parseFloat(ev.srcElement.value)*s.data).toFixed(2));
-    if(parseFloat(ev.srcElement.value)*s.data <= parseFloat($('#available').val().toString())){
-      $('input#'+id_p+'__'+id_s+'__1').val((parseFloat(ev.srcElement.value)*s.data).toFixed(2));
-    }else {
-      $('input#'+id_p+'__'+id_s+'__1').val(0);
-      $('input#'+id_p+'__'+id_s+'__2').val(0);
-    }
-    this.calculate(id_p);
-  }
-
-  calculate(id_p){
-    let sum = 0;
-    this.sectors1.forEach(p => {
-      if(!p.startsWith('sector__')){
-        let n: string = $('input#'+id_p+'__'+p+'__1').val().toString();
-        sum += parseFloat(n);
-      }
-    });
-    //console.log(sum);
-  }
-
-  async focus1(pro){
-    //console.log(pro);
-    this.scheduled = 0;
-    this.sectors1.forEach(s => {
-      if(!s.startsWith('sector__')){
-        let n1: string = $('input#'+pro.value+'__'+s+'__1').val().toString();
-        let nn1 = parseFloat(n1);
-        this.scheduled += nn1;
-      }
-    });
-    //const promise5 = new Promise((resolve, reject) => {
-      this.apiA.GetApplicationList().snapshotChanges().subscribe(data => {
-        data.forEach(item => {
-          const r = item.payload.val();     
-          if(r.status < 3 && r.id != this.key){
-            if(r.products){
-              Object.entries(r.products).forEach(([key, value], index) => {
-                if(key == pro.value){
-                  Object.entries(value).forEach(([k,v], i) => {
-                    if(!v.delivered){
-                      //console.log(r);
-                      this.scheduled += v.sector;
-                    }
-                  });
-                }
-                
-              });
-            }
-          }   
-        });
-        //resolve(data);
-        $('#scheduled').val(this.scheduled.toFixed(2));
-        $('#available').val((pro.data.existence - this.scheduled).toFixed(2));
-        //$('#available').val((pro.data.existence - parseFloat($('#scheduled').val().toString())).toFixed(2));
-        //$('#scheduled').val(scheduled.toFixed(2));
-      });
-    //});
-    //await promise5.then((data: any) => {
-      /* data.forEach(item => {
-        const r = item.payload.val();    console.log(r);
-         
-        if(r.status < 3){
-          if(r.products){
-            Object.entries(r.products).forEach(([key, value], index) => {
-              if(key == pro.value){
-                Object.entries(value).forEach(([k,v], i) => {
-                  if(!v.delivered){
-                    //console.log(r);
-                    this.scheduled += v.sector;
-                  }
-                });
-              }
-              
-            });
-          }
-        }   
-      }); */
-      //console.log(data);
-    //});
-    //console.log(pro.data.existence);
-    $('#exis').show()
-    $('#existence').val(pro.data.existence.toFixed(2));
-    //$('#scheduled').val(this.scheduled.toFixed(2));
-    //$('#available').val((pro.data.existence - parseFloat($('#scheduled').val().toString())).toFixed(2));
-    //$('#available').val((pro.data.existence - this.scheduled).toFixed(2));
-    //$('#existence').html(pro.data.existence);
-    $('#unit').html(pro.data.unit);
-    $('#unit1').html(pro.data.unit);
-    $('#unit2').html(pro.data.unit);
-  }
-
-  blur1(){
-    $('#exis').hide();
   }
 }

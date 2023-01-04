@@ -54,7 +54,7 @@ export class MakePaymentComponent implements OnInit {
       amount: [null, Validators.required],
     });
     this.myForm2 = this.fb.group({
-      avcost: [null, [Validators.required]],
+      //avcost: [null, [Validators.required]],
       id: [null, [Validators.required]],
       iva: [null, [Validators.required]],
       key: ['', [Validators.required]],
