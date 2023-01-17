@@ -21,6 +21,8 @@ import { ApiCompanyService } from 'src/app/services/api-company.service';
 //import { OrderedRequisitionsComponent } from '../ordered-requisitions/ordered-requisitions.component';
 import { Application } from 'src/app/models/application';
 import { ApiApplicationService } from 'src/app/services/api-application.service';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { MailService } from 'src/app/services/mail.service';
 
 @Component({
   selector: 'app-applications',
@@ -49,6 +51,7 @@ export class ApplicationsComponent implements OnInit {
     public dialog: MatDialog,
     public apiC: ApiCompanyService,
     //public apiR: ApiRequisitionService,
+    public apiM: MailService,
     public apiA: ApiApplicationService,
     public toastr: ToastrService,
   ) { }
@@ -179,16 +182,28 @@ export class ApplicationsComponent implements OnInit {
     //dialogRef.afterClosed().subscribe(result => {
       //console.log(`Dialog result: ${result}`);
     //});
-  }
+  }*/
 
-  openOrdersDialog(requisition: Requisition) {
-    const dialogRef = this.dialog.open(ViewPdfOrdersComponent, {
-      data: {
-        requisition: requisition
-      },
-      autoFocus: false
+  openMailDialog(id: string) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: "¿Confirma que desea enviar esta receta por correo?"
     });
-  } */
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        //console.log(result);
+        //this.apiC.DeleteCategory(key);
+        this.apiA.GetApplication(id).valueChanges().subscribe(data => {
+          if(data){
+            this.apiM.mailApplication(data).subscribe(dat =>{
+              console.log(dat);
+              
+             });
+          }
+        });
+        this.toastr.info('Receta enviada al correo!');
+      }
+    });
+  }
 
   PDF(id) {
     this.apiA.GetApplication(id).valueChanges().subscribe(data => {
@@ -201,19 +216,22 @@ export class ApplicationsComponent implements OnInit {
           {
             style: 'table',
             table: {
-              widths: [75, 75, 75, 55, 70, 'auto'],
-              heights: [50, 20, 20, 20, 20, 20, 20, 25],
+              widths: [70, 330, 'auto'],
+              heights: [60, 20, 20, 20, 20, 20],
               headerRows: 1,
               body: [
-                [{text: 'RECETA', colSpan: 5, alignment: 'center', fontSize: 26, margin: 15 },{}, {}, {}, {}, {}],
-                [{ colSpan: 5, rowSpan: 3, text: this.company.name + '\nRFC: ' + this.company.rfc + '\n' +  this.company.address +'\n' }, {}, {}, {}, {}, { text: 'MORELIA, MICHOACÁN', alignment: 'center'}],
-                [{}, {}, {}, {}, {}, { text: 'REC - ' + data.id, alignment: 'center' }],
-                [{}, {}, {}, {}, {}, { text: 'Slogan', alignment: 'center' }],
-                [{ text: 'Nombre', fillColor: '#eeeeee' }, { text: data.customer.name, colSpan: 2 }, {}, { text: 'Ciclo', fillColor: '#eeeeee' }, { text: data.cicle }, { text: 'Fecha', fillColor: '#eeeeee' }],
-                [{ text: 'Prioridad', fillColor: '#eeeeee' }, { text: 'pri', colSpan: 2 }, {}, { text: 'Catégoria', fillColor: '#eeeeee' }, {}, { text: data.date, alignment: 'center'}],
-                [{ text: 'Justificación', fillColor: '#eeeeee' }, { text: data.justification, colSpan: 5 }, {}, {}, {}, {}],
-                [{ text: 'ID', bold: true, style: 'he', fillColor: '#eeeeee' }, { text: 'Indicación', bold: true, style: 'he', fillColor: '#eeeeee', colSpan: 5 }, {}, {}, {}, {}],
-                ...data.indications.map(p => ([{ text: p.id, style: 'he' }, { text: p.indication, style: 'he', colSpan: 5 }, {}, {}, {}, {}]))
+                //[{text: 'RECETA', colSpan: 5, alignment: 'center', fontSize: 26, margin: 15 },{}, {}, {}, {}, {}],
+                //[{},{ colSpan: 4, rowSpan: 3, text: this.company.name + '\nRFC: ' + this.company.rfc + '\n' +  this.company.address +'\n' }, {}, {}, {}, { text: 'MORELIA, MICHOACÁN', alignment: 'center'}],
+                [{}, { /* rowSpan: 2, */ text: this.company.name + '\nRFC: ' + this.company.rfc + '\n' +  this.company.address +'\n', alignment: 'center', fontSize: 12, margin: 2 }, { text: 'No. Receta: ' + data.id + '\n\nFecha: '+ data.date, alignment: 'right' }],
+                //[{}, {}, {}, {}, {}, { text: 'Fecha: ' + data.date, alignment: 'center' }],
+                [{ text: 'Nombre', fillColor: '#eeeeee' }, { text: data.customer.name, colSpan: 2 }, {}],
+                [{ text: 'Domicilio', fillColor: '#eeeeee' }, { text: data.address, colSpan: 2 }, {}],
+                [{ text: 'Ciudad', fillColor: '#eeeeee' }, { text: data.city, colSpan: 2 }, {}],
+                [{ text: 'Justificación', fillColor: '#eeeeee' }, { text: data.justification, colSpan: 2 }, {}],
+                [{ text: 'Cultivo(s)', bold: true, style: 'he', fillColor: '#eeeeee', colSpan: 3 }, {}, {}],
+                ...data.crops.map(p => ([{ text: p, colSpan: 3 }, {}, {}])),
+                [{ text: 'Indicaciones', bold: true, style: 'he', fillColor: '#eeeeee', colSpan: 3 }, {}, {}],
+                ...data.indications.map(p => ([{ text: p.id+1 + '.- ' + p.indication, /* style: 'he', */ colSpan: 3 }, {}, {}]))
               ]
             }
           }
