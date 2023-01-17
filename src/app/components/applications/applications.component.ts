@@ -5,13 +5,13 @@ import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
 //import { Requisition } from 'src/app/models/requisition';
-//import { Company } from 'src/app/models/company';
+import { Company } from 'src/app/models/company';
 //import { ApiRequisitionService } from 'src/app/services/api-requisition.service';
 //import { NewRequisitionComponent } from '../new-requisition/new-requisition.component';
-//import pdfMake from 'pdfmake/build/pdfmake';  
-//import pdfFonts from 'pdfmake/build/vfs_fonts';  
-//pdfMake.vfs = pdfFonts.pdfMake.vfs;  
-//import { ApiCompanyService } from 'src/app/services/api-company.service';
+import pdfMake from 'pdfmake/build/pdfmake';  
+import pdfFonts from 'pdfmake/build/vfs_fonts';  
+pdfMake.vfs = pdfFonts.pdfMake.vfs;  
+import { ApiCompanyService } from 'src/app/services/api-company.service';
 //import { AuthorizeRequisitionComponent } from '../authorize-requisition/authorize-requisition.component';
 //import { QuoteComponent } from '../quote/quote.component';
 //import { OrderComponent } from '../order/order.component';
@@ -43,11 +43,11 @@ export class ApplicationsComponent implements OnInit {
   ];
   //public categories: Select2Data = [];
   public applications: Application[] = [];
-  //public company: Company;
+  public company: Company;
   //public category = '';
   constructor(
     public dialog: MatDialog,
-    //public apiC: ApiCompanyService,
+    public apiC: ApiCompanyService,
     //public apiR: ApiRequisitionService,
     public apiA: ApiApplicationService,
     public toastr: ToastrService,
@@ -73,9 +73,9 @@ export class ApplicationsComponent implements OnInit {
         this.dataSource.paginator = this.paginator;
       }, 0);
     });
-    /* this.apiC.GetCompany().valueChanges().subscribe(data => {
+    this.apiC.GetCompany().valueChanges().subscribe(data => {
       this.company = data;
-    }); */
+    });
     
   }
 
@@ -190,18 +190,10 @@ export class ApplicationsComponent implements OnInit {
     });
   } */
 
-  /* PDF(id) {
-    this.apiR.GetRequisition(id).valueChanges().subscribe(data => {
-      let priority = '';
-      if(data.priority == 1){
-        priority = 'Baja';
-      }else if(data.priority){
-        priority = 'Media';
-      }else{
-        priority = 'Alta';
-      }
-      if(!data.products){
-        data.products = [{ key: '', name: '', quantity: '', unit: '' }];
+  PDF(id) {
+    this.apiA.GetApplication(id).valueChanges().subscribe(data => {
+      if(!data.indications){
+        data.indications = [{ key: '', indication: '' }];
       }
       let docDefinition = {  
         //header: 'C# Corner PDF Header',  
@@ -213,15 +205,15 @@ export class ApplicationsComponent implements OnInit {
               heights: [50, 20, 20, 20, 20, 20, 20, 25],
               headerRows: 1,
               body: [
-                [{text: 'REQUISICIÓN', colSpan: 5, alignment: 'center', fontSize: 26, margin: 15 },{}, {}, {}, {}, {}],
+                [{text: 'RECETA', colSpan: 5, alignment: 'center', fontSize: 26, margin: 15 },{}, {}, {}, {}, {}],
                 [{ colSpan: 5, rowSpan: 3, text: this.company.name + '\nRFC: ' + this.company.rfc + '\n' +  this.company.address +'\n' }, {}, {}, {}, {}, { text: 'MORELIA, MICHOACÁN', alignment: 'center'}],
-                [{}, {}, {}, {}, {}, { text: 'REQ - ' + data.id, alignment: 'center' }],
+                [{}, {}, {}, {}, {}, { text: 'REC - ' + data.id, alignment: 'center' }],
                 [{}, {}, {}, {}, {}, { text: 'Slogan', alignment: 'center' }],
-                [{ text: 'Solicitante', fillColor: '#eeeeee' }, { text: data.petitioner, colSpan: 2 }, {}, { text: 'Ciclo', fillColor: '#eeeeee' }, { text: data.cicle }, { text: 'Fecha', fillColor: '#eeeeee' }],
-                [{ text: 'Prioridad', fillColor: '#eeeeee' }, { text: priority, colSpan: 2 }, {}, { text: 'Catégoria', fillColor: '#eeeeee' }, {}, { text: data.date, alignment: 'center'}],
+                [{ text: 'Nombre', fillColor: '#eeeeee' }, { text: data.customer.name, colSpan: 2 }, {}, { text: 'Ciclo', fillColor: '#eeeeee' }, { text: data.cicle }, { text: 'Fecha', fillColor: '#eeeeee' }],
+                [{ text: 'Prioridad', fillColor: '#eeeeee' }, { text: 'pri', colSpan: 2 }, {}, { text: 'Catégoria', fillColor: '#eeeeee' }, {}, { text: data.date, alignment: 'center'}],
                 [{ text: 'Justificación', fillColor: '#eeeeee' }, { text: data.justification, colSpan: 5 }, {}, {}, {}, {}],
-                [{ text: 'ID', bold: true, style: 'he', fillColor: '#eeeeee' }, { text: 'CANTIDAD', bold: true, style: 'he', fillColor: '#eeeeee' }, { text: 'UNIDAD', bold: true, style: 'he', fillColor: '#eeeeee' }, { text: 'DESCRIPCIÓN', bold: true, style: 'he', colSpan: 3, fillColor: '#eeeeee' }, {}, {}],
-                ...data.products.map(p => ([{ text: p.key, style: 'he' }, { text: p.quantity, style: 'he' }, { text: p.unit, style: 'he' }, { text: p.name, colSpan: 3, style: 'he'},  '', '']))
+                [{ text: 'ID', bold: true, style: 'he', fillColor: '#eeeeee' }, { text: 'Indicación', bold: true, style: 'he', fillColor: '#eeeeee', colSpan: 5 }, {}, {}, {}, {}],
+                ...data.indications.map(p => ([{ text: p.id, style: 'he' }, { text: p.indication, style: 'he', colSpan: 5 }, {}, {}, {}, {}]))
               ]
             }
           }
@@ -239,5 +231,5 @@ export class ApplicationsComponent implements OnInit {
      
       pdfMake.createPdf(docDefinition).open();  
     });
-  }  */
+  }
 }
