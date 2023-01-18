@@ -61,10 +61,10 @@ export class ApplicationsComponent implements OnInit {
       this.applications = [];
       data.forEach(item => {
         const r = item.payload.val();     
-        if(r.status == 1){
+        //if(r.status == 1){
           const app = {'id': item.key, 'customer': r.customer.name, 'date': r.date, 'status': r.status, 'justification': r.justification };        
           this.applications.push(app as Application);
-        }   
+        //}   
       });
       if (this.applications.length > 0) {
         this.data = true;
@@ -188,10 +188,28 @@ export class ApplicationsComponent implements OnInit {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       data: "¿Confirma que desea enviar esta receta por correo?"
     });
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe(async result => {
       if(result){
         //console.log(result);
         //this.apiC.DeleteCategory(key);
+        const promise = new Promise((resolve, reject) => {
+          this.apiA.GetApplication(id).valueChanges().subscribe(data => {
+            if(data){
+              resolve(data);
+            }else {
+              resolve({})
+            }
+          });
+        });
+    
+        await promise.then((app: any) => {
+          app['status'] = 2;
+          console.log(app, app.id);
+          this.apiA.UpdateApplication(app, app.id);
+          app['company'] = this.company;
+          this.apiM.mailApplication(app).subscribe({});          
+        });
+/* 
         this.apiA.GetApplication(id).valueChanges().subscribe(data => {
           if(data){
             this.apiM.mailApplication(data).subscribe(dat =>{
@@ -199,7 +217,7 @@ export class ApplicationsComponent implements OnInit {
               
              });
           }
-        });
+        }); */
         this.toastr.info('Receta enviada al correo!');
       }
     });

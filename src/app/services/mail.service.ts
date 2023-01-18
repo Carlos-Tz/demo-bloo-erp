@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -15,7 +15,11 @@ export class MailService {
   }
 
   mailApplication(app: Object){
-    return this.http.post(`${this.url}resources/mail_application.php`, JSON.stringify(app));
+    let headers= new HttpHeaders({'Content-Type': 'application/x-www-form-urlencoded'});
+    const httpOptions = {
+      headers: headers
+    };
+    return this.http.post(`${this.url}resources/mail_application.php`, JSON.stringify(app), {responseType: 'text'});
     //return this.http.post('mail.php', JSON.stringify(mail));
   }
 }

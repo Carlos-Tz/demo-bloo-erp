@@ -31,7 +31,7 @@
                             <mat-cell *matCellDef="let element">{{element.id}}
                                 <!-- <span (click)="PDF(element.id)" style="color: #fff; background-color: green; border-radius: 20%; padding: 0.2rem; margin-left: 0.3rem; cursor: pointer; font-size: 0.7rem;" class="me-2">PDF</span> -->
                                 <span class="ms-3" *ngIf="element.status == 1">Programada</span>
-                                <span class="me-3" *ngIf="element.status == 2">Enviada</span>
+                                <span class="ms-3" *ngIf="element.status == 2">Enviada</span>
                                 <!-- <span class="me-3" *ngIf="element.status == 3">Realizada</span> -->
                             </mat-cell>
                         </ng-container>

@@ -1,15 +1,13 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Select2Data } from 'ng-select2-component';
 import { ToastrService } from 'ngx-toastr';
-import { Ranch } from 'src/app/models/ranch';
 import { ApiApplicationService } from 'src/app/services/api-application.service';
-import { ApiProductService } from 'src/app/services/api-product.service';
 import { ApiRanchService } from 'src/app/services/api-ranch.service';
 import * as $ from 'jquery';
 import { ApiCustomerService } from 'src/app/services/api-customer.service';
-import { Customer } from 'src/app/models/customer';
+import 'fecha';
+import fechaObj from 'fecha';
 @Component({
   selector: 'app-edit-application',
   templateUrl: './edit-application.component.html',
@@ -26,6 +24,8 @@ export class EditApplicationComponent implements OnInit {
   public scheduled = 0;
   public indications: any[] = [];
   public customers: any[] = [];
+  public ord = 0;
+  public date = '';
 
   constructor(
     private fb: FormBuilder,
@@ -40,6 +40,8 @@ export class EditApplicationComponent implements OnInit {
     this.key = this.actRouter.snapshot.paramMap.get('id');
     this.sForm();
     this.sForm1();
+    this.date = fechaObj.format(new Date(), 'DD[/]MM[/]YYYY');
+    //this.myForm.patchValue({ date: new Date().toISOString() });
     this.apiA.GetApplication(this.key).valueChanges().subscribe(data => {
       this.myForm.patchValue(data);
       this.cus = data.customer.name;
@@ -66,6 +68,15 @@ export class EditApplicationComponent implements OnInit {
           this.customers.push(cus);
         //}
       });
+    });
+
+    this.apiA.GetLastApplication().subscribe(res=> {
+      if(res[0]){
+        this.ord = Number(res[0].id);
+        this.myForm.patchValue({ id: this.ord + 1 });      
+      } else {
+        this.myForm.patchValue({ id: 1 });      
+      }
     });
   }
 
@@ -115,9 +126,19 @@ export class EditApplicationComponent implements OnInit {
       indications_.push({ id: i, indication: c.indication })
     });
     //console.log(indications_);
-    this.myForm.patchValue({ 'indications': indications_ })
-    this.apiA.UpdateApplication(this.myForm.value, this.key)
-    //this.apiA.AddApplication(this.myForm.value);
+    this.myForm.patchValue({ 'indications': indications_ });
+    this.myForm.patchValue({ date: this.date });
+    this.myForm.patchValue({ status: 1 });
+    this.apiA.GetLastApplication().subscribe(res=> {
+      if(res[0]){
+        this.ord = Number(res[0].id);
+        this.myForm.patchValue({ id: this.ord + 1 });      
+      } else {
+        this.myForm.patchValue({ id: 1 });      
+      }
+    });
+    //this.apiA.UpdateApplication(this.myForm.value, this.key)
+    this.apiA.AddApplication(this.myForm.value);
   }
 
   allCrops(){

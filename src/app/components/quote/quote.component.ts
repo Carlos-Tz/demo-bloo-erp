@@ -36,11 +36,6 @@ export class QuoteComponent implements  OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.mail.mail_({ email: 'nine2one@live.com.mx' }).subscribe(data => {
-      if(data){
-        console.log(data);
-      }
-    });
     this.sForm();
     this.apiR.GetRequisition(this.data.id).valueChanges().subscribe(data => {
       this.myForm.patchValue(data);

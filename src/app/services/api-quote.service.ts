@@ -31,7 +31,7 @@ export class ApiQuoteService {
         if(prod.providers){
           prod.providers.forEach(element => {
             this.apiPr.GetProvider(element).valueChanges().subscribe(prov => {
-              if(prov.email){
+              //if(prov.email){
                 let quotation: Quotation = { 
                   date: '',
                   id: null,
@@ -92,7 +92,7 @@ export class ApiQuoteService {
                     this.db.object('blooming-erp/requisition-list/' + id_requisition).update({ 'quotations': quotations });
                   }); 
                 });  */           
-              }
+              //}
             });
           });
         }
