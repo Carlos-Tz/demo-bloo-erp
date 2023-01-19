@@ -72,17 +72,19 @@
                     <!-- <ng-template #template let-data="data"><strong>{{data?.color}}</strong>: {{data?.name}}</ng-template> -->
                 </select2>
             </div>
-            <mat-label style="padding: 2rem 0 0 0;">Variación de costos</mat-label>
+            <!-- <mat-label style="padding: 2rem 0 0 0;">Variación de costos</mat-label> -->
             <div class="col-sm-12">
                 <table class="table table-bordered">
                     <thead >
                         <!-- <th>ID</th> -->
-                        <th>Costo</th>
+                        <th>ID</th>
+                        <th>Monto</th>
                         <th>Opciones</th>
                     </thead>
                     <tr *ngFor="let cost of costs">
                         <!-- <td>{{ cost.key }}</td> -->
-                        <td>{{ cost.cost }}</td>
+                        <td>Costo {{ cost.id + 1 }}</td>
+                        <td>{{ cost.cost | currency }}</td>
                         <td>
                             <button class="btn btn-outline-info me-2" style="padding: 0 0.2rem;" (click)="editCost(cost.id, cost.cost)"><span class="material-icons">edit</span></button>
                             <button class="btn btn-outline-danger" style="padding: 0 0.2rem;" (click)="deleteCost(cost.id)"><span class="material-icons">delete</span></button></td>
@@ -103,9 +105,9 @@
             <mat-label>ID</mat-label>
             <input matInput type="number" formControlName="id" readonly>
         </mat-form-field>
-        <mat-form-field appearance="fill" class="col-sm-12 col-md-2">
+        <mat-form-field appearance="fill" class="col-sm-12 col-md-2" style="padding: 0 0 0 2.2rem;">
             <mat-label>Costo</mat-label>
-            <input matInput type="number" formControlName="cost" required>
+            <input matInput type="number" formControlName="cost" required >
         </mat-form-field>
         <div class="col-sm-12 col-md-2">
             <button mat-button class="btn btn-outline-success" (click)="addCost()"
