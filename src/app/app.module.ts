@@ -102,6 +102,8 @@ import { NewCropComponent } from './components/new-crop/new-crop.component';
 import { EditCropComponent } from './components/edit-crop/edit-crop.component';
 import { NewCustomerComponent } from './components/new-customer/new-customer.component';
 import { EditCustomerComponent } from './components/edit-customer/edit-customer.component';
+import { NotesComponent } from './components/notes/notes.component';
+import { NewNoteComponent } from './components/new-note/new-note.component';
 
 @NgModule({
   declarations: [
@@ -165,7 +167,9 @@ import { EditCustomerComponent } from './components/edit-customer/edit-customer.
     NewCropComponent,
     EditCropComponent,
     NewCustomerComponent,
-    EditCustomerComponent
+    EditCustomerComponent,
+    NotesComponent,
+    NewNoteComponent
   ],
   imports: [
     BrowserModule,

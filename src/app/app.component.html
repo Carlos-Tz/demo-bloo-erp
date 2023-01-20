@@ -3,7 +3,7 @@
     <button mat-icon-button>
       <mat-icon (click)="sidenav.toggle()">menu</mat-icon>
     </button>
-    <a mat-button [routerLink]="['/']" style="font-size: 1.1rem;">INICIO<!-- BLOOMING TEC --></a>
+    <a mat-button [routerLink]="['/']" style="font-size: 1.1rem;"><img src="../assets/bg2.png" alt="home" style="height: 60px;"></a>
     <span class="menu-spacer"></span>
     <div id="nav_a">
       <a mat-button [routerLink]="['/']"><mat-icon> home</mat-icon> Inicio</a>
@@ -46,7 +46,7 @@
         </mat-expansion-panel-header>
         <a mat-list-item [routerLink]="['/reception']"><span class="material-icons">archive</span> Recepción </a>
         <!-- <a mat-list-item [routerLink]="['/delivery']"><span class="material-icons">outbox</span> Surtido </a> -->
-        <a mat-list-item [routerLink]="['/output']"><span class="material-icons">unarchive</span> Salida </a>
+        <a mat-list-item [routerLink]="['/output']"><span class="material-icons">unarchive</span> Entrega </a>
         <!-- <a mat-list-item [routerLink]="['/warehouse-report']"><span class="material-icons">summarize</span> Reporte </a> -->
       </mat-expansion-panel>
       <mat-expansion-panel *ngIf="this.authService.userName">
@@ -59,7 +59,7 @@
           </mat-panel-description> -->
         </mat-expansion-panel-header>
         <a mat-list-item [routerLink]="['/applications']"><span class="material-icons">format_list_numbered</span> Recetas </a>
-        <a mat-list-item [routerLink]="['/run-applications']"><span class="material-icons">list_alt</span> Pedidos </a>
+        <a mat-list-item [routerLink]="['/notes']"><span class="material-icons">list_alt</span> Pedidos </a>
         <!-- <a mat-list-item [routerLink]="['/applications-report']"><span class="material-icons">summarize</span> Reporte </a> -->
       </mat-expansion-panel>
       <mat-expansion-panel *ngIf="this.authService.userName">

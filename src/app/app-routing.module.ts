@@ -17,7 +17,9 @@ import { MainComponent } from './components/main/main.component';
 import { NewApplicationComponent } from './components/new-application/new-application.component';
 import { NewCropComponent } from './components/new-crop/new-crop.component';
 import { NewCustomerComponent } from './components/new-customer/new-customer.component';
+import { NewNoteComponent } from './components/new-note/new-note.component';
 import { NewRequisitionComponent } from './components/new-requisition/new-requisition.component';
+import { NotesComponent } from './components/notes/notes.component';
 import { OutputComponent } from './components/output/output.component';
 import { PaymentsComponent } from './components/payments/payments.component';
 import { PresentationsComponent } from './components/presentations/presentations.component';
@@ -65,6 +67,8 @@ const routes: Routes = [
   {path: 'edit-crop/:id', component: EditCropComponent , canActivate: [AuthGuard]},
   {path: 'new-customer', component: NewCustomerComponent, canActivate: [AuthGuard]},
   {path: 'edit-customer/:id', component: EditCustomerComponent , canActivate: [AuthGuard]},
+  {path: 'notes', component: NotesComponent , canActivate: [AuthGuard]},
+  {path: 'new-note', component: NewNoteComponent , canActivate: [AuthGuard]},
   {path: 'login', component: LoginComponent, canActivate: [SecureInnerPagesGuard]},
 ];
 
