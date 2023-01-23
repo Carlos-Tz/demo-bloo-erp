@@ -109,8 +109,25 @@ export class NewNoteComponent implements OnInit {
     //});
     //console.log(indications_);
     //this.myForm.patchValue({ 'products': indications_ })
-    this.apiN.AddNote(this.myForm.value);
-    this.ResetForm();
+    //this.apiN.AddNote(this.myForm.value);
+    //this.ResetForm();
+    this.products1.forEach(p => {
+      //if(!s.startsWith('sector__')){
+      console.log($('input#id___'+p.value).val());
+      console.log($('input#name___'+p.value).val());
+      console.log($('input#quantity___'+p.value).val());
+      console.log($('input#unit___'+p.value).val());
+      console.log($('input#presentation___'+p.value).val());
+      console.log($('#cost___'+p.value+'option:selected').val());
+      console.log($('input#iva___'+p.value).val());
+      
+        //let n1: string = $('input#'+p.value+'__'+s+'__1').val().toString();
+        //let n2: string = $('input#'+p.value+'__'+s+'__2').val().toString();
+        //let nn1 = parseFloat(n1);
+        //let nn2 = parseFloat(n2);
+        //sectors_d[s] = { sector: nn1, dosis: nn2, delivered: false }
+      //}
+    });
     this.toastr.success('Pedido guardado!');
   }
 
