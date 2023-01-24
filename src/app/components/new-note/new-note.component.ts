@@ -102,32 +102,28 @@ export class NewNoteComponent implements OnInit {
   }
 
   submitSurveyData = () => {
-    //let indications_ : any[] = [];
-    //this.indications.forEach((c, i) => {
-      //console.log(c);
-      //indications_.push({ id: i, indication: c.indication })
-    //});
-    //console.log(indications_);
-    //this.myForm.patchValue({ 'products': indications_ })
+    let products_d = {};
+    this.products1.forEach(p => {
+      let id = $('input#id___'+p.value).val();
+      let name = $('input#name___'+p.value).val();
+      let q = 0;
+      if ($('input#quantity___'+p.value).val()){
+        q = parseFloat($('input#quantity___'+p.value).val().toString());
+      }else {
+        q = 0;
+      }
+      let unit = $('input#unit___'+p.value).val();
+      let presentation = $('input#presentation___'+p.value).val();
+      //let cost = parseFloat($('select#cost___'+p.value +' option:selected').val().toString()); 
+      console.log($('select#cost___'+p.value +' option:selected').val());
+      
+      let iva = $('input#iva___'+p.value).prop('checked');
+      
+      //products_d[p.value] = { id: id, name: name, quantity: q, unit: unit, presentation: presentation, cost: cost, iva: iva  };
+    });
+    //this.myForm.patchValue({ 'products': products_d })
     //this.apiN.AddNote(this.myForm.value);
     //this.ResetForm();
-    this.products1.forEach(p => {
-      //if(!s.startsWith('sector__')){
-      console.log($('input#id___'+p.value).val());
-      console.log($('input#name___'+p.value).val());
-      console.log($('input#quantity___'+p.value).val());
-      console.log($('input#unit___'+p.value).val());
-      console.log($('input#presentation___'+p.value).val());
-      console.log($('#cost___'+p.value+'option:selected').val());
-      console.log($('input#iva___'+p.value).val());
-      
-        //let n1: string = $('input#'+p.value+'__'+s+'__1').val().toString();
-        //let n2: string = $('input#'+p.value+'__'+s+'__2').val().toString();
-        //let nn1 = parseFloat(n1);
-        //let nn2 = parseFloat(n2);
-        //sectors_d[s] = { sector: nn1, dosis: nn2, delivered: false }
-      //}
-    });
     this.toastr.success('Pedido guardado!');
   }
 

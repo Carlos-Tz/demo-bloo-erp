@@ -131,8 +131,10 @@ export class NotesComponent implements OnInit {
 
   PDF(id) {
     this.apiN.GetNote(id).valueChanges().subscribe(data => {
-      if(!data.indications){
-        data.indications = [{ key: '', indication: '' }];
+      console.log(data.products);
+      if(!data.products){
+        data.products = [{ id: '', name: '', cost: '', iva: '', presentation: '', quantity: '', unit: '' }];
+        
       }
       let docDefinition = {  
         //header: 'C# Corner PDF Header',  
@@ -154,8 +156,8 @@ export class NotesComponent implements OnInit {
                 [{ text: 'Justificación', fillColor: '#eeeeee' }, { text: data.justification, colSpan: 2 }, {}],
                 [{ text: 'Cultivo(s)', bold: true, style: 'he', fillColor: '#eeeeee', colSpan: 3 }, {}, {}],
                 ...data.crops.map(p => ([{ text: p, colSpan: 3 }, {}, {}])),
-                [{ text: 'Indicaciones', bold: true, style: 'he', fillColor: '#eeeeee', colSpan: 3 }, {}, {}],
-                ...data.indications.map(p => ([{ text: p.id+1 + '.- ' + p.indication, /* style: 'he', */ colSpan: 3 }, {}, {}]))
+                [{ text: 'Productos', bold: true, style: 'he', fillColor: '#eeeeee', colSpan: 3 }, {}, {}],
+                ...data.products.map(p => ([{ text: p.id + '.- ' + p.name, /* style: 'he', */ colSpan: 3 }, {}, {}]))
               ]
             }
           }

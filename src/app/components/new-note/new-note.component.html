@@ -97,11 +97,11 @@
                                             <td><input type="text" value="{{pro.data.unit }}" readonly matInput style="text-align: center;" id="unit___{{pro.value}}"></td>
                                             <td><input type="text" value="{{pro.data.presentation }}" readonly matInput style="text-align: center;" id="presentation___{{pro.value}}"></td>
                                             <td>
-                                                <select name="" id="cost___{{pro.value}}">
-                                                    <option *ngFor="let cos of pro.data.costs" [value]="cos">{{ cos.cost | currency }}</option>
+                                                <select matInput name="" id="cost___{{pro.value}}">
+                                                    <option *ngFor="let cos of pro.data.costs" value="{{cos.cost}}">{{ cos.cost | currency }}</option>
                                                 </select>
                                                 <!-- <mat-select matInput name="cost" id="cost___{{pro.value}}" required #co>
-                                                    <mat-option *ngFor="let cos of pro.data.costs" [value]="cos">{{ cos.cost | currency }}
+                                                    <mat-option *ngFor="let cos of pro.data.costs" [value]="cos.cost">{{ cos.cost | currency }}
                                                     </mat-option>
                                                 </mat-select> -->
                                             </td>
