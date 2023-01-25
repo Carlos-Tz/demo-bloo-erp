@@ -131,35 +131,57 @@ export class NotesComponent implements OnInit {
 
   PDF(id) {
     this.apiN.GetNote(id).valueChanges().subscribe(data => {
-      console.log(data.products);
+      let prods = [];
+      let subtotal = 0;
+      let iva = 0;
+      let total = 0;
       if(!data.products){
-        data.products = [{ id: '', name: '', cost: '', iva: '', presentation: '', quantity: '', unit: '' }];
-        
+        prods = [{ id: '', name: '', cost: '', iva: '', presentation: '', quantity: '', unit: '' }];        
+        //let prods: any = Object.values(data.products);
+      }else {
+        prods = Object.values(data.products);
       }
+      prods.map(p => {
+        subtotal += p.quantity*p.cost;
+        if(p.iva){
+          iva += (p.quantity*p.cost)*0.16;
+        }
+      });
+      total = subtotal + iva;
+      console.log(subtotal);
+      console.log(iva);
+      console.log(total);
+      
       let docDefinition = {  
         //header: 'C# Corner PDF Header',  
         content: [
           {
             style: 'table',
             table: {
-              widths: [70, 330, 'auto'],
-              heights: [60, 20, 20, 20, 20, 20],
+              //widths: [60, 340, 'auto'],
+              widths: [60, 50, 60, 165, 55, 'auto'],
+              heights: [60, 20, 20, 20, 20],
               headerRows: 1,
               body: [
                 //[{text: 'RECETA', colSpan: 5, alignment: 'center', fontSize: 26, margin: 15 },{}, {}, {}, {}, {}],
                 //[{},{ colSpan: 4, rowSpan: 3, text: this.company.name + '\nRFC: ' + this.company.rfc + '\n' +  this.company.address +'\n' }, {}, {}, {}, { text: 'MORELIA, MICHOACÁN', alignment: 'center'}],
-                [{}, { /* rowSpan: 2, */ text: this.company.name + '\nRFC: ' + this.company.rfc + '\n' +  this.company.address +'\n', alignment: 'center', fontSize: 12, margin: 2 }, { text: 'No. Receta: ' + data.id + '\n\nFecha: '+ data.date, alignment: 'right' }],
+                [{}, { /* rowSpan: 2, */ text: this.company.name + '\nRFC: ' + this.company.rfc + '\n' +  this.company.address +'\n', alignment: 'center', fontSize: 12, margin: 2, colSpan: 4 }, {}, {}, {}, { text: 'No. Receta: ' + data.id + '\n\nFecha: '+ data.date, alignment: 'right' }],
                 //[{}, {}, {}, {}, {}, { text: 'Fecha: ' + data.date, alignment: 'center' }],
-                [{ text: 'Nombre', fillColor: '#eeeeee' }, { text: data.customer.name, colSpan: 2 }, {}],
-                [{ text: 'Domicilio', fillColor: '#eeeeee' }, { text: data.address, colSpan: 2 }, {}],
-                [{ text: 'Ciudad', fillColor: '#eeeeee' }, { text: data.city, colSpan: 2 }, {}],
-                [{ text: 'Justificación', fillColor: '#eeeeee' }, { text: data.justification, colSpan: 2 }, {}],
-                [{ text: 'Cultivo(s)', bold: true, style: 'he', fillColor: '#eeeeee', colSpan: 3 }, {}, {}],
-                ...data.crops.map(p => ([{ text: p, colSpan: 3 }, {}, {}])),
-                [{ text: 'Productos', bold: true, style: 'he', fillColor: '#eeeeee', colSpan: 3 }, {}, {}],
-                ...data.products.map(p => ([{ text: p.id + '.- ' + p.name, /* style: 'he', */ colSpan: 3 }, {}, {}]))
+                [{ text: 'Nombre', fillColor: '#eeeeee' }, { text: data.customer.name, colSpan: 5 }, {}, {}, {}, {}],
+                [{ text: 'Domicilio', fillColor: '#eeeeee' }, { text: data.address, colSpan: 5 }, {}, {}, {}, {}],
+                [{ text: 'Ciudad', fillColor: '#eeeeee' }, { text: data.city, colSpan: 5 }, {}, {}, {}, {}],
+                [{ text: 'Justificación', fillColor: '#eeeeee' }, { text: data.justification, colSpan: 5 }, {}, {}, {}, {}],
+                [{ text: 'Cultivo(s)', bold: true, style: 'ce', fillColor: '#eeeeee', colSpan: 6 }, {}, {}, {}, {}, {}],
+                ...data.crops.map(p => ([{ text: p, colSpan: 6 }, {}, {}, {}, {}, {}])),
+                [{ text: 'Cantidad', bold: true, style: 'ce', fillColor: '#eeeeee' }, { text: 'Unidad', bold: true, style: 'ce', fillColor: '#eeeeee' }, { text: 'Presentación', bold: true, style: 'ce', fillColor: '#eeeeee' }, { text: 'Descripción', bold: true, style: 'ce', fillColor: '#eeeeee' }, { text: 'P.U.', bold: true, style: 'ce', fillColor: '#eeeeee' }, { text: 'Importe', bold: true, style: 'ce', fillColor: '#eeeeee' }],
+                //...data.products.map(p => ([{ text: p.id + '.- ' + p.name, /* style: 'he', */ colSpan: 3 }, {}, {}]))
+                ...prods.map(p => ([{ text: p.quantity, style: 'ce' }, { text: p.unit, style: 'ce' }, { text: p.presentation, style: 'ce' }, { text: p.name, style: 'ce' }, { text: (p.cost).toLocaleString('en-US', { style: 'currency', currency: 'USD', }), style: 'ce' }, { text: (p.cost*p.quantity).toLocaleString('en-US', { style: 'currency', currency: 'USD', }), style: 'ce' }])),
+                [{ text: 'DEBO (EMOS) Y PAGARÉ (MOS) INCONDICIONALMENTE POR ESTE PAGARÉ A LA ORDEN DE Cuautémoc Moreno Martínez/Milton Alejandro Rivera de León EN LA CIUDAD DE __________ EL DÍA _______ DE ________ DEL _______ LA CANTIDAD DE $ _______________ M.N.\n VALOR RECIBIDO A NUESTRA ENTERA SATISFACCIÓN POR ESTE DOCUMENTO, LA DEMORA EN EL PAGO DE ESTE PAGARÉ CAUSA INTERESES MORATORIOS A RAZÓN DEL __ % MENSUAL.', alignment: 'left', colSpan: 4, fontSize: 8, rowSpan: 3 }, {}, {}, {}, { text: 'Subtotal', alignment: 'right' }, { text: (subtotal).toLocaleString('en-US', { style: 'currency', currency: 'USD', }), style: 'ce' }],
+                [{}, {}, {}, {}, { text: 'I.V.A.', alignment: 'right' }, { text: (iva).toLocaleString('en-US', { style: 'currency', currency: 'USD', }), style: 'ce' }],
+                [{}, {}, {}, {}, { text: 'Total', alignment: 'right' }, { text: (total).toLocaleString('en-US', { style: 'currency', currency: 'USD', }), style: 'ce' }],
+                [{text: '____ DE ____________ DEL ________\n\n\n\n_________________________________________________\n ACEPTO (AMOS) - NOMBRE Y FIRMA', colSpan: 6, style: 'm1'}, {}, {}, {}, {}, {}]
               ]
-            }
+            },
           }
         ],
         styles: {
@@ -169,6 +191,14 @@ export class NotesComponent implements OnInit {
           he: {
             margin: 5,
             alignment: 'center'
+          },
+          ce: {
+            alignment: 'center'
+          },
+          m1: {
+            margin: 15,
+            alignment: 'center',
+            fontSize: 8
           }
         }  
       };  

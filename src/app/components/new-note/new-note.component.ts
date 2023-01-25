@@ -114,16 +114,16 @@ export class NewNoteComponent implements OnInit {
       }
       let unit = $('input#unit___'+p.value).val();
       let presentation = $('input#presentation___'+p.value).val();
-      //let cost = parseFloat($('select#cost___'+p.value +' option:selected').val().toString()); 
-      console.log($('select#cost___'+p.value +' option:selected').val());
+      let cost = parseFloat($('select#cost___'+p.value +' option:selected').val().toString()); 
+      //console.log($('select#cost___'+p.value +' option:selected').val());
       
       let iva = $('input#iva___'+p.value).prop('checked');
       
-      //products_d[p.value] = { id: id, name: name, quantity: q, unit: unit, presentation: presentation, cost: cost, iva: iva  };
+      products_d[p.value] = { id: id, name: name, quantity: q, unit: unit, presentation: presentation, cost: cost, iva: iva  };
     });
-    //this.myForm.patchValue({ 'products': products_d })
-    //this.apiN.AddNote(this.myForm.value);
-    //this.ResetForm();
+    this.myForm.patchValue({ 'products': products_d })
+    this.apiN.AddNote(this.myForm.value);
+    this.ResetForm();
     this.toastr.success('Pedido guardado!');
   }
 
