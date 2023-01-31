@@ -104,6 +104,7 @@ import { NewCustomerComponent } from './components/new-customer/new-customer.com
 import { EditCustomerComponent } from './components/edit-customer/edit-customer.component';
 import { NotesComponent } from './components/notes/notes.component';
 import { NewNoteComponent } from './components/new-note/new-note.component';
+import { ExpedientComponent } from './components/expedient/expedient.component';
 
 @NgModule({
   declarations: [
@@ -169,7 +170,8 @@ import { NewNoteComponent } from './components/new-note/new-note.component';
     NewCustomerComponent,
     EditCustomerComponent,
     NotesComponent,
-    NewNoteComponent
+    NewNoteComponent,
+    ExpedientComponent
   ],
   imports: [
     BrowserModule,

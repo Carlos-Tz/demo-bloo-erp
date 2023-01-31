@@ -46,7 +46,8 @@
                             <mat-cell *matCellDef="let element; let i = index;">
 
                                 <button class="btn btn-outline-info me-2" style="padding: 0 0.2rem;" (click)="openEditDialog(element.id)"><span class="material-icons">edit</span></button>
-                                <button class="btn btn-outline-danger" style="padding: 0 0.2rem;" (click)="openDeleteDialog(element.id)"><span class="material-icons">delete</span></button>
+                                <button class="btn btn-outline-danger me-2" style="padding: 0 0.2rem;" (click)="openDeleteDialog(element.id)"><span class="material-icons">delete</span></button>
+                                <button class="btn btn-outline-success" style="padding: 0 0.2rem;" [routerLink]="['/expedient', element.id]"><span class="material-icons">snippet_folder</span></button>
                             </mat-cell>
                         </ng-container>
 

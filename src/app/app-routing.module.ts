@@ -12,6 +12,7 @@ import { DeliveryComponent } from './components/delivery/delivery.component';
 import { EditApplicationComponent } from './components/edit-application/edit-application.component';
 import { EditCropComponent } from './components/edit-crop/edit-crop.component';
 import { EditCustomerComponent } from './components/edit-customer/edit-customer.component';
+import { ExpedientComponent } from './components/expedient/expedient.component';
 import { LoginComponent } from './components/login/login.component';
 import { MainComponent } from './components/main/main.component';
 import { NewApplicationComponent } from './components/new-application/new-application.component';
@@ -69,6 +70,7 @@ const routes: Routes = [
   {path: 'edit-customer/:id', component: EditCustomerComponent , canActivate: [AuthGuard]},
   {path: 'notes', component: NotesComponent , canActivate: [AuthGuard]},
   {path: 'new-note', component: NewNoteComponent , canActivate: [AuthGuard]},
+  {path: 'expedient/:id', component: ExpedientComponent , canActivate: [AuthGuard]},
   {path: 'login', component: LoginComponent, canActivate: [SecureInnerPagesGuard]},
 ];
 

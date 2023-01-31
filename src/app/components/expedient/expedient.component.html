@@ -1,0 +1,48 @@
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card mt-2">
+                <div class="card-header">
+                    <nav class="navbar bg-light">
+                        <div class="container-fluid">
+                            <a class="navbar-brand">Expediente</a>
+                            <div class="d-flex">
+                            </div>
+                            <div class="d-flex">
+                                <button class="btn btn-outline-info me-2" [routerLink]="['/customers']">Clientes</button>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+                <div class="card-body">
+                    <form [formGroup]="myForm" novalidate autocomplete="off">
+                        <div class="row">
+                            <mat-form-field appearance="fill" class="col-sm-12 col-md-4">
+                                <mat-label>RFC (12 ó 13 dígitos)</mat-label>
+                                <input matInput type="text" formControlName="id" readonly>
+                            </mat-form-field>
+                            <mat-form-field appearance="fill" class="col-sm-12 col-md-8">
+                                <mat-label>Nombre</mat-label>
+                                <input matInput type="text" formControlName="name" readonly>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm-12">
+                            <select2 class="w-100" 
+                                [data]="crops"
+                                displaySearchStatus="always"
+                                listPosition="above"
+                                styleMode="material"
+                                resettable
+                                formControlName="crops"
+                                (update)="updateC($event)"
+                                resultMaxHeight="250px">
+                                <select2-hint>Cultivo *</select2-hint>
+                            </select2>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
