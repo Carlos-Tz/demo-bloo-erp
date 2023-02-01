@@ -173,17 +173,7 @@ export class NewNoteComponent implements OnInit {
                   //console.log(value['quantity']);
                   this.scheduled += value['quantity'];
                 }
-                
-                //Object.entries(value).forEach(([k,v], i) => {
-                  //console.log(v);
-                  
-                  /* if(!v.delivered){
-                    //console.log(v.sector, r);
-                    this.scheduled += v.sector;
-                  } */
-                //});
               }
-              
             });
           }
         }   
@@ -193,7 +183,7 @@ export class NewNoteComponent implements OnInit {
       $('#available').val((pro.data.existence - this.scheduled).toFixed(2));
     });
     //console.log(this.scheduled);
-    console.log(parseFloat($('#scheduled').val().toString()));
+    //console.log(parseFloat($('#scheduled').val().toString()));
 
     $('#exis').show();
     $('#existence').val(pro.data.existence.toFixed(2));
@@ -203,8 +193,9 @@ export class NewNoteComponent implements OnInit {
   }
 
   change1(ev){
-    console.log(ev.srcElement.value);
-    
+    if(parseFloat(ev.srcElement.value) > parseFloat($('#available').val().toString())){
+      $('input#'+ ev.srcElement.id).val(0);
+    }
   }
 
   blur1(){

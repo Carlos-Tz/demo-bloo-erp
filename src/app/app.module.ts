@@ -105,6 +105,7 @@ import { EditCustomerComponent } from './components/edit-customer/edit-customer.
 import { NotesComponent } from './components/notes/notes.component';
 import { NewNoteComponent } from './components/new-note/new-note.component';
 import { ExpedientComponent } from './components/expedient/expedient.component';
+import { OutputNoteComponent } from './components/output-note/output-note.component';
 
 @NgModule({
   declarations: [
@@ -171,7 +172,8 @@ import { ExpedientComponent } from './components/expedient/expedient.component';
     EditCustomerComponent,
     NotesComponent,
     NewNoteComponent,
-    ExpedientComponent
+    ExpedientComponent,
+    OutputNoteComponent
   ],
   imports: [
     BrowserModule,

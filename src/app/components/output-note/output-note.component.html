@@ -1,0 +1,120 @@
+<div class="card mt-2">
+    <div class="card-header">
+        <nav class="navbar bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand">Entregar pedido</a>
+                <div class="d-flex">
+                    <!-- <button mat-button class="btn btn-outline-success" (click)="allCrops()">Todos los cultivos</button> -->
+                    <!-- <button mat-button [routerLink]="['/notes']">Cancelar</button> -->
+                    <!-- <button mat-button (click)="submitSurveyData()" [routerLink]="['/notes']" [disabled]="!myForm.valid" class="btn btn-outline-info">Guardar</button> -->
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="card-body">
+        <form [formGroup]="myForm" novalidate autocomplete="off">
+            <div class="row">
+                <mat-form-field appearance="fill" class="col-sm-12 col-md-4" hidden>
+                    <mat-label>ID</mat-label>
+                    <input matInput type="number" formControlName="id" required>
+                </mat-form-field>
+                <mat-form-field appearance="fill" class="col-sm-12 col-md-4" hidden>
+                    <mat-label>Estatus</mat-label>
+                    <mat-select matInput name="status" id="status" formControlName="status" required>
+                        <mat-option [value]="1">Programado</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="fill" class="col-sm-12">
+                    <mat-label>Cliente</mat-label>
+                    <input matInput type="text" formControlName="customer" required readonly>
+                    <!-- <mat-select matInput name="customer" id="customer" formControlName="customer" required>
+                        <mat-option [value]="customer">{{ customer.name }}
+                        </mat-option>
+                    </mat-select> -->
+                </mat-form-field>
+                <mat-form-field appearance="fill" class="col-sm-12 col-md-6" hidden>
+                    <mat-label>Domicilio</mat-label>
+                    <input matInput type="text" formControlName="address" required readonly>
+                </mat-form-field>
+                <mat-form-field appearance="fill" class="col-sm-12 col-md-6" hidden>
+                    <mat-label>Ciudad</mat-label>
+                    <input matInput type="text" formControlName="city" required readonly>
+                </mat-form-field>
+                <mat-form-field appearance="fill" class="col-sm-12" hidden>
+                    <mat-label>Justificación</mat-label>
+                    <input matInput type="text" formControlName="justification" required>
+                </mat-form-field>
+                <div class="col-sm-12">
+                    <!-- [data]="crops"
+                    [value]="cro" -->
+                    <select2 class="w-100" 
+                        multiple
+                        [overlay]="false"
+                        displaySearchStatus="always"
+                        listPosition="above"
+                        styleMode="material"
+                        resettable
+                        formControlName="crops"
+                        resultMaxHeight="200px">
+                        <select2-hint>Cultivos</select2-hint>
+                    </select2>
+                </div>
+                <div class="col-sm-12">
+                    <!-- [data]="products" -->
+                    <select2 class="w-100" 
+                        multiple
+                        [overlay]="false"
+                        displaySearchStatus="always"
+                        listPosition="above"
+                        styleMode="material"
+                        resettable
+                        resultMaxHeight="200px">
+                        <!-- (update)="updateP($event)" -->
+                        <!-- formControlName="products" -->
+                        <select2-hint>Productos</select2-hint>
+                    </select2>
+                </div>
+                <div class="col">
+                    <table class="table table-bordered" style="font-size: 0.85rem;">
+                        <thead>
+                            <th style="background-color: #155a89; color: #fff; font-weight: 400; text-align: center;">Id</th>
+                            <th style="background-color: #155a89; color: #fff; font-weight: 400; text-align: center;">Producto</th>
+                            <th style="background-color: #155a89; color: #fff; font-weight: 400; text-align: center;">Cantidad</th>
+                            <th style="background-color: #155a89; color: #fff; font-weight: 400; text-align: center;">Unidad</th>
+                            <th style="background-color: #155a89; color: #fff; font-weight: 400; text-align: center;">Presentación</th>
+                            <th style="background-color: #155a89; color: #fff; font-weight: 400; text-align: center;">Costo</th>
+                            <th style="background-color: #155a89; color: #fff; font-weight: 400; text-align: center;">I.V.A.</th>
+                            <!-- <th *ngFor="let sec of sectors1" [ngStyle]="{'background-color': sec.startsWith('sector__') ? '#155a89': '#fff'}"><span *ngIf="sec.startsWith('sector__')"  style="color: #fff; font-weight: 400;">Sector {{ sec | slice:8 }}</span><span *ngIf="!sec.startsWith('sector__')">Dosis Ha</span></th> -->
+                        </thead>
+                        <tbody>
+                            <!-- <tr *ngFor="let pro of products1">
+                                <td><input type="number" matInput style="text-align: center;" value="{{pro.value}}" readonly id="id___{{pro.value}}"></td>
+                                <td><input type="text" value="{{pro.label }}" readonly matInput id="name___{{pro.value}}"></td>
+                                <td><input type="number" matInput style="text-align: center;" #ca id="quantity___{{pro.value}}" (blur)="blur1()" (focus)="focus1(pro)" (change)="change1($event)"></td>
+                                <td><input type="text" value="{{pro.data.unit }}" readonly matInput style="text-align: center;" id="unit___{{pro.value}}"></td>
+                                <td><input type="text" value="{{pro.data.presentation }}" readonly matInput style="text-align: center;" id="presentation___{{pro.value}}"></td>
+                                <td>
+                                    <select matInput name="" id="cost___{{pro.value}}">
+                                        <option *ngFor="let cos of pro.data.costs" value="{{cos.cost}}">{{ cos.cost | currency }}</option>
+                                    </select>
+                                </td>
+                                <td><input type="checkbox" id="iva___{{pro.value}}"></td>
+                            </tr> -->
+                        </tbody>
+                    </table>
+                </div>
+                <!-- <div class="row" id="exis" style="display: none;">
+                    <div class="col-sm-4">
+                        Existencia: <input type="number" id="existence" readonly style="border: none; max-width: 6rem;"><span id="unit" class="me-3"></span>     
+                    </div>
+                    <div class="col-sm 4">
+                        Programada: <input type="number" id="scheduled" readonly style="border: none; max-width: 6rem;" value="{{scheduled | number:'1.2-2'}}" step="0.01"><span id="unit1" class="me-3"></span>
+                    </div>
+                    <div class="col-sm-4">
+                        Disponible: <input type="number" id="available" readonly style="border: none; max-width: 6rem;"><span id="unit2"></span>
+                    </div>
+                </div> -->
+            </div>
+        </form>
+    </div>
+</div>
