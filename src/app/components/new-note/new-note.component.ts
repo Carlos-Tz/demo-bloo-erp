@@ -158,6 +158,59 @@ export class NewNoteComponent implements OnInit {
     this.crops.forEach(e => this.cro.push(e['value']));
   }
 
+  focus1(pro: any){
+    //console.log(pro.data.existence);
+    
+    this.scheduled = 0;
+    this.apiN.GetNoteList().snapshotChanges().subscribe(data => {
+      data.forEach(item => {
+        const r = item.payload.val();
+        if(r.status < 3){ 
+          if(r.products){          
+            Object.entries(r.products).forEach(([key, value], index) => {              
+              if(key == pro.value){
+                if(value['quantity'] > 0){
+                  //console.log(value['quantity']);
+                  this.scheduled += value['quantity'];
+                }
+                
+                //Object.entries(value).forEach(([k,v], i) => {
+                  //console.log(v);
+                  
+                  /* if(!v.delivered){
+                    //console.log(v.sector, r);
+                    this.scheduled += v.sector;
+                  } */
+                //});
+              }
+              
+            });
+          }
+        }   
+      });
+      //$('#scheduled').val(scheduled.toFixed(2));
+      //$('#available').val((pro.data.existence - parseFloat($('#scheduled').val().toString())).toFixed(2));
+      $('#available').val((pro.data.existence - this.scheduled).toFixed(2));
+    });
+    //console.log(this.scheduled);
+    console.log(parseFloat($('#scheduled').val().toString()));
+
+    $('#exis').show();
+    $('#existence').val(pro.data.existence.toFixed(2));
+    $('#unit').html(pro.data.unit);
+    $('#unit1').html(pro.data.unit);
+    $('#unit2').html(pro.data.unit);
+  }
+
+  change1(ev){
+    console.log(ev.srcElement.value);
+    
+  }
+
+  blur1(){
+    $('#exis').hide();
+  }
+
  /*  addIndication(){
     if (this.indications.find(e => e.id === this.myForm1.get('id')!.value)) {
       const c = this.indications.find(e => e.id === this.myForm1.get('id')!.value);
