@@ -2,8 +2,10 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Select2Data } from 'ng-select2-component';
+import { ToastrService } from 'ngx-toastr';
 import { ApiNoteService } from 'src/app/services/api-note.service';
 import { ApiProductService } from 'src/app/services/api-product.service';
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-output-note',
@@ -22,6 +24,7 @@ export class OutputNoteComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     public apiN: ApiNoteService,
     public apiP: ApiProductService,
+    public toastr: ToastrService,
     private fb: FormBuilder
   ) { }
 
@@ -68,6 +71,7 @@ export class OutputNoteComponent implements OnInit {
       justification: [''],
       address: [''],
       city: [''],
+      send: [''],
       crops: [],
       products: [],
     });
@@ -75,5 +79,50 @@ export class OutputNoteComponent implements OnInit {
 
   updateP(ev){
     this.products1 = [...ev.options];
+  }
+
+  submitSurveyData = () => {
+    let products_d = {};
+    let complete = true;
+    this.products1.forEach(p => {
+      let id = $('input#id___'+p.value).val();
+      let name = $('input#name___'+p.value).val();
+      let q = 0;
+      if ($('input#quantity___'+p.value).val()){
+        q = parseFloat($('input#quantity___'+p.value).val().toString());
+      }else {
+        q = 0;
+      }
+      let unit = $('input#unit___'+p.value).val();
+      let presentation = $('input#presentation___'+p.value).val();
+      let comment = $('textarea#comment___'+p.value).val();
+      let cost = parseFloat($('input#cost___'+p.value).val().toString()); 
+      //console.log($('select#cost___'+p.value +' option:selected').val());
+      
+      let iva = $('input#iva___'+p.value).prop('checked');
+      
+      let output = $('input#output___'+p.value).prop('checked'); console.log(output);
+      
+      if(!output){
+        complete = false;
+      }
+      
+      products_d[p.value] = { id: id, name: name, quantity: q, unit: unit, presentation: presentation, cost: cost, iva: iva, output: output, comment: comment  };
+    });
+    this.myForm.patchValue({ 'products': products_d });
+    if(complete){
+      this.myForm.patchValue({ 'status': 3 });
+    }else{
+      this.myForm.patchValue({ 'status': 2 });
+    }
+    console.log(this.myForm.value);
+    
+    this.ResetForm();
+    //this.apiN.UpdateNote(this.myForm.value, this.data.id);
+    this.toastr.success('Pedido entregado!');
+  }
+
+  ResetForm() {
+    this.myForm.reset();
   }
 }

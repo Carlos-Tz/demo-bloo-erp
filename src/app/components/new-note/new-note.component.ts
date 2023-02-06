@@ -89,6 +89,7 @@ export class NewNoteComponent implements OnInit {
       justification: ['', [Validators.required]],
       address: ['', [Validators.required]],
       city: ['', [Validators.required]],
+      send: [false],
       crops: [],
       products: [],
     });

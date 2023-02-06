@@ -6,6 +6,7 @@ export interface Note {
     justification: string;
     address: string;
     city: string;
+    send: boolean;
     paymentdate: string;
     orderdate: string;
     crops: [];

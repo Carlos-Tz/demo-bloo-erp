@@ -54,7 +54,7 @@ export class OutputComponent implements OnInit {
       this.notes = [];
       data.forEach(item => {
         const r = item.payload.val();     
-        if(r.status < 3){
+        if(r.status == 1){
           const not = {'id': item.key, 'customer': r.customer.name, 'date': r.date, 'crops': r.crops, 'justification': r.justification };        
           this.notes.push(not as Note);
         }   
