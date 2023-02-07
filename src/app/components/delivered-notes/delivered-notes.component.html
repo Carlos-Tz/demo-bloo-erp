@@ -5,14 +5,14 @@
                 <div class="card-header">
                     <nav class="navbar bg-light">
                         <div class="container-fluid">
-                            <a class="navbar-brand">Gestión de pedidos</a>
+                            <a class="navbar-brand">Pedidos entregados</a>
                             <div class="d-flex">
                             </div>
                             <div class="d-flex">
-                                <button class="btn btn-outline-success me-2" (click)="openEDialog()">Pedidos entregados</button>
+                                <!-- <button class="btn btn-outline-success me-2" (click)="openEDialog()">Pedidos entregados</button> -->
                                 <!-- <button class="btn btn-outline-warning me-2" (click)="openRDialog()">Requisiciones rechazadas</button>
                                 <button class="btn btn-outline-success me-2" (click)="openPDialog()">Requisiciones pedidas</button> -->
-                                <button class="btn btn-outline-info me-2" [routerLink]="['/new-note']">Nuevo pedido</button>
+                                <!-- <button class="btn btn-outline-info me-2" [routerLink]="['/new-note']">Nuevo pedido</button> -->
                             </div>
                         </div>
                     </nav>
@@ -31,8 +31,8 @@
                             <mat-header-cell *matHeaderCellDef mat-sort-header >Folio</mat-header-cell>
                             <mat-cell *matCellDef="let element">{{element.id}}
                                 <!-- <span (click)="PDF(element.id)" style="color: #fff; background-color: green; border-radius: 20%; padding: 0.2rem; margin-left: 0.3rem; cursor: pointer; font-size: 0.7rem;" class="me-2">PDF</span> -->
-                                <span class="ms-3" *ngIf="element.status == 1">Programado</span>
-                                <span class="ms-3" *ngIf="element.status == 2">Enviada</span>
+                                <span class="ms-3" *ngIf="element.status == 2">Entregado</span>
+                                <span class="ms-3" *ngIf="element.status == 3">Entregado incompleto</span>
                                 <!-- <span class="me-3" *ngIf="element.status == 3">Realizada</span> -->
                             </mat-cell>
                         </ng-container>
@@ -75,4 +75,5 @@
         </div>
     </div>
 </div>
+
 

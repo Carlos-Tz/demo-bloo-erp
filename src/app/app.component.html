@@ -47,6 +47,8 @@
         <a mat-list-item [routerLink]="['/reception']"><span class="material-icons">archive</span> Recepción </a>
         <!-- <a mat-list-item [routerLink]="['/delivery']"><span class="material-icons">outbox</span> Surtido </a> -->
         <a mat-list-item [routerLink]="['/output']"><span class="material-icons">unarchive</span> Entrega </a>
+        <a mat-list-item [routerLink]="['/entries']"><span class="material-icons">arrow_downward</span> Entradas </a>
+        <a mat-list-item [routerLink]="['/withdrawals']"><span class="material-icons">arrow_upward</span> Salidas </a>
         <!-- <a mat-list-item [routerLink]="['/warehouse-report']"><span class="material-icons">summarize</span> Reporte </a> -->
       </mat-expansion-panel>
       <mat-expansion-panel *ngIf="this.authService.userName">

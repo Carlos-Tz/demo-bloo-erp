@@ -12,6 +12,7 @@ import { DeliveryComponent } from './components/delivery/delivery.component';
 import { EditApplicationComponent } from './components/edit-application/edit-application.component';
 import { EditCropComponent } from './components/edit-crop/edit-crop.component';
 import { EditCustomerComponent } from './components/edit-customer/edit-customer.component';
+import { EntriesComponent } from './components/entries/entries.component';
 import { ExpedientComponent } from './components/expedient/expedient.component';
 import { LoginComponent } from './components/login/login.component';
 import { MainComponent } from './components/main/main.component';
@@ -33,6 +34,7 @@ import { RequisitionsComponent } from './components/requisitions/requisitions.co
 import { RunApplicationComponent } from './components/run-application/run-application.component';
 import { RunApplicationsComponent } from './components/run-applications/run-applications.component';
 import { WarehouseReportComponent } from './components/warehouse-report/warehouse-report.component';
+import { WithdrawalsComponent } from './components/withdrawals/withdrawals.component';
 import { AuthGuard } from './services/auth.guard';
 import { SecureInnerPagesGuard } from './services/secure-inner-pages.guard';
 
@@ -71,6 +73,8 @@ const routes: Routes = [
   {path: 'notes', component: NotesComponent , canActivate: [AuthGuard]},
   {path: 'new-note', component: NewNoteComponent , canActivate: [AuthGuard]},
   {path: 'expedient/:id', component: ExpedientComponent , canActivate: [AuthGuard]},
+  {path: 'entries', component: EntriesComponent , canActivate: [AuthGuard]},
+  {path: 'withdrawals', component: WithdrawalsComponent , canActivate: [AuthGuard]},
   {path: 'login', component: LoginComponent, canActivate: [SecureInnerPagesGuard]},
 ];
 

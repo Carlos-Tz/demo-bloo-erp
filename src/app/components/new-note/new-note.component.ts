@@ -90,6 +90,8 @@ export class NewNoteComponent implements OnInit {
       address: ['', [Validators.required]],
       city: ['', [Validators.required]],
       send: [false],
+      paymentdate: [''],
+      orderdate: [''],
       crops: [],
       products: [],
     });

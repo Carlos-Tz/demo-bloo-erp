@@ -9,12 +9,10 @@ import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';  
 pdfMake.vfs = pdfFonts.pdfMake.vfs;  
 import { ApiCompanyService } from 'src/app/services/api-company.service';
-import { Application } from 'src/app/models/application';
-import { ApiApplicationService } from 'src/app/services/api-application.service';
-import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { MailService } from 'src/app/services/mail.service';
 import { Note } from 'src/app/models/note';
 import { ApiNoteService } from 'src/app/services/api-note.service';
+import { DeliveredNotesComponent } from '../delivered-notes/delivered-notes.component';
 
 @Component({
   selector: 'app-notes',
@@ -53,10 +51,10 @@ export class NotesComponent implements OnInit {
       this.notes = [];
       data.forEach(item => {
         const r = item.payload.val();     
-        //if(r.status == 1){
+        if(r.status == 1){
           const not = {'id': item.key, 'customer': r.customer.name, 'date': r.date, 'status': r.status, 'justification': r.justification };        
           this.notes.push(not as Note);
-        //}   
+        }   
       });
       if (this.notes.length > 0) {
         this.data = true;
@@ -99,6 +97,15 @@ export class NotesComponent implements OnInit {
     this.dataSource.filter = event.value.trim().toLocaleLowerCase();
   }
 
+  openEDialog() {
+    const dialogRef = this.dialog.open(DeliveredNotesComponent, {
+      width: '80%',
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      //console.log(`Dialog result: ${result}`);
+    });
+  }
   /* openMailDialog(id: string) {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       data: "¿Confirma que desea enviar esta receta por correo?"

@@ -2,12 +2,12 @@
     <div class="card-header">
         <nav class="navbar bg-light">
             <div class="container-fluid">
-                <a class="navbar-brand">Entregar pedido No. {{data.id}}</a>
+                <a class="navbar-brand">Pedido No. {{data.id}}</a>
                 <div class="d-flex">
-                    <button mat-button class="btn btn-outline-success" (click)="allProducts()">Seleccionar todo</button>
+                    <!-- <button mat-button class="btn btn-outline-success" (click)="allCrops()">Todos los cultivos</button> -->
                     <!-- <button mat-button [routerLink]="['/notes']">Cancelar</button> -->
-                    <button mat-button mat-dialog-close>Cancelar</button>
-                    <button mat-button (click)="submitSurveyData()" [mat-dialog-close]="true" class="btn btn-outline-info">Entregar</button>
+                    <button mat-button mat-dialog-close>Cerrar</button>
+                    <!-- <button mat-button (click)="submitSurveyData()" [mat-dialog-close]="true" class="btn btn-outline-info">Entregar</button> -->
                 </div>
             </div>
         </nav>
@@ -69,8 +69,8 @@
                             <th style="background-color: #155a89; color: #fff; font-weight: 400; text-align: center;">Cantidad</th>
                             <th style="background-color: #155a89; color: #fff; font-weight: 400; text-align: center;">Unidad</th>
                             <th style="background-color: #155a89; color: #fff; font-weight: 400; text-align: center;">Presentación</th>
-                            <th style="background-color: #155a89; color: #fff; font-weight: 400; text-align: center;">Entregar</th>
-                            <th style="background-color: #155a89; color: #fff; font-weight: 400; text-align: center;">Comentarios</th>
+                            <!-- <th style="background-color: #155a89; color: #fff; font-weight: 400; text-align: center;">Entregar</th>
+                            <th style="background-color: #155a89; color: #fff; font-weight: 400; text-align: center;">Comentarios</th> -->
                             <!-- <th style="background-color: #155a89; color: #fff; font-weight: 400; text-align: center;">Costo</th>
                             <th style="background-color: #155a89; color: #fff; font-weight: 400; text-align: center;">I.V.A.</th> -->
                         </thead>
@@ -81,8 +81,8 @@
                                 <td><input type="number" value="{{pro.data.quantity }}" matInput style="text-align: center;" #ca id="quantity___{{pro.value}}" readonly></td>
                                 <td><input type="text" value="{{pro.data.unit }}" readonly matInput style="text-align: center;" id="unit___{{pro.value}}"></td>
                                 <td><input type="text" value="{{pro.data.presentation }}" readonly matInput style="text-align: center;" id="presentation___{{pro.value}}"></td>
-                                <td style="text-align: center;"><input type="checkbox" id="output___{{pro.value}}"></td>
-                                <td><textarea name="" id="comment___{{pro.value}}" rows="2" matInput></textarea></td>
+                                <!-- <td style="text-align: center;"><input type="checkbox" id="output___{{pro.value}}"></td>
+                                <td><textarea name="" id="comment___{{pro.value}}" rows="2" matInput></textarea></td> -->
                                 <td hidden><input type="number" matInput style="text-align: center;" value="{{pro.data.cost}}" readonly id="cost___{{pro.value}}"></td>
                                 <td hidden><input type="checkbox" id="iva___{{pro.value}}" [checked]="pro.data.iva" disabled="disabled"></td>
                             </tr>

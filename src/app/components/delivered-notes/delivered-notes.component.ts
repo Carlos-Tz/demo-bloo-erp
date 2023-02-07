@@ -12,15 +12,13 @@ import { ApiCompanyService } from 'src/app/services/api-company.service';
 import { MailService } from 'src/app/services/mail.service';
 import { Note } from 'src/app/models/note';
 import { ApiNoteService } from 'src/app/services/api-note.service';
-import { OutputNoteComponent } from '../output-note/output-note.component';
-import { ViewNoteComponent } from '../view-note/view-note.component';
 
 @Component({
-  selector: 'app-output',
-  templateUrl: './output.component.html',
-  styleUrls: ['./output.component.css']
+  selector: 'app-delivered-notes',
+  templateUrl: './delivered-notes.component.html',
+  styleUrls: ['./delivered-notes.component.css']
 })
-export class OutputComponent implements OnInit {
+export class DeliveredNotesComponent implements OnInit {
   public dataSource = new MatTableDataSource<Note>();
   public data = false;
   @ViewChild(MatPaginator, {static: false}) paginator!: MatPaginator;
@@ -30,7 +28,7 @@ export class OutputComponent implements OnInit {
     'id',
     'date',
     'customer',
-    'crops',
+    /* 'status', */
     'justification',
     'action',
   ];
@@ -52,8 +50,8 @@ export class OutputComponent implements OnInit {
       this.notes = [];
       data.forEach(item => {
         const r = item.payload.val();     
-        if(r.status == 1){
-          const not = {'id': item.key, 'customer': r.customer.name, 'date': r.date, 'crops': r.crops, 'justification': r.justification };        
+        if(r.status == 2 || r.status == 3){
+          const not = {'id': item.key, 'customer': r.customer.name, 'date': r.date, 'status': r.status, 'justification': r.justification };        
           this.notes.push(not as Note);
         }   
       });
@@ -98,6 +96,17 @@ export class OutputComponent implements OnInit {
     this.dataSource.filter = event.value.trim().toLocaleLowerCase();
   }
 
+  openEDialog() {
+    const dialogRef = this.dialog.open(DeliveredNotesComponent, {
+      width: '80%',
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      //console.log(`Dialog result: ${result}`);
+    });
+  }
+  
+
   PDF(id) {
     this.apiN.GetNote(id).valueChanges().subscribe(data => {
       let prods = [];
@@ -117,9 +126,9 @@ export class OutputComponent implements OnInit {
         }
       });
       total = subtotal + iva;
-      //console.log(subtotal);
-      //console.log(iva);
-      //console.log(total);
+      console.log(subtotal);
+      console.log(iva);
+      console.log(total);
       
       let docDefinition = {  
         //header: 'C# Corner PDF Header',  
@@ -175,26 +184,4 @@ export class OutputComponent implements OnInit {
       pdfMake.createPdf(docDefinition).open();  
     });
   }
-
-  openOutputDialog(id: string) {
-    const dialogRef = this.dialog.open(OutputNoteComponent, {
-      data: {
-        id: id
-      },
-      autoFocus: false
-    });
-    dialogRef.afterClosed().subscribe(async result => {
-    });
-  }
-
-  openViewDialog(id: string) {
-    const dialogRef = this.dialog.open(ViewNoteComponent, {
-      data: {
-        id: id
-      }
-    });
-    dialogRef.afterClosed().subscribe(async result => {
-    });
-  }
-
 }

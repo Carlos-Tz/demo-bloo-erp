@@ -106,6 +106,10 @@ import { NotesComponent } from './components/notes/notes.component';
 import { NewNoteComponent } from './components/new-note/new-note.component';
 import { ExpedientComponent } from './components/expedient/expedient.component';
 import { OutputNoteComponent } from './components/output-note/output-note.component';
+import { DeliveredNotesComponent } from './components/delivered-notes/delivered-notes.component';
+import { ViewNoteComponent } from './components/view-note/view-note.component';
+import { EntriesComponent } from './components/entries/entries.component';
+import { WithdrawalsComponent } from './components/withdrawals/withdrawals.component';
 
 @NgModule({
   declarations: [
@@ -173,7 +177,11 @@ import { OutputNoteComponent } from './components/output-note/output-note.compon
     NotesComponent,
     NewNoteComponent,
     ExpedientComponent,
-    OutputNoteComponent
+    OutputNoteComponent,
+    DeliveredNotesComponent,
+    ViewNoteComponent,
+    EntriesComponent,
+    WithdrawalsComponent
   ],
   imports: [
     BrowserModule,

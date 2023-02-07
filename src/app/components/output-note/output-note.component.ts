@@ -152,10 +152,10 @@ export class OutputNoteComponent implements OnInit {
     }else{
       this.myForm.patchValue({ 'status': 2 });
     }
-    console.log(this.myForm.value);
+    //console.log(this.myForm.value);
     
-    this.ResetForm();
     this.apiN.UpdateNote(this.myForm.value, this.data.id);
+    this.ResetForm();
     this.toastr.success('Pedido entregado!');
   }
 
@@ -184,5 +184,13 @@ export class OutputNoteComponent implements OnInit {
 
   ResetForm() {
     this.myForm.reset();
+  }
+
+  allProducts(){
+    this.products1.forEach(p => {
+
+      $('input#output___'+p.value).prop('checked', true);
+    });
+    
   }
 }
