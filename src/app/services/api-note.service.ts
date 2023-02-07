@@ -36,8 +36,9 @@ export class ApiNoteService {
   }
 
   UpdateNote(note: Note, key: string) {
-    this.noteObject
-    .update(note);
+    this.db.object('blooming-erp/note-list/' + key).update(note);
+    //this.noteObject
+    //.update(note);
   }
 
   AssignProvider(key: string, pro: any, index: number) {

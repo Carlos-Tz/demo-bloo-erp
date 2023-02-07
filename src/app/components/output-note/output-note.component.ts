@@ -6,6 +6,9 @@ import { ToastrService } from 'ngx-toastr';
 import { ApiNoteService } from 'src/app/services/api-note.service';
 import { ApiProductService } from 'src/app/services/api-product.service';
 import * as $ from 'jquery';
+import 'fecha';
+import fechaObj from 'fecha';
+import { ApiMovementService } from 'src/app/services/api-movement.service';
 
 @Component({
   selector: 'app-output-note',
@@ -24,6 +27,7 @@ export class OutputNoteComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     public apiN: ApiNoteService,
     public apiP: ApiProductService,
+    public apiM: ApiMovementService,
     public toastr: ToastrService,
     private fb: FormBuilder
   ) { }
@@ -72,6 +76,8 @@ export class OutputNoteComponent implements OnInit {
       address: [''],
       city: [''],
       send: [''],
+      paymentdate: [''],
+      orderdate: [''],
       crops: [],
       products: [],
     });
@@ -84,6 +90,8 @@ export class OutputNoteComponent implements OnInit {
   submitSurveyData = () => {
     let products_d = {};
     let complete = true;
+    let movements = [];
+    let existences = [];
     this.products1.forEach(p => {
       let id = $('input#id___'+p.value).val();
       let name = $('input#name___'+p.value).val();
@@ -106,9 +114,38 @@ export class OutputNoteComponent implements OnInit {
       if(!output){
         complete = false;
       }
+
+      if(q > 0 && output){
+        let mo = {
+          id: 0,
+          id_req: '',
+          id_app: '',
+          id_note: this.data.id,
+          date: fechaObj.format(new Date(), 'DD[/]MM[/]YYYY'),
+          type: 'SALIDA',
+          quantity: q,
+          price: cost,
+          id_prod: id,
+          name_prod: name,
+          category: ''
+        }
+        movements.push(mo);
+        let ex = {
+          id: p.value,
+          quantity: q
+        };
+        existences.push(ex);
+      }
       
       products_d[p.value] = { id: id, name: name, quantity: q, unit: unit, presentation: presentation, cost: cost, iva: iva, output: output, comment: comment  };
     });
+    if(movements.length > 0){
+      this.addMov(movements);
+    }
+    if(existences.length > 0){
+      this.upExis(existences);
+    }
+
     this.myForm.patchValue({ 'products': products_d });
     if(complete){
       this.myForm.patchValue({ 'status': 3 });
@@ -118,8 +155,31 @@ export class OutputNoteComponent implements OnInit {
     console.log(this.myForm.value);
     
     this.ResetForm();
-    //this.apiN.UpdateNote(this.myForm.value, this.data.id);
+    this.apiN.UpdateNote(this.myForm.value, this.data.id);
     this.toastr.success('Pedido entregado!');
+  }
+
+  async addMov(movements){
+    const promise2 = new Promise((resolve, reject) => {
+      this.apiM.GetLastMovement().subscribe(res => {
+        let id = 0;
+        if(res[0]){ id = Number(res[0].id) + 1; } else { id = 1; }
+        resolve(id);
+      });
+    });
+    await promise2.then((v: number) => {
+      movements.forEach(m => {
+        //console.log(m, v);
+        m['id'] = v;
+        this.apiM.AddMovement(m);
+        v++;
+      });
+        //mov['id'] = v;
+    });
+  }
+
+  upExis(existences){
+    this.apiP.UpdateExistences(existences);
   }
 
   ResetForm() {

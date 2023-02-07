@@ -6,6 +6,7 @@ export interface Movement {
     date: string;
     id_req: string;
     id_app: string;
+    id_note: string;
     id_prod: string;
     name_prod: string;
     category: string;
