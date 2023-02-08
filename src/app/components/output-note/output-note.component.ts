@@ -121,7 +121,7 @@ export class OutputNoteComponent implements OnInit {
           id_req: '',
           id_app: '',
           id_note: this.data.id,
-          date: fechaObj.format(new Date(), 'DD[/]MM[/]YYYY'),
+          date: fechaObj.format(new Date(), 'YYYY[-]MM[-]DD'),
           type: 'SALIDA',
           quantity: q,
           price: cost,

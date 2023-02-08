@@ -1,1 +1,108 @@
-<p>entries works!</p>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card mt-2">
+                <div class="card-header">
+                    <nav class="navbar bg-light">
+                        <div class="container-fluid">
+                            <a class="navbar-brand">Gestión de entradas a almacén</a>
+                            <div class="d-flex">
+                            </div>
+                            <div class="d-flex">
+                                <!-- <button class="btn btn-outline-success me-2" (click)="debtsToPayDialog()">Excel</button>
+                                <button class="btn btn-outline-warning me-2" (click)="openPDialog()">Ordenes pagadas</button>
+                                <button class="btn btn-outline-info me-2" (click)="openNewOrderDialog()">Nueva order de compra</button> --><!--  [routerLink]="['/new-requisition']">Nueva orden</button> -->
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <form [formGroup]="myForm" novalidate autocomplete="off">
+                            <mat-dialog-content class="w-100 m-0">
+                                <div class="row mb-5">
+                                    <mat-form-field appearance="fill" class="col-sm-12 col-md-5">
+                                        <mat-label>Fecha inicial</mat-label>
+                                        <input matInput type="date" formControlName="initial_date" useValueAsDate>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="fill" class="col-sm-12 col-md-5">
+                                        <mat-label>Fecha final</mat-label>
+                                        <input matInput type="date" formControlName="final_date" useValueAsDate>
+                                    </mat-form-field>
+                                    <div class="col-sm-12 col-md-2">
+                                        <button mat-button (click)="submitSurveyData()" [disabled]="!myForm.valid" class="btn btn-outline-info w-100">Buscar</button>
+                                    </div>
+                                </div>
+                            </mat-dialog-content>
+                            <!-- <mat-dialog-actions align="end">
+                                <button mat-button mat-dialog-close>Cancelar</button>
+                            </mat-dialog-actions> -->
+                        </form>
+                    </div>
+                        <div class="row" *ngIf="data">
+                            <div class="col s4">
+                                <mat-form-field>
+                                  <input matInput type="text" (keyup)="doFilter($event.target)" placeholder="Buscar">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-4"></div>
+                            <div class="col-md-4" align="right">
+                                <!-- <button class="btn btn-outline-success me-2" (click)="debtsToPayDialog()">Excel</button> -->
+                            </div>
+                            <!-- <div class="col-md-4" align="right">
+                                <button class="btn btn-outline-success me-2" (click)="exporter.exportTable('xlsx', {fileName:'cuentasXpagar'})">Excel</button>
+                            </div> -->
+                        </div>
+                    <mat-table *ngIf="data" class="mat-elevation-z8" [dataSource]="dataSource" matSort matSortActive="id" matSortDirection="desc" matSortDisableClear (matSortChange)="sortData($event)" matTableExporter  #exporter="matTableExporter" [hiddenColumns]="[1,7]">
+
+                        <ng-container matColumnDef="id">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
+                            <mat-cell *matCellDef="let element">MOV-{{element.id}}
+                            </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="date">
+                            <mat-header-cell *matHeaderCellDef class="pad-l">Fecha</mat-header-cell>
+                            <mat-cell *matCellDef="let element" class="pad-l">{{element.date}}</mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="name_prod">
+                            <mat-header-cell *matHeaderCellDef class="pad-l">Producto</mat-header-cell>
+                            <mat-cell *matCellDef="let element" class="pad-l">{{element.name_prod}}</mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="price">
+                            <mat-header-cell *matHeaderCellDef class="pad-l">Precio</mat-header-cell>
+                            <mat-cell *matCellDef="let element" class="pad-l">{{element.price | currency}}</mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="quantity">
+                            <mat-header-cell *matHeaderCellDef class="pad-l">Cantidad</mat-header-cell>
+                            <mat-cell *matCellDef="let element" class="pad-l">{{element.quantity}}</mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="type">
+                            <mat-header-cell *matHeaderCellDef class="pad-l">TIPO</mat-header-cell>
+                            <mat-cell *matCellDef="let element" class="pad-l">{{element.type}}</mat-cell>
+                        </ng-container>
+                        <!-- <ng-container matColumnDef="action">
+                            <mat-header-cell *matHeaderCellDef> Acción </mat-header-cell>
+                            <mat-cell *matCellDef="let element; let i = index;">
+                                <button *ngIf="element.status == 1" class="btn btn-outline-success me-2 w-100" style="padding: 0 0.2rem;" (click)="openSchedulePaymentDialog(element)" >
+                                    <span class="material-icons">pending_actions</span>Programar pago
+                                </button>
+                                <button *ngIf="element.status == 2 || element.status == 3" class="btn btn-outline-success me-2 w-100" style="padding: 0 0.2rem;" (click)="openMakePaymentDialog(element)" >
+                                    <span class="material-icons">paid</span>Pagar
+                                </button>
+                                <button *ngIf="element.status > 1" class="btn btn-outline-secondary me-2 w-100" style="padding: 0 0.2rem;" (click)="openPaymentsDialog(element)" >
+                                    <span class="material-icons">attach_money</span>Pagos
+                                </button>
+                            </mat-cell>
+                        </ng-container> -->
+
+                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+                        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+
+                    </mat-table>
+                    <mat-paginator *ngIf="data" [pageSizeOptions]="[10, 20, 50, 100]" showFirstLastButtons></mat-paginator>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
