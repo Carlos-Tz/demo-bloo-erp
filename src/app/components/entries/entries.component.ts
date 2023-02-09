@@ -68,6 +68,7 @@ export class EntriesComponent implements OnInit {
   }
 
   submitSurveyData() {
+    this.data = false;
     this.apiM.GetMovementList().snapshotChanges().subscribe(data => {
       this.movements = [];
       data.forEach(item => {

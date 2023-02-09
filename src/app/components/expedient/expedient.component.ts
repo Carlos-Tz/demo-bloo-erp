@@ -15,6 +15,10 @@ import pdfFonts from 'pdfmake/build/vfs_fonts';
 import { ApiCompanyService } from 'src/app/services/api-company.service';
 import { Note } from 'src/app/models/note';
 import { ApiNoteService } from 'src/app/services/api-note.service';
+import { FileUploadService } from 'src/app/services/file-upload.service';
+import { File } from 'src/app/models/file';
+import { MatDialog } from '@angular/material/dialog';
+import { UploadFileComponent } from '../upload-file/upload-file.component';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;  
 
 @Component({
@@ -30,9 +34,11 @@ export class ExpedientComponent implements OnInit {
   public crop = false;
   public apps = false;
   public nots = false;
+  public fils = false;
   public company: Company;
   public dataSource = new MatTableDataSource<Application>();
   public dataSource1 = new MatTableDataSource<Note>();
+  public dataSource2 = new MatTableDataSource<File>();
   public data = false;
   @ViewChild(MatPaginator, {static: false}) paginator!: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort!: MatSort;
@@ -45,9 +51,17 @@ export class ExpedientComponent implements OnInit {
     'justification',
     'action',
   ];
+  displayedColumns2: any[] = [
+    /* 'id', */
+    'name',
+    'date',
+    /* 'url', */
+    'action',
+  ];
   //public categories: Select2Data = [];
   public applications: Application[] = [];
   public notes: Note[] = [];
+  public files: File[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -55,6 +69,8 @@ export class ExpedientComponent implements OnInit {
     public apiCu: ApiCustomerService,
     public apiA: ApiApplicationService,
     public apiN: ApiNoteService,
+    public apiF: FileUploadService,
+    public dialog: MatDialog,
     public toastr: ToastrService,
     private actRouter: ActivatedRoute
   ) { }
@@ -85,6 +101,7 @@ export class ExpedientComponent implements OnInit {
   updateC(ev){
     this.apps = false;
     this.nots = false;
+    this.fils = false;
     if(ev.options){
       //console.log(ev.options[0].value, this.myForm.get('id').value);
       this.crop = true;
@@ -96,6 +113,7 @@ export class ExpedientComponent implements OnInit {
   showApps(){
     this.apps = true;
     this.nots = false;
+    this.fils = false;
     this.apiA.GetApplicationList().snapshotChanges().subscribe(data => {
       this.applications = [];
       data.forEach(item => {
@@ -120,6 +138,7 @@ export class ExpedientComponent implements OnInit {
   showNotes(){
     this.nots = true;
     this.apps = false;
+    this.fils = false;
     this.apiN.GetNoteList().snapshotChanges().subscribe(data => {
       this.notes = [];
       data.forEach(item => {
@@ -136,7 +155,32 @@ export class ExpedientComponent implements OnInit {
       }
       /* Pagination */
       setTimeout(() => {
-        this.dataSource.paginator = this.paginator;
+        this.dataSource1.paginator = this.paginator;
+      }, 0);
+    });
+  }
+
+  showFiles(){
+    this.fils = true;
+    this.nots = false;
+    this.apps = false;
+    this.apiF.GetFileList().snapshotChanges().subscribe(data => {
+      this.files = [];
+      data.forEach(item => {
+        const r = item.payload.val();
+        if(r.customer == this.myForm.get('id').value){
+          const fil = {'id': item.key, 'customer': r.customer, 'date': r.date, 'name': r.name, 'url': r.url };        
+          this.files.push(fil as File);
+        }   
+      });
+      if (this.files.length > 0) {
+        this.data = true;
+        this.dataSource2.data = this.files.reverse().slice(); console.log(this.dataSource2.data);
+       /*  this.dataSource.sort = this.sort; */
+      }
+      /* Pagination */
+      setTimeout(() => {
+        this.dataSource2.paginator = this.paginator;
       }, 0);
     });
   }
@@ -175,6 +219,23 @@ export class ExpedientComponent implements OnInit {
       }
     });
   }
+  sortData2(sort: Sort) {
+    const data = this.files.slice();
+    if (!sort.active || sort.direction === '') {
+      this.dataSource2.data = data;
+      return;
+    }
+
+    this.dataSource2.data = data.sort((a, b) => {
+      const isAsc = sort.direction === 'asc';
+      switch (sort.active) {
+        case 'date': return this.compare(a.date.trim().toLocaleLowerCase(), b.date.trim().toLocaleLowerCase(), isAsc);
+        /* case 'id': return this.compare(a.id, b.id, isAsc); */
+        case 'name': return this.compare(a.name.trim().toLocaleLowerCase(), b.name.trim().toLocaleLowerCase(), isAsc);
+        default: return 0;
+      }
+    });
+  }
   compare(a: number | string, b: number | string, isAsc: boolean) {
     return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
   }
@@ -185,6 +246,19 @@ export class ExpedientComponent implements OnInit {
 
   public doFilter1 = (event: any) => {
     this.dataSource1.filter = event.value.trim().toLocaleLowerCase();
+  }
+
+  openUploadDialog(id: string) {
+    const dialogRef = this.dialog.open(UploadFileComponent, {
+      width: '80%',
+      data: {
+        id: id
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      //console.log(`Dialog result: ${result}`);
+    });
   }
 
   PDF(id) {

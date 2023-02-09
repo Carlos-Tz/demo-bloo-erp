@@ -110,6 +110,7 @@ import { DeliveredNotesComponent } from './components/delivered-notes/delivered-
 import { ViewNoteComponent } from './components/view-note/view-note.component';
 import { EntriesComponent } from './components/entries/entries.component';
 import { WithdrawalsComponent } from './components/withdrawals/withdrawals.component';
+import { UploadFileComponent } from './components/upload-file/upload-file.component';
 
 @NgModule({
   declarations: [
@@ -181,7 +182,8 @@ import { WithdrawalsComponent } from './components/withdrawals/withdrawals.compo
     DeliveredNotesComponent,
     ViewNoteComponent,
     EntriesComponent,
-    WithdrawalsComponent
+    WithdrawalsComponent,
+    UploadFileComponent
   ],
   imports: [
     BrowserModule,
