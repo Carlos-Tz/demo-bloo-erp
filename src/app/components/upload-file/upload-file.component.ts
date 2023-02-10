@@ -5,6 +5,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FileUploadService } from 'src/app/services/file-upload.service';
 import 'fecha';
 import fechaObj from 'fecha';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-upload-file',
@@ -24,6 +25,7 @@ export class UploadFileComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public apiF: FileUploadService,
+    public toastr: ToastrService,
     private fb: FormBuilder,
     private http: HttpClient
   ) { }
@@ -75,14 +77,17 @@ export class UploadFileComponent implements OnInit {
       
     this.http.post(`${this.url}resources/upload_file.php`, formData)
       .subscribe(res => {
-        console.log(res);
-        this.myForm1.patchValue({ 
-          date: fechaObj.format(new Date(), 'YYYY[-]MM[-]DD'),
-          name: this.myForm.get('name').value,
-          url: `${this.url}files/${res}`,
-          customer: this.data.id,
-        });
-        this.apiF.AddFile(this.myForm1.value);
+        if(res){
+          //console.log(res);
+          this.myForm1.patchValue({ 
+            date: fechaObj.format(new Date(), 'YYYY[-]MM[-]DD'),
+            name: this.myForm.get('name').value,
+            url: `${this.url}files/${res}`,
+            customer: this.data.id,
+          });
+          this.apiF.AddFile(this.myForm1.value);
+          this.toastr.success('Documento cargado!');
+        }
         //alert('Uploaded Successfully.');
       })
   }

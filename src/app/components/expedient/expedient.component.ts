@@ -19,6 +19,8 @@ import { FileUploadService } from 'src/app/services/file-upload.service';
 import { File } from 'src/app/models/file';
 import { MatDialog } from '@angular/material/dialog';
 import { UploadFileComponent } from '../upload-file/upload-file.component';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { HttpClient } from '@angular/common/http';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;  
 
 @Component({
@@ -28,6 +30,7 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 })
 export class ExpedientComponent implements OnInit {
 
+  url='https://demo-erp.bloomingtec.mx/';
   public myForm!: FormGroup;
   public key = '';
   public crops: Select2Data = [];
@@ -71,6 +74,7 @@ export class ExpedientComponent implements OnInit {
     public apiN: ApiNoteService,
     public apiF: FileUploadService,
     public dialog: MatDialog,
+    private http: HttpClient,
     public toastr: ToastrService,
     private actRouter: ActivatedRoute
   ) { }
@@ -175,7 +179,7 @@ export class ExpedientComponent implements OnInit {
       });
       if (this.files.length > 0) {
         this.data = true;
-        this.dataSource2.data = this.files.reverse().slice(); console.log(this.dataSource2.data);
+        this.dataSource2.data = this.files.reverse().slice();
        /*  this.dataSource.sort = this.sort; */
       }
       /* Pagination */
@@ -379,6 +383,28 @@ export class ExpedientComponent implements OnInit {
       };  
      
       pdfMake.createPdf(docDefinition).open();  
+    });
+  }
+
+  openDeleteDialog(id: string) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: "¿Confirma que desea eliminar este documento?"
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        const formData = new FormData();
+        formData.append('id', id);
+          
+        this.http.post(`${this.url}resources/delete_file.php`, formData)
+          .subscribe(res => {
+            if(res){
+              console.log(res);
+              this.toastr.info('Documento eliminado!');
+            }
+            //alert('Uploaded Successfully.');
+          });
+      }
     });
   }
 }

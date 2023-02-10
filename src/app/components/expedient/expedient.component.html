@@ -211,10 +211,13 @@
                                                 <ng-container matColumnDef="action">
                                                     <mat-header-cell *matHeaderCellDef> Acción </mat-header-cell>
                                                     <mat-cell *matCellDef="let element; let i = index;">
-                                                        <!-- <button class="btn btn-outline-danger me-2" style="padding: 0 0.2rem;" (click)="element.url" >
-                                                            <span class="material-icons">image</span>
+                                                        <!-- <button class="btn btn-outline-danger me-2" style="padding: 0 0.2rem;" (onclick)="location.href='{{element.url}}'">
+                                                            <span class="material-icons">delete</span>
                                                         </button> -->
-                                                        <a href="{{element.url}}" target="_blank"><span class="material-icons">visibility</span></a>
+                                                        <a class="btn btn-outline-dark" href="{{element.url}}" style="padding: 0 0.2rem;" target="_blank"><span class="material-icons">visibility</span></a>
+                                                        <button class="btn btn-outline-danger me-2" style="padding: 0 0.2rem;" (click)="openDeleteDialog(element.id)">
+                                                            <span class="material-icons">delete</span>
+                                                        </button>
                                                     </mat-cell>
                                                 </ng-container>
                         
