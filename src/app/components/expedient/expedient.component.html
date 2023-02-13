@@ -59,7 +59,7 @@
                                                 </div>
                                             </nav>
                                         </div>
-                                        <div class="card-body"> <!-- *ngIf="data" -->
+                                        <div class="card-body" *ngIf="data_apps">
                                                 <div class="row">
                                                     <div class="col s4">
                                                         <mat-form-field>
@@ -130,7 +130,7 @@
                                                 </div>
                                             </nav>
                                         </div>
-                                        <div class="card-body"> <!-- *ngIf="data" -->
+                                        <div class="card-body" *ngIf="data_notes">
                                                 <div class="row">
                                                     <div class="col s4">
                                                         <mat-form-field>
@@ -160,6 +160,9 @@
                                                         <button class="btn btn-outline-danger me-2" style="padding: 0 0.2rem;" (click)="PDF1(element.id)" >
                                                             <span class="material-icons">picture_as_pdf</span>
                                                         </button>
+                                                        <button class="btn btn-outline-success me-2" style="padding: 0 0.2rem;" (click)="openRenoteDialog(element.id)">
+                                                            <span class="material-icons">content_copy</span>Duplicar
+                                                        </button>
                                                     </mat-cell>
                                                 </ng-container>
                         
@@ -188,7 +191,7 @@
                                                 </div>
                                             </nav>
                                         </div>
-                                        <div class="card-body"> <!-- *ngIf="data" -->
+                                        <div class="card-body" *ngIf="data_files">
                                                 <!-- <div class="row">
                                                     <div class="col s4">
                                                         <mat-form-field>
@@ -215,7 +218,7 @@
                                                             <span class="material-icons">delete</span>
                                                         </button> -->
                                                         <a class="btn btn-outline-dark" href="{{element.url}}" style="padding: 0 0.2rem;" target="_blank"><span class="material-icons">visibility</span></a>
-                                                        <button class="btn btn-outline-danger me-2" style="padding: 0 0.2rem;" (click)="openDeleteDialog(element.id)">
+                                                        <button class="btn btn-outline-danger me-2" style="padding: 0 0.2rem;" (click)="openDeleteDialog(element.id,element.url)">
                                                             <span class="material-icons">delete</span>
                                                         </button>
                                                     </mat-cell>

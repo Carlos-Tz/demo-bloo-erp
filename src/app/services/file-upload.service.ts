@@ -52,4 +52,9 @@ export class FileUploadService {
     this.lastFileRef = this.db.list('blooming-erp/file-list/', ref => ref.limitToLast(1)).valueChanges();
     return this.lastFileRef;
   }
+
+  DeleteFile(key: string) {
+    this.fileObject = this.db.object('blooming-erp/file-list/' + key);
+    this.fileObject.remove();
+  }
 }

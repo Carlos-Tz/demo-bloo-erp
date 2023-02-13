@@ -21,6 +21,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { UploadFileComponent } from '../upload-file/upload-file.component';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { HttpClient } from '@angular/common/http';
+import { ReNoteComponent } from '../re-note/re-note.component';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;  
 
 @Component({
@@ -43,6 +44,9 @@ export class ExpedientComponent implements OnInit {
   public dataSource1 = new MatTableDataSource<Note>();
   public dataSource2 = new MatTableDataSource<File>();
   public data = false;
+  public data_files = false;
+  public data_notes = false;
+  public data_apps = false;
   @ViewChild(MatPaginator, {static: false}) paginator!: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort!: MatSort;
   @ViewChild('input', {static: false}) input!: ElementRef;
@@ -128,7 +132,7 @@ export class ExpedientComponent implements OnInit {
         }   
       });
       if (this.applications.length > 0) {
-        this.data = true;
+        this.data_apps = true;
         this.dataSource.data = this.applications.reverse().slice();
        /*  this.dataSource.sort = this.sort; */
       }
@@ -153,7 +157,7 @@ export class ExpedientComponent implements OnInit {
         }   
       });
       if (this.notes.length > 0) {
-        this.data = true;
+        this.data_notes = true;
         this.dataSource1.data = this.notes.reverse().slice();
        /*  this.dataSource.sort = this.sort; */
       }
@@ -178,7 +182,7 @@ export class ExpedientComponent implements OnInit {
         }   
       });
       if (this.files.length > 0) {
-        this.data = true;
+        this.data_files = true;
         this.dataSource2.data = this.files.reverse().slice();
        /*  this.dataSource.sort = this.sort; */
       }
@@ -386,7 +390,7 @@ export class ExpedientComponent implements OnInit {
     });
   }
 
-  openDeleteDialog(id: string) {
+  openDeleteDialog(id: string, url: string) {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       data: "¿Confirma que desea eliminar este documento?"
     });
@@ -394,17 +398,37 @@ export class ExpedientComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if(result){
         const formData = new FormData();
-        formData.append('id', id);
+        //formData.append('id', id);
+        formData.append('url', url);
           
         this.http.post(`${this.url}resources/delete_file.php`, formData)
           .subscribe(res => {
             if(res){
-              console.log(res);
+              //console.log(res);
+              this.apiF.DeleteFile(id) ;
               this.toastr.info('Documento eliminado!');
+              //console.log(this.dataSource2.data);
+              
+              if (this.dataSource2.data.length == 1){
+                this.data_files = false;
+              }
+            }else{
+              this.toastr.warning('No se pudo eliminar el documento!')
             }
             //alert('Uploaded Successfully.');
           });
       }
+    });
+  }
+
+  openRenoteDialog(id: string) {
+    const dialogRef = this.dialog.open(ReNoteComponent, {
+      data: {
+        id: id
+      },
+      autoFocus: false
+    });
+    dialogRef.afterClosed().subscribe(async result => {
     });
   }
 }

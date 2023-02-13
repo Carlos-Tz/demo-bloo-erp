@@ -111,6 +111,8 @@ import { ViewNoteComponent } from './components/view-note/view-note.component';
 import { EntriesComponent } from './components/entries/entries.component';
 import { WithdrawalsComponent } from './components/withdrawals/withdrawals.component';
 import { UploadFileComponent } from './components/upload-file/upload-file.component';
+import { ReNoteComponent } from './components/re-note/re-note.component';
+import { EditNoteComponent } from './components/edit-note/edit-note.component';
 
 @NgModule({
   declarations: [
@@ -183,7 +185,9 @@ import { UploadFileComponent } from './components/upload-file/upload-file.compon
     ViewNoteComponent,
     EntriesComponent,
     WithdrawalsComponent,
-    UploadFileComponent
+    UploadFileComponent,
+    ReNoteComponent,
+    EditNoteComponent
   ],
   imports: [
     BrowserModule,

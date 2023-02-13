@@ -52,9 +52,9 @@
                         <ng-container matColumnDef="action">
                             <mat-header-cell *matHeaderCellDef> Acción </mat-header-cell>
                             <mat-cell *matCellDef="let element; let i = index;">
-                                <!-- <button class="btn btn-outline-success me-2 w-100" style="padding: 0 0.2rem;" [routerLink]="['/edit-application', element.id]" >
-                                    <span class="material-icons">edit</span>
-                                </button> -->
+                                <button class="btn btn-outline-success me-2 w-100" style="padding: 0 0.2rem;" [routerLink]="['/edit-note', element.id]" >
+                                    <span class="material-icons">content_copy</span>
+                                </button>
                                 <button class="btn btn-outline-danger me-2 w-100" style="padding: 0 0.2rem;" (click)="PDF(element.id)" >
                                     <span class="material-icons">picture_as_pdf</span>
                                 </button>
