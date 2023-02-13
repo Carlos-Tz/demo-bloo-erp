@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild, Inject} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Select2Data } from 'ng-select2-component';
 import { ToastrService } from 'ngx-toastr';
@@ -12,13 +12,14 @@ import { Customer } from 'src/app/models/customer';
 import { ApiCustomerService } from 'src/app/services/api-customer.service';
 import { ApiNoteService } from 'src/app/services/api-note.service';
 import { ActivatedRoute } from '@angular/router';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-edit-note',
-  templateUrl: './edit-note.component.html',
-  styleUrls: ['./edit-note.component.css']
+  selector: 'app-re-edit-note',
+  templateUrl: './re-edit-note.component.html',
+  styleUrls: ['./re-edit-note.component.css']
 })
-export class EditNoteComponent implements OnInit {
+export class ReEditNoteComponent implements OnInit {
 
   public myForm!: FormGroup;
   public myForm1!: FormGroup;
@@ -39,6 +40,7 @@ export class EditNoteComponent implements OnInit {
   public scheduled = 0;
 
   constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private fb: FormBuilder,
     public apiC: ApiCustomerService,
     public apiN: ApiNoteService,
@@ -48,34 +50,18 @@ export class EditNoteComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.key = this.actRouter.snapshot.paramMap.get('id');
+    //this.key = this.actRouter.snapshot.paramMap.get('id');
     this.sForm();
     this.sForm1();
-    this.apiN.GetNote(this.key).valueChanges().subscribe(data => {
+    this.apiN.GetNote(this.data.id).valueChanges().subscribe(data => {
       this.myForm.patchValue(data);
       $('#customer1').val(data.customer.name);
       this.customer(data.customer)
       for (const e in data.crops) {
         this.cro.push(data.crops[e]);
       }
-      //$('#customer1').trigger('change');
-      //this.customer1 = data.customer.name;
-      
-      //this.customer = data.customer.name;
-      //data.products.forEach(pp => {
-      //}); */
       for (const e in data.products) {
         this.pro.push(e);
-        //console.log(e);
-        //const element = data.products[e];
-        //const pro = {'value': element.id, 'label': element.name, 'data': { 'iva': element.iva, 'quantity': element.quantity, 'unit': element.unit, 'cost': element.cost, 'presentation': element.presentation }};
-        //const pro = {'value': pp.id, 'label': pp.name, 'data': { 'iva': pp.iva, 'quantity': pp.quantity, 'unit': pp.unit, 'cost': pp.cost, 'presentation': pp.presentation }};
-        //this.products.push(pro);
-        /* if (Object.prototype.hasOwnProperty.call(ev.value.crops, e)) {
-          const element = ev.value.crops[e];
-          const cro = {'value': element, 'label': element};   
-          this.crops.push(cro);
-        } */
       };
       //this.pro = data.products;
     });

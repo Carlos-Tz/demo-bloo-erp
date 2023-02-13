@@ -113,6 +113,7 @@ import { WithdrawalsComponent } from './components/withdrawals/withdrawals.compo
 import { UploadFileComponent } from './components/upload-file/upload-file.component';
 import { ReNoteComponent } from './components/re-note/re-note.component';
 import { EditNoteComponent } from './components/edit-note/edit-note.component';
+import { ReEditNoteComponent } from './components/re-edit-note/re-edit-note.component';
 
 @NgModule({
   declarations: [
@@ -187,7 +188,8 @@ import { EditNoteComponent } from './components/edit-note/edit-note.component';
     WithdrawalsComponent,
     UploadFileComponent,
     ReNoteComponent,
-    EditNoteComponent
+    EditNoteComponent,
+    ReEditNoteComponent
   ],
   imports: [
     BrowserModule,

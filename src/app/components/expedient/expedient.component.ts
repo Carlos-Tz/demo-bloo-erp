@@ -22,6 +22,7 @@ import { UploadFileComponent } from '../upload-file/upload-file.component';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { HttpClient } from '@angular/common/http';
 import { ReNoteComponent } from '../re-note/re-note.component';
+import { ReEditNoteComponent } from '../re-edit-note/re-edit-note.component';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;  
 
 @Component({
@@ -423,6 +424,17 @@ export class ExpedientComponent implements OnInit {
 
   openRenoteDialog(id: string) {
     const dialogRef = this.dialog.open(ReNoteComponent, {
+      data: {
+        id: id
+      },
+      autoFocus: false
+    });
+    dialogRef.afterClosed().subscribe(async result => {
+    });
+  }
+
+  openEditDialog(id: string) {
+    const dialogRef = this.dialog.open(ReEditNoteComponent, {
       data: {
         id: id
       },
