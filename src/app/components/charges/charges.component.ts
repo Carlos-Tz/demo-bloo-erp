@@ -12,14 +12,13 @@ import { ApiCompanyService } from 'src/app/services/api-company.service';
 import { MailService } from 'src/app/services/mail.service';
 import { Note } from 'src/app/models/note';
 import { ApiNoteService } from 'src/app/services/api-note.service';
-import { DeliveredNotesComponent } from '../delivered-notes/delivered-notes.component';
 
 @Component({
-  selector: 'app-notes',
-  templateUrl: './notes.component.html',
-  styleUrls: ['./notes.component.css']
+  selector: 'app-charges',
+  templateUrl: './charges.component.html',
+  styleUrls: ['./charges.component.css']
 })
-export class NotesComponent implements OnInit {
+export class ChargesComponent implements OnInit {
   public dataSource = new MatTableDataSource<Note>();
   public data = false;
   @ViewChild(MatPaginator, {static: false}) paginator!: MatPaginator;
@@ -51,7 +50,7 @@ export class NotesComponent implements OnInit {
       this.notes = [];
       data.forEach(item => {
         const r = item.payload.val();     
-        if(r.status == 1){
+        if(r.status == 2 || r.status == 3){
           const not = {'id': item.key, 'customer': r.customer.name, 'date': r.date, 'status': r.status, 'justification': r.justification };        
           this.notes.push(not as Note);
         }   
@@ -97,7 +96,7 @@ export class NotesComponent implements OnInit {
     this.dataSource.filter = event.value.trim().toLocaleLowerCase();
   }
 
-  openEDialog() {
+  /* openEDialog() {
     const dialogRef = this.dialog.open(DeliveredNotesComponent, {
       width: '80%',
     });
@@ -105,36 +104,8 @@ export class NotesComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       //console.log(`Dialog result: ${result}`);
     });
-  }
-  /* openMailDialog(id: string) {
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      data: "¿Confirma que desea enviar esta receta por correo?"
-    });
-    dialogRef.afterClosed().subscribe(async result => {
-      if(result){
-        //console.log(result);
-        //this.apiC.DeleteCategory(key);
-        const promise = new Promise((resolve, reject) => {
-          this.apiA.GetApplication(id).valueChanges().subscribe(data => {
-            if(data){
-              resolve(data);
-            }else {
-              resolve({})
-            }
-          });
-        });
-    
-        await promise.then((app: any) => {
-          app['status'] = 2;
-          console.log(app, app.id);
-          this.apiA.UpdateApplication(app, app.id);
-          app['company'] = this.company;
-          this.apiM.mailApplication(app).subscribe({});          
-        });
-        this.toastr.info('Receta enviada al correo!');
-      }
-    });
   } */
+  
 
   PDF(id) {
     this.apiN.GetNote(id).valueChanges().subscribe(data => {
@@ -155,9 +126,6 @@ export class NotesComponent implements OnInit {
         }
       });
       total = subtotal + iva;
-      console.log(subtotal);
-      console.log(iva);
-      console.log(total);
       
       let docDefinition = {  
         //header: 'C# Corner PDF Header',  

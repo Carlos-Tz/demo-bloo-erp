@@ -4,4 +4,7 @@ export interface Company {
     rfc: string;
     address: string;
     logo: string;
+    business_name: string;
+    email: string;
+    tel: string;
 }

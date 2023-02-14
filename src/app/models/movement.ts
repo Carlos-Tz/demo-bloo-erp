@@ -10,4 +10,6 @@ export interface Movement {
     id_prod: string;
     name_prod: string;
     category: string;
+    customer_id: string;
+    customer_name: string;
 }

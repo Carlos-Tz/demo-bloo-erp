@@ -31,7 +31,8 @@ export class WithdrawalsComponent implements OnInit {
     /* 'provider', */
     /* 'iva',*/
     'quantity',
-    'type',
+    /* 'type', */
+    'customer_name',
     /* 'balance', */
     /* 'key_r', */
     /* 'action', */

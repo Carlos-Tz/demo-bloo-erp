@@ -96,7 +96,7 @@ export class DeliveredNotesComponent implements OnInit {
     this.dataSource.filter = event.value.trim().toLocaleLowerCase();
   }
 
-  openEDialog() {
+  /* openEDialog() {
     const dialogRef = this.dialog.open(DeliveredNotesComponent, {
       width: '80%',
     });
@@ -104,7 +104,7 @@ export class DeliveredNotesComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       //console.log(`Dialog result: ${result}`);
     });
-  }
+  } */
   
 
   PDF(id) {
@@ -126,9 +126,6 @@ export class DeliveredNotesComponent implements OnInit {
         }
       });
       total = subtotal + iva;
-      console.log(subtotal);
-      console.log(iva);
-      console.log(total);
       
       let docDefinition = {  
         //header: 'C# Corner PDF Header',  
@@ -143,7 +140,7 @@ export class DeliveredNotesComponent implements OnInit {
               body: [
                 //[{text: 'RECETA', colSpan: 5, alignment: 'center', fontSize: 26, margin: 15 },{}, {}, {}, {}, {}],
                 //[{},{ colSpan: 4, rowSpan: 3, text: this.company.name + '\nRFC: ' + this.company.rfc + '\n' +  this.company.address +'\n' }, {}, {}, {}, { text: 'MORELIA, MICHOACÁN', alignment: 'center'}],
-                [{}, { /* rowSpan: 2, */ text: this.company.name + '\nRFC: ' + this.company.rfc + '\n' +  this.company.address +'\n', alignment: 'center', fontSize: 12, margin: 2, colSpan: 4 }, {}, {}, {}, { text: 'No. Pedido: ' + data.id + '\n\nFecha: '+ data.date, alignment: 'right' }],
+                [{ image: this.company.logo, width: 50 }, { /* rowSpan: 2, */ text: this.company.name + '\n' + this.company.business_name + this.company.rfc + '\n' +  this.company.address +'\n' + this.company.email + ' / ' +this.company.tel, alignment: 'center', fontSize: 10, margin: 2, colSpan: 4 }, {}, {}, {}, { text: 'No. Pedido: ' + data.id + '\n\nFecha: '+ data.date, alignment: 'right' }],
                 //[{}, {}, {}, {}, {}, { text: 'Fecha: ' + data.date, alignment: 'center' }],
                 [{ text: 'Nombre', fillColor: '#eeeeee' }, { text: data.customer.name, colSpan: 5 }, {}, {}, {}, {}],
                 [{ text: 'Domicilio', fillColor: '#eeeeee' }, { text: data.address, colSpan: 5 }, {}, {}, {}, {}],

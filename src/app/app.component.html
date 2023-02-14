@@ -62,7 +62,7 @@
         </mat-expansion-panel-header>
         <a mat-list-item [routerLink]="['/applications']"><span class="material-icons">format_list_numbered</span> Recetas </a>
         <a mat-list-item [routerLink]="['/notes']"><span class="material-icons">list_alt</span> Pedidos </a>
-        <!-- <a mat-list-item [routerLink]="['/applications-report']"><span class="material-icons">summarize</span> Reporte </a> -->
+        <a mat-list-item [routerLink]="['/charges']"><span class="material-icons">request_quote</span> Pedidos y cobros </a>
       </mat-expansion-panel>
       <mat-expansion-panel *ngIf="this.authService.userName">
         <mat-expansion-panel-header>

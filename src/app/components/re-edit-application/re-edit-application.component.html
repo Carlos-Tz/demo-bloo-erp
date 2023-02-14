@@ -1,0 +1,106 @@
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card mt-2">
+                <div class="card-header">
+                    <nav class="navbar bg-light">
+                        <div class="container-fluid">
+                            <a class="navbar-brand">Editar receta</a>
+                            <div class="d-flex">
+                                <button mat-button class="btn btn-outline-success" (click)="allCrops()">Todos los cultivos</button>
+                                <button mat-button mat-dialog-close>Cancelar</button>
+                                <button mat-button (click)="submitSurveyData()" [mat-dialog-close]="true" [disabled]="!myForm.valid" class="btn btn-outline-info">Guardar nueva</button>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+                <div class="card-body">
+                    <form [formGroup]="myForm" novalidate autocomplete="off">
+                        <div class="row">
+                            <mat-form-field appearance="fill" class="col-sm-12 col-md-4" hidden>
+                                <mat-label>ID</mat-label>
+                                <input matInput type="number" formControlName="id" required>
+                            </mat-form-field>
+                            <mat-form-field appearance="fill" class="col-sm-12 col-md-4" hidden>
+                                <mat-label>Estatus</mat-label>
+                                <mat-select matInput name="status" id="status" formControlName="status" required>
+                                    <mat-option [value]="1">Nueva</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <mat-form-field appearance="fill" class="col-sm-12" hidden>
+                                <mat-label>Cliente</mat-label>
+                                <mat-select matInput name="customer" id="customer" formControlName="customer" required (selectionChange)="customer($event)">
+                                    <mat-option *ngFor="let customer of customers" [value]="customer">{{ customer.name }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <mat-form-field appearance="fill" class="col-sm-12">
+                                <mat-label>Cliente</mat-label>
+                                <input matInput type="text" [value]="cus"readonly>
+                            </mat-form-field>
+                            <mat-form-field appearance="fill" class="col-sm-12 col-md-6">
+                                <mat-label>Domicilio</mat-label>
+                                <input matInput type="text" formControlName="address" required readonly>
+                            </mat-form-field>
+                            <mat-form-field appearance="fill" class="col-sm-12 col-md-6">
+                                <mat-label>Ciudad</mat-label>
+                                <input matInput type="text" formControlName="city" required readonly>
+                            </mat-form-field>
+                            <mat-form-field appearance="fill" class="col-sm-12">
+                                <mat-label>Justificación</mat-label>
+                                <input matInput type="text" formControlName="justification" required>
+                            </mat-form-field>
+                            <div class="col-sm-12">
+                                <select2 class="w-100" 
+                                    [data]="crops"
+                                    [value]="cro"
+                                    multiple
+                                    [overlay]="false"
+                                    displaySearchStatus="always"
+                                    listPosition="above"
+                                    styleMode="material"
+                                    resettable
+                                    formControlName="crops"
+                                    resultMaxHeight="200px">
+                                    <select2-hint>Cultivos</select2-hint>
+                                </select2>
+                            </div>
+                            <div class="col-sm-12">
+                                <table class="table table-bordered">
+                                    <thead >
+                                        <th>Indicación</th>
+                                        <th>Opciones</th>
+                                    </thead>
+                                    <tr *ngFor="let indication of indications">
+                                        <td>{{ indication.indication }}</td>
+                                        <td>
+                                            <button class="btn btn-outline-info me-2" style="padding: 0 0.2rem;" (click)="editIndication(indication.id, indication.indication)"><span class="material-icons">edit</span></button>
+                                            <button class="btn btn-outline-danger" style="padding: 0 0.2rem;" (click)="deleteIndication(indication.id)"><span class="material-icons">delete</span></button>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </form>
+                    <form [formGroup]="myForm1" novalidate autocomplete="off">
+                        <div class="row">
+                            <mat-form-field appearance="fill" class="col-sm-12 col-md-2" hidden>
+                                <mat-label>ID</mat-label>
+                                <input matInput type="number" formControlName="id" readonly>
+                            </mat-form-field>
+                            <mat-form-field appearance="fill" class="col-sm-10">
+                                <mat-label>Indicación</mat-label>
+                                <!-- <input matInput type="text" formControlName="indication" required> -->
+                                <textarea matInput cols="30" rows="3" formControlName="indication" required></textarea>
+                            </mat-form-field>
+                            <div class="col-sm-2">
+                                <button mat-button class="btn btn-outline-success" (click)="addIndication()"
+                                    [disabled]="!myForm1.valid">Agregar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -21,6 +21,7 @@ export class OutputNoteComponent implements OnInit {
   public myForm!: FormGroup;
   public products1: any[] = [];
   public pro: string[] = [];
+  public customer_id = '';
   public customer = '';
 
   constructor(
@@ -37,6 +38,7 @@ export class OutputNoteComponent implements OnInit {
     this.apiN.GetNote(this.data.id).valueChanges().subscribe(data => {
       this.myForm.patchValue(data);
       this.customer = data.customer.name;
+      this.customer_id = data.customer.id;
       /* data.products.forEach(pp => {
       }); */
       for (const e in data.products) {
@@ -127,7 +129,9 @@ export class OutputNoteComponent implements OnInit {
           price: cost,
           id_prod: id,
           name_prod: name,
-          category: ''
+          category: '',
+          customer_id: this.customer_id,
+          customer: this.customer,
         }
         movements.push(mo);
         let ex = {

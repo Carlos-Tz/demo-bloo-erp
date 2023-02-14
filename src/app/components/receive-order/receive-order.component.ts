@@ -113,7 +113,9 @@ export class ReceiveOrderComponent implements OnInit {
             price: price,
             id_prod: key,
             name_prod: name,
-            category: category
+            category: category,
+            customer_id: '',
+            customer_name: '',
           }
           this.apiM.AddMovement(mo);
       });
@@ -137,7 +139,9 @@ export class ReceiveOrderComponent implements OnInit {
           price: price,
           id_prod: key,
           name_prod: name,
-          category: category
+          category: category,
+          customer_id: '',
+          customer_name: ''
         }
         this.apiM.AddMovement(mo);
     });

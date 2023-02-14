@@ -100,6 +100,9 @@
                                                         <button class="btn btn-outline-danger me-2" style="padding: 0 0.2rem;" (click)="PDF(element.id)" >
                                                             <span class="material-icons">picture_as_pdf</span>
                                                         </button>
+                                                        <button class="btn btn-outline-success me-2" style="padding: 0 0.2rem;" (click)="openEditAppDialog(element.id)" >
+                                                            <span class="material-icons">content_copy</span>
+                                                        </button>
                                                         <!-- <button *ngIf="element.status == 1" class="btn btn-outline-info me-2 w-100" style="padding: 0 0.2rem;" (click)="openMailDialog(element.id)" >
                                                             <span class="material-icons">mail</span>
                                                         </button> -->
@@ -160,11 +163,11 @@
                                                         <button class="btn btn-outline-danger me-2" style="padding: 0 0.2rem;" (click)="PDF1(element.id)" >
                                                             <span class="material-icons">picture_as_pdf</span>
                                                         </button>
-                                                        <button class="btn btn-outline-success me-2" style="padding: 0 0.2rem;" (click)="openRenoteDialog(element.id)">
+                                                        <!-- <button class="btn btn-outline-success me-2" style="padding: 0 0.2rem;" (click)="openRenoteDialog(element.id)">
                                                             <span class="material-icons">content_copy</span>Duplicar
-                                                        </button>
+                                                        </button> -->
                                                         <button class="btn btn-outline-success me-2" style="padding: 0 0.2rem;" (click)="openEditDialog(element.id)" >
-                                                            <span class="material-icons">edit</span>
+                                                            <span class="material-icons">content_copy</span>
                                                         </button>
                                                     </mat-cell>
                                                 </ng-container>

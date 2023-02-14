@@ -12,6 +12,7 @@ export class CompanyComponent implements OnInit {
 
   public myForm!: FormGroup;
   public name = '';
+  public image;
   constructor(
     private fb: FormBuilder,
     public api: ApiCompanyService,
@@ -22,6 +23,9 @@ export class CompanyComponent implements OnInit {
     this.sForm();
     this.api.GetCompany().valueChanges().subscribe(data => {
       this.myForm.patchValue(data);
+      if(data.logo){
+        this.image = data.logo;
+      }
     });
   }
 
@@ -32,7 +36,25 @@ export class CompanyComponent implements OnInit {
       rfc: ['', [Validators.maxLength(13), Validators.minLength(12)]],
       address: [''],
       logo: [''],
+      business_name: [''],
+      email: [''],
+      tel: [''],
     });
+  }
+
+  changeListener($event): void {
+    const ima = $event.target.files[0];
+    //this.readThis($event.target);
+    const myReader: FileReader = new FileReader();
+    myReader.readAsDataURL(ima);
+    myReader.onload = (e) => {
+      this.image = myReader.result;
+      this.myForm.patchValue({ 'logo' : this.image});
+      /* this.element.avatar = <string>myReader.result; */
+      //console.log(myReader.result);
+      //console.log(this.image);
+    //  container.style.backgroundImage = `url(${myReader.result})`;
+    };
   }
 
   submitSurveyData = () => {

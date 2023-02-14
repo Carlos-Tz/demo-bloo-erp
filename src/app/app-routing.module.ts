@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { ApplicationsReportComponent } from './components/applications-report/applications-report.component';
 import { ApplicationsComponent } from './components/applications/applications.component';
 import { CategoriesComponent } from './components/categories/categories.component';
+import { ChargesComponent } from './components/charges/charges.component';
 import { CiclesComponent } from './components/cicles/cicles.component';
 import { CompanyComponent } from './components/company/company.component';
 import { CropsComponent } from './components/crops/crops.component';
@@ -77,6 +78,7 @@ const routes: Routes = [
   {path: 'entries', component: EntriesComponent , canActivate: [AuthGuard]},
   {path: 'withdrawals', component: WithdrawalsComponent , canActivate: [AuthGuard]},
   {path: 'edit-note/:id', component: EditNoteComponent , canActivate: [AuthGuard]},
+  {path: 'charges', component: ChargesComponent , canActivate: [AuthGuard]},
   {path: 'login', component: LoginComponent, canActivate: [SecureInnerPagesGuard]},
 ];
 

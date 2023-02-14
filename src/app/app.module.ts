@@ -114,6 +114,8 @@ import { UploadFileComponent } from './components/upload-file/upload-file.compon
 import { ReNoteComponent } from './components/re-note/re-note.component';
 import { EditNoteComponent } from './components/edit-note/edit-note.component';
 import { ReEditNoteComponent } from './components/re-edit-note/re-edit-note.component';
+import { ReEditApplicationComponent } from './components/re-edit-application/re-edit-application.component';
+import { ChargesComponent } from './components/charges/charges.component';
 
 @NgModule({
   declarations: [
@@ -189,7 +191,9 @@ import { ReEditNoteComponent } from './components/re-edit-note/re-edit-note.comp
     UploadFileComponent,
     ReNoteComponent,
     EditNoteComponent,
-    ReEditNoteComponent
+    ReEditNoteComponent,
+    ReEditApplicationComponent,
+    ChargesComponent
   ],
   imports: [
     BrowserModule,

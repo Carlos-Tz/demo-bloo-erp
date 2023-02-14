@@ -1,0 +1,26 @@
+.pic {
+    width: 3.2cm;
+    border: 1px solid #7c7c80;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 0.65em;
+}
+
+.image-container input {
+    opacity: 0;
+}
+
+.image-container {
+    background-repeat: no-repeat;
+    background-size: 100%;
+    border-radius: 5px;
+    /* border-radius: 50%; */
+    /* border: 1px solid rgb(128, 95, 95); */
+    height: 3.2cm;
+}
+
+input[type=file] {
+    width: 3.2cm;
+    /*4*/
+    height: 3.2cm;
+}

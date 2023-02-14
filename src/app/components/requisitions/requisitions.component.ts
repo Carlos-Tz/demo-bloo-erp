@@ -214,10 +214,10 @@ export class RequisitionsComponent implements OnInit {
               heights: [50, 20, 20, 20, 20, 20, 20, 25],
               headerRows: 1,
               body: [
-                [{text: 'REQUISICIÓN', colSpan: 5, alignment: 'center', fontSize: 26, margin: 15 },{}, {}, {}, {}, {}],
-                [{ colSpan: 5, rowSpan: 3, text: this.company.name + '\nRFC: ' + this.company.rfc + '\n' +  this.company.address +'\n' }, {}, {}, {}, {}, { text: 'MORELIA, MICHOACÁN', alignment: 'center'}],
+                [{text: 'REQUISICIÓN', colSpan: 5, alignment: 'center', fontSize: 26, margin: 15 },{}, {}, {}, {}, { image: this.company.logo, width: 50, alignment: 'right' }],
+                [{ colSpan: 5, rowSpan: 3, text: this.company.name + '\n' + this.company.business_name + '\nRFC: ' + this.company.rfc + '\n' +  this.company.address +'\n' + this.company.email + ' / ' +this.company.tel }, {}, {}, {}, {}, { text: 'MORELIA, MICHOACÁN', alignment: 'center'}],
                 [{}, {}, {}, {}, {}, { text: 'REQ - ' + data.id, alignment: 'center' }],
-                [{}, {}, {}, {}, {}, { text: 'Slogan', alignment: 'center' }],
+                [{}, {}, {}, {}, {}, { text: '', alignment: 'center' }],
                 [{ text: 'Solicitante', fillColor: '#eeeeee' }, { text: data.petitioner, colSpan: 2 }, {}, { text: 'Ciclo', fillColor: '#eeeeee' }, { text: data.cicle }, { text: 'Fecha', fillColor: '#eeeeee' }],
                 [{ text: 'Prioridad', fillColor: '#eeeeee' }, { text: priority, colSpan: 2 }, {}, { text: 'Catégoria', fillColor: '#eeeeee' }, {}, { text: data.date, alignment: 'center'}],
                 [{ text: 'Justificación', fillColor: '#eeeeee' }, { text: data.justification, colSpan: 5 }, {}, {}, {}, {}],

@@ -155,11 +155,12 @@ export class EditNoteComponent implements OnInit {
       
       let iva = $('input#iva___'+p.value).prop('checked');
       
-      products_d[p.value] = { id: id, name: name, quantity: q, unit: unit, presentation: presentation, cost: cost, iva: iva  };
+      products_d[p.value] = { id: id, name: name, quantity: q, unit: unit, presentation: presentation, cost: cost, iva: iva, comment: '', output: false };
     });
     this.date = fechaObj.format(new Date(), 'DD[/]MM[/]YYYY');
     this.myForm.patchValue({ date: this.date });
     this.myForm.patchValue({ status: 1 });
+    this.myForm.patchValue({ send: false });
     this.myForm.patchValue({ 'products': products_d });
     this.apiN.AddNote(this.myForm.value);
     this.ResetForm();
