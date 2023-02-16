@@ -191,7 +191,8 @@ export class OutputComponent implements OnInit {
     const dialogRef = this.dialog.open(ViewNoteComponent, {
       data: {
         id: id
-      }
+      },
+      autoFocus: false
     });
     dialogRef.afterClosed().subscribe(async result => {
     });

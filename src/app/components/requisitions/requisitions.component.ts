@@ -65,6 +65,9 @@ export class RequisitionsComponent implements OnInit {
         this.data = true;
         this.dataSource.data = this.requisitions.reverse().slice();
        /*  this.dataSource.sort = this.sort; */
+      }else{
+        this.data = false;
+        this.dataSource.data = [];
       }
       /* Pagination */
       setTimeout(() => {
@@ -116,6 +119,7 @@ export class RequisitionsComponent implements OnInit {
   openRDialog() {
     const dialogRef = this.dialog.open(RejectedRequisitionsComponent, {
       width: '80%',
+      autoFocus: false
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -125,7 +129,8 @@ export class RequisitionsComponent implements OnInit {
 
   openPDialog() {
     const dialogRef = this.dialog.open(OrderedRequisitionsComponent, {
-      width: '80%'
+      width: '80%',
+      autoFocus: false
     });
 
     dialogRef.afterClosed().subscribe(result => {

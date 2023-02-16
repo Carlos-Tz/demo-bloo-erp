@@ -50,8 +50,8 @@ export class DeliveredNotesComponent implements OnInit {
       this.notes = [];
       data.forEach(item => {
         const r = item.payload.val();     
-        if(r.status == 2 || r.status == 3){
-          const not = {'id': item.key, 'customer': r.customer.name, 'date': r.date, 'status': r.status, 'justification': r.justification };        
+        if(r.status == 2){
+          const not = {'id': item.key, 'customer': r.customer.name, 'date': r.date, 'status': r.status, 'complete': r.complete, 'justification': r.justification };        
           this.notes.push(not as Note);
         }   
       });

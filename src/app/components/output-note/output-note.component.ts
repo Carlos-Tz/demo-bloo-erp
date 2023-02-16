@@ -78,6 +78,7 @@ export class OutputNoteComponent implements OnInit {
       address: [''],
       city: [''],
       send: [''],
+      complete: [''],
       paymentdate: [''],
       orderdate: [''],
       crops: [],
@@ -151,10 +152,11 @@ export class OutputNoteComponent implements OnInit {
     }
 
     this.myForm.patchValue({ 'products': products_d });
+    this.myForm.patchValue({ 'status': 2 });
     if(complete){
-      this.myForm.patchValue({ 'status': 3 });
+      this.myForm.patchValue({ 'complete': true });
     }else{
-      this.myForm.patchValue({ 'status': 2 });
+      this.myForm.patchValue({ 'complete': false });
     }
     //console.log(this.myForm.value);
     

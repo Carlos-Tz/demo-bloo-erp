@@ -12,6 +12,9 @@ import { ApiCompanyService } from 'src/app/services/api-company.service';
 import { MailService } from 'src/app/services/mail.service';
 import { Note } from 'src/app/models/note';
 import { ApiNoteService } from 'src/app/services/api-note.service';
+import { ScheduleChargeComponent } from '../schedule-charge/schedule-charge.component';
+import { MakeChargeComponent } from '../make-charge/make-charge.component';
+import { ViewChargeComponent } from '../view-charge/view-charge.component';
 
 @Component({
   selector: 'app-charges',
@@ -29,6 +32,8 @@ export class ChargesComponent implements OnInit {
     'date',
     'customer',
     /* 'status', */
+    'total',
+    'balance',
     'justification',
     'action',
   ];
@@ -50,15 +55,18 @@ export class ChargesComponent implements OnInit {
       this.notes = [];
       data.forEach(item => {
         const r = item.payload.val();     
-        if(r.status == 2 || r.status == 3){
-          const not = {'id': item.key, 'customer': r.customer.name, 'date': r.date, 'status': r.status, 'justification': r.justification };        
-          this.notes.push(not as Note);
+        if(r.status == 2 || r.status == 3 || r.status == 4){
+          //const not = {'id': item.key, 'customer': r.customer.name, 'date': r.date, 'status': r.status, 'justification': r.justification, 'balance': r.balance, 'total': r.total };        
+          this.notes.push(r as Note);
         }   
       });
       if (this.notes.length > 0) {
         this.data = true;
         this.dataSource.data = this.notes.reverse().slice();
        /*  this.dataSource.sort = this.sort; */
+      }else{
+        this.data = false;
+        this.dataSource.data = [];
       }
       /* Pagination */
       setTimeout(() => {
@@ -105,7 +113,34 @@ export class ChargesComponent implements OnInit {
       //console.log(`Dialog result: ${result}`);
     });
   } */
+
+  openScheduleChargeDialog(note: Note) {
+    const dialogRef = this.dialog.open(ScheduleChargeComponent, {
+      data: {
+        note: note
+      },
+      autoFocus: false
+    });
+  }
   
+  openMakeChargeDialog(note: Note) {
+    const dialogRef = this.dialog.open(MakeChargeComponent, {
+      data: {
+        note: note
+      },
+      autoFocus: false
+    });
+  }
+
+  openChargesDialog(note: Note) {
+    const dialogRef = this.dialog.open(ViewChargeComponent, {
+      data: {
+        note: note
+      },
+      autoFocus: false,
+      width: '60%',
+    });
+  }
 
   PDF(id) {
     this.apiN.GetNote(id).valueChanges().subscribe(data => {

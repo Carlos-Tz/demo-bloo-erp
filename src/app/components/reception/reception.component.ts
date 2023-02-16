@@ -176,6 +176,7 @@ export class ReceptionComponent implements OnInit {
       }, */
       /* autoFocus: false, */
       width: '80%',
+      autoFocus: false
     });
   }
 

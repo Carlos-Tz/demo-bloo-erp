@@ -1,0 +1,27 @@
+<h2 mat-dialog-title style="margin-bottom: 0.5rem;">Cobros pedido No. {{ data.note.id }}</h2>
+<mat-dialog-content class="w-100 m-0">
+    <div class="row">
+        <div class="col-sm-12">
+            <table class="table table-bordered">
+                <thead >
+                    <th>Fecha</th>
+                    <th>Forma de pago</th>
+                    <th>Documento</th>
+                    <th>Folio</th>
+                    <th>Monto</th>
+                </thead>
+                <tr *ngFor="let pay of data.note.payments">
+                    <td>{{ pay.date }}</td>
+                    <td>{{ pay.paymenttype }}</td>
+                    <td>{{ pay.document }}</td>
+                    <td>{{ pay.folio }}</td>
+                    <td>{{ pay.amount | currency }}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cerrar</button>
+</mat-dialog-actions>
+

@@ -100,6 +100,7 @@ export class NotesComponent implements OnInit {
   openEDialog() {
     const dialogRef = this.dialog.open(DeliveredNotesComponent, {
       width: '80%',
+      autoFocus: false
     });
 
     dialogRef.afterClosed().subscribe(result => {

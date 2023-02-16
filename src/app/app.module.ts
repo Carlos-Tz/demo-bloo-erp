@@ -116,6 +116,9 @@ import { EditNoteComponent } from './components/edit-note/edit-note.component';
 import { ReEditNoteComponent } from './components/re-edit-note/re-edit-note.component';
 import { ReEditApplicationComponent } from './components/re-edit-application/re-edit-application.component';
 import { ChargesComponent } from './components/charges/charges.component';
+import { ScheduleChargeComponent } from './components/schedule-charge/schedule-charge.component';
+import { MakeChargeComponent } from './components/make-charge/make-charge.component';
+import { ViewChargeComponent } from './components/view-charge/view-charge.component';
 
 @NgModule({
   declarations: [
@@ -193,7 +196,10 @@ import { ChargesComponent } from './components/charges/charges.component';
     EditNoteComponent,
     ReEditNoteComponent,
     ReEditApplicationComponent,
-    ChargesComponent
+    ChargesComponent,
+    ScheduleChargeComponent,
+    MakeChargeComponent,
+    ViewChargeComponent
   ],
   imports: [
     BrowserModule,

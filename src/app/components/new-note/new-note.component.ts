@@ -90,10 +90,19 @@ export class NewNoteComponent implements OnInit {
       address: ['', [Validators.required]],
       city: ['', [Validators.required]],
       send: [false],
+      complete: [false],
       paymentdate: [''],
+      paymenttype: [''],
+      folio: [''],
       orderdate: [''],
+      iva: [''],
+      subtotal: [''],
+      total: [''],
+      balance: [''],
+      paidout: [''],
       crops: [],
       products: [],
+      payments: [],
     });
   }
 
@@ -106,6 +115,9 @@ export class NewNoteComponent implements OnInit {
 
   submitSurveyData = () => {
     let products_d = {};
+    let subtotal = 0;
+    let total = 0;
+    let iva_ = 0;
     this.products1.forEach(p => {
       let id = $('input#id___'+p.value).val();
       let name = $('input#name___'+p.value).val();
@@ -122,9 +134,21 @@ export class NewNoteComponent implements OnInit {
       
       let iva = $('input#iva___'+p.value).prop('checked');
       
+      subtotal += cost*q;
+      if(iva){
+        iva_ += subtotal*0.16;
+      }
       products_d[p.value] = { id: id, name: name, quantity: q, unit: unit, presentation: presentation, cost: cost, iva: iva  };
     });
-    this.myForm.patchValue({ 'products': products_d })
+    total = subtotal + iva_;
+    console.log(subtotal, iva_, total);
+    
+    this.myForm.patchValue({ 'iva': iva_ });
+    this.myForm.patchValue({ 'subtotal': subtotal });
+    this.myForm.patchValue({ 'total': total });
+    this.myForm.patchValue({ 'paidout': 0 });
+    this.myForm.patchValue({ 'balance': total });
+    this.myForm.patchValue({ 'products': products_d });
     this.apiN.AddNote(this.myForm.value);
     this.ResetForm();
     this.toastr.success('Pedido guardado!');

@@ -5,7 +5,7 @@
                 <div class="card-header">
                     <nav class="navbar bg-light">
                         <div class="container-fluid">
-                            <a class="navbar-brand">Pedidos entregados</a>
+                            <a class="navbar-brand">Gestión de pedidos y cobros</a>
                             <div class="d-flex">
                             </div>
                             <div class="d-flex">
@@ -30,15 +30,16 @@
                         <ng-container matColumnDef="id">
                             <mat-header-cell *matHeaderCellDef mat-sort-header >Folio</mat-header-cell>
                             <mat-cell *matCellDef="let element">{{element.id}}
-                                <!-- <span (click)="PDF(element.id)" style="color: #fff; background-color: green; border-radius: 20%; padding: 0.2rem; margin-left: 0.3rem; cursor: pointer; font-size: 0.7rem;" class="me-2">PDF</span> -->
+                                <span (click)="PDF(element.id)" style="color: #fff; background-color: green; border-radius: 20%; padding: 0.2rem; margin-left: 0.3rem; cursor: pointer; font-size: 0.7rem;" class="me-2">PDF</span>
                                 <span class="ms-3" *ngIf="element.status == 2">Entregado</span>
-                                <span class="ms-3" *ngIf="element.status == 3">Entregado incompleto</span>
+                                <span class="ms-3" *ngIf="element.status == 3">Programado</span>
+                                <span class="ms-3" *ngIf="element.status == 4">Parcial</span>
                                 <!-- <span class="me-3" *ngIf="element.status == 3">Realizada</span> -->
                             </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="customer">
                             <mat-header-cell *matHeaderCellDef mat-sort-header class="pad-l">Cliente</mat-header-cell>
-                            <mat-cell *matCellDef="let element" class="pad-l">{{element.customer}}</mat-cell>
+                            <mat-cell *matCellDef="let element" class="pad-l">{{element.customer.name}}</mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="date">
                             <mat-header-cell *matHeaderCellDef mat-sort-header class="pad-l">Fecha</mat-header-cell>
@@ -48,19 +49,27 @@
                             <mat-header-cell *matHeaderCellDef mat-sort-header class="pad-l">Justificación</mat-header-cell>
                             <mat-cell *matCellDef="let element" class="pad-l">{{element.justification}}</mat-cell>
                         </ng-container>
+                        <ng-container matColumnDef="total">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="pad-l">Total</mat-header-cell>
+                            <mat-cell *matCellDef="let element" class="pad-l">{{element.total | currency}}</mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="balance">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="pad-l">Saldo</mat-header-cell>
+                            <mat-cell *matCellDef="let element" class="pad-l">{{element.balance | currency}}</mat-cell>
+                        </ng-container>
 
                         <ng-container matColumnDef="action">
                             <mat-header-cell *matHeaderCellDef> Acción </mat-header-cell>
                             <mat-cell *matCellDef="let element; let i = index;">
-                                <!-- <button class="btn btn-outline-success me-2 w-100" style="padding: 0 0.2rem;" [routerLink]="['/edit-application', element.id]" >
-                                    <span class="material-icons">edit</span>
-                                </button> -->
-                                <button class="btn btn-outline-danger me-2 w-100" style="padding: 0 0.2rem;" (click)="PDF(element.id)" >
-                                    <span class="material-icons">picture_as_pdf</span>
+                                <button *ngIf="element.status == 2" class="btn btn-outline-success me-2 w-100" style="padding: 0 0.2rem;" (click)="openScheduleChargeDialog(element)" >
+                                    <span class="material-icons">pending_actions</span>
                                 </button>
-                                <!-- <button *ngIf="element.status == 1" class="btn btn-outline-info me-2 w-100" style="padding: 0 0.2rem;" (click)="openMailDialog(element.id)" >
-                                    <span class="material-icons">mail</span>
-                                </button> -->
+                                <button *ngIf="element.status == 3 || element.status == 4" class="btn btn-outline-success me-2 w-100" style="padding: 0 0.2rem;" (click)="openMakeChargeDialog(element)" >
+                                    <span class="material-icons">paid</span>Cobrar
+                                </button>
+                                <button *ngIf="element.status > 2" class="btn btn-outline-secondary me-2 w-100" style="padding: 0 0.2rem;" (click)="openChargesDialog(element)" >
+                                    <span class="material-icons">attach_money</span>cobros
+                                </button>
                             </mat-cell>
                         </ng-container>
 
