@@ -3,5 +3,6 @@ export interface File {
     date: string;
     name: string;
     customer: string;
+    crop: string;
     url: string;
 }

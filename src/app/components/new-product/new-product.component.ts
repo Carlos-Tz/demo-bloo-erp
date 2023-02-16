@@ -75,7 +75,7 @@ export class NewProductComponent implements OnInit {
       category: ['', [Validators.required]],
       presentation: ['', [Validators.required]],
       unit: [''],
-      existence: [''],
+      existence: [0, [Validators.required]],
       providers: [],
       costs: []
     });

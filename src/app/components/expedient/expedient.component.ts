@@ -89,7 +89,7 @@ export class ExpedientComponent implements OnInit {
     this.key = this.actRouter.snapshot.paramMap.get('id');
     this.sForm();
     this.apiCu.GetCustomer(this.key).valueChanges().subscribe(data => {
-      this.myForm.patchValue({ id: data.id, name: data.name/* , crops: data.crops */ });
+      this.myForm.patchValue({ id: data.id, name: data.name, crops: data.crops });
       data.crops.forEach(c=> {
         const pro = {'value': c, 'label': c};        
         this.crops.push(pro);
@@ -177,16 +177,20 @@ export class ExpedientComponent implements OnInit {
     this.apiF.GetFileList().snapshotChanges().subscribe(data => {
       this.files = [];
       data.forEach(item => {
-        const r = item.payload.val();
-        if(r.customer == this.myForm.get('id').value){
+        const r = item.payload.val(); 
+        if(r.customer == this.myForm.get('id').value && r.crop == this.myForm.get('crops').value){
           const fil = {'id': item.key, 'customer': r.customer, 'date': r.date, 'name': r.name, 'url': r.url };        
           this.files.push(fil as File);
         }   
       });
+      
       if (this.files.length > 0) {
         this.data_files = true;
         this.dataSource2.data = this.files.reverse().slice();
        /*  this.dataSource.sort = this.sort; */
+      }else{
+        this.data_files = false;
+        this.dataSource2.data = [];
       }
       /* Pagination */
       setTimeout(() => {
@@ -262,7 +266,8 @@ export class ExpedientComponent implements OnInit {
     const dialogRef = this.dialog.open(UploadFileComponent, {
       width: '80%',
       data: {
-        id: id
+        id: id,
+        crop: this.myForm.get('crops').value
       }
     });
 

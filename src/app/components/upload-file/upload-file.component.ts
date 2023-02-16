@@ -49,6 +49,7 @@ export class UploadFileComponent implements OnInit {
       customer: [''],
       url: [''],
       name: [''],
+      crop: [''],
     });
   }
 
@@ -84,6 +85,7 @@ export class UploadFileComponent implements OnInit {
             name: this.myForm.get('name').value,
             url: `${this.url}files/${res}`,
             customer: this.data.id,
+            crop: this.data.crop,
           });
           this.apiF.AddFile(this.myForm1.value);
           this.toastr.success('Documento cargado!');
