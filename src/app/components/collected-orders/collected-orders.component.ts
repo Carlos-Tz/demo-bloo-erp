@@ -1,71 +1,68 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
 import { Company } from 'src/app/models/company';
+import { ApiCompanyService } from 'src/app/services/api-company.service';
 import pdfMake from 'pdfmake/build/pdfmake';  
 import pdfFonts from 'pdfmake/build/vfs_fonts';  
-pdfMake.vfs = pdfFonts.pdfMake.vfs;  
-import { ApiCompanyService } from 'src/app/services/api-company.service';
-import { MailService } from 'src/app/services/mail.service';
+import { CurrencyPipe } from '@angular/common';
+import { ApiProviderService } from 'src/app/services/api-provider.service';
+import { ViewPaymentComponent } from '../view-payment/view-payment.component';
 import { Note } from 'src/app/models/note';
 import { ApiNoteService } from 'src/app/services/api-note.service';
-import { ScheduleChargeComponent } from '../schedule-charge/schedule-charge.component';
-import { MakeChargeComponent } from '../make-charge/make-charge.component';
 import { ViewChargeComponent } from '../view-charge/view-charge.component';
-import { DebtsToCollectComponent } from '../debts-to-collect/debts-to-collect.component';
-import { CollectedOrdersComponent } from '../collected-orders/collected-orders.component';
+pdfMake.vfs = pdfFonts.pdfMake.vfs;  
 
 @Component({
-  selector: 'app-charges',
-  templateUrl: './charges.component.html',
-  styleUrls: ['./charges.component.css']
+  selector: 'app-collected-orders',
+  templateUrl: './collected-orders.component.html',
+  styleUrls: ['./collected-orders.component.css']
 })
-export class ChargesComponent implements OnInit {
+export class CollectedOrdersComponent implements OnInit {
+
   public dataSource = new MatTableDataSource<Note>();
   public data = false;
+  public notes: Note[] = [];
+  public company: Company;
   @ViewChild(MatPaginator, {static: false}) paginator!: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort!: MatSort;
   @ViewChild('input', {static: false}) input!: ElementRef;
   displayedColumns: any[] = [
     'id',
-    'date',
-    'customer',
-    /* 'status', */
+    /* 'orderdate', */
+    'paymentdate',
+    /* 'provider', */
+    'subtotal',
+    'iva',
     'total',
     'balance',
-    'justification',
+    /* 'key_r', */
     'action',
   ];
-  //public categories: Select2Data = [];
-  public notes: Note[] = [];
-  public company: Company;
-  //public category = '';
   constructor(
     public dialog: MatDialog,
-    public apiC: ApiCompanyService,
-    //public apiR: ApiRequisitionService,
-    public apiM: MailService,
     public apiN: ApiNoteService,
+    public apiC: ApiCompanyService,
+    public apiP: ApiProviderService,
     public toastr: ToastrService,
+    private currencyPipe:CurrencyPipe
   ) { }
 
   ngOnInit(): void {
     this.apiN.GetNoteList().snapshotChanges().subscribe(data => {
       this.notes = [];
       data.forEach(item => {
-        const r = item.payload.val();     
-        if(r.status == 2 || r.status == 3 || r.status == 4){
-          //const not = {'id': item.key, 'customer': r.customer.name, 'date': r.date, 'status': r.status, 'justification': r.justification, 'balance': r.balance, 'total': r.total };        
-          this.notes.push(r as Note);
-        }   
+        const o = item.payload.val();
+        if(o.status == 5){
+          this.notes.push(o as Note);
+        }
       });
       if (this.notes.length > 0) {
         this.data = true;
         this.dataSource.data = this.notes.reverse().slice();
-       /*  this.dataSource.sort = this.sort; */
       }else{
         this.data = false;
         this.dataSource.data = [];
@@ -78,7 +75,6 @@ export class ChargesComponent implements OnInit {
     this.apiC.GetCompany().valueChanges().subscribe(data => {
       this.company = data;
     });
-    
   }
 
   sortData(sort: Sort) {
@@ -93,7 +89,6 @@ export class ChargesComponent implements OnInit {
       switch (sort.active) {
         case 'date': return this.compare(a.date.trim().toLocaleLowerCase(), b.date.trim().toLocaleLowerCase(), isAsc);
         case 'id': return this.compare(a.id, b.id, isAsc);
-        case 'justification': return this.compare(a.justification.trim().toLocaleLowerCase(), b.justification.trim().toLocaleLowerCase(), isAsc);
         default: return 0;
       }
     });
@@ -104,64 +99,6 @@ export class ChargesComponent implements OnInit {
 
   public doFilter = (event: any) => {
     this.dataSource.filter = event.value.trim().toLocaleLowerCase();
-  }
-
-  /* openEDialog() {
-    const dialogRef = this.dialog.open(DeliveredNotesComponent, {
-      width: '80%',
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      //console.log(`Dialog result: ${result}`);
-    });
-  } */
-
-  openScheduleChargeDialog(note: Note) {
-    const dialogRef = this.dialog.open(ScheduleChargeComponent, {
-      data: {
-        note: note
-      },
-      autoFocus: false
-    });
-  }
-  
-  openMakeChargeDialog(note: Note) {
-    const dialogRef = this.dialog.open(MakeChargeComponent, {
-      data: {
-        note: note
-      },
-      autoFocus: false
-    });
-  }
-
-  openChargesDialog(note: Note) {
-    const dialogRef = this.dialog.open(ViewChargeComponent, {
-      data: {
-        note: note
-      },
-      autoFocus: false,
-      width: '60%',
-    });
-  }
-
-  debtsToCollectDialog() {
-    const dialogRef = this.dialog.open(DebtsToCollectComponent, {
-      /* data: {
-        order: order
-      }, */
-      autoFocus: false,
-      width: '80%',
-    });
-  }
-
-  openCDialog() {
-    const dialogRef = this.dialog.open(CollectedOrdersComponent, {
-      /* data: {
-        order: order
-      }, */
-      autoFocus: false,
-      width: '80%',
-    });
   }
 
   PDF(id) {
@@ -238,4 +175,15 @@ export class ChargesComponent implements OnInit {
       pdfMake.createPdf(docDefinition).open();  
     });
   }
+
+  openPaymentsDialog(note: Note) {
+    const dialogRef = this.dialog.open(ViewChargeComponent, {
+      data: {
+        note: note
+      },
+      autoFocus: false,
+      width: '60%',
+    });
+  }
 }
+

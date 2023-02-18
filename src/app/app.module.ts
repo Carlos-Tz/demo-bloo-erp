@@ -119,6 +119,8 @@ import { ChargesComponent } from './components/charges/charges.component';
 import { ScheduleChargeComponent } from './components/schedule-charge/schedule-charge.component';
 import { MakeChargeComponent } from './components/make-charge/make-charge.component';
 import { ViewChargeComponent } from './components/view-charge/view-charge.component';
+import { DebtsToCollectComponent } from './components/debts-to-collect/debts-to-collect.component';
+import { CollectedOrdersComponent } from './components/collected-orders/collected-orders.component';
 
 @NgModule({
   declarations: [
@@ -199,7 +201,9 @@ import { ViewChargeComponent } from './components/view-charge/view-charge.compon
     ChargesComponent,
     ScheduleChargeComponent,
     MakeChargeComponent,
-    ViewChargeComponent
+    ViewChargeComponent,
+    DebtsToCollectComponent,
+    CollectedOrdersComponent
   ],
   imports: [
     BrowserModule,
