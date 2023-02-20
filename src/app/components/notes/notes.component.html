@@ -58,9 +58,9 @@
                                 <button class="btn btn-outline-danger me-2 w-100" style="padding: 0 0.2rem;" (click)="PDF(element.id)" >
                                     <span class="material-icons">picture_as_pdf</span>
                                 </button>
-                                <!-- <button *ngIf="element.status == 1" class="btn btn-outline-info me-2 w-100" style="padding: 0 0.2rem;" (click)="openMailDialog(element.id)" >
+                                <button *ngIf="!element.send" class="btn btn-outline-info me-2 w-100" style="padding: 0 0.2rem;" (click)="openMailDialog(element.id)" >
                                     <span class="material-icons">mail</span>
-                                </button> -->
+                                </button>
                             </mat-cell>
                         </ng-container>
 

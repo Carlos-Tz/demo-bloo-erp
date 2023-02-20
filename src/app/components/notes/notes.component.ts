@@ -13,6 +13,7 @@ import { MailService } from 'src/app/services/mail.service';
 import { Note } from 'src/app/models/note';
 import { ApiNoteService } from 'src/app/services/api-note.service';
 import { DeliveredNotesComponent } from '../delivered-notes/delivered-notes.component';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-notes',
@@ -107,16 +108,16 @@ export class NotesComponent implements OnInit {
       //console.log(`Dialog result: ${result}`);
     });
   }
-  /* openMailDialog(id: string) {
+  openMailDialog(id: string) {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      data: "¿Confirma que desea enviar esta receta por correo?"
+      data: "¿Confirma que desea enviar este pedido por correo?"
     });
     dialogRef.afterClosed().subscribe(async result => {
       if(result){
         //console.log(result);
         //this.apiC.DeleteCategory(key);
         const promise = new Promise((resolve, reject) => {
-          this.apiA.GetApplication(id).valueChanges().subscribe(data => {
+          this.apiN.GetNote(id).valueChanges().subscribe(data => {
             if(data){
               resolve(data);
             }else {
@@ -125,17 +126,17 @@ export class NotesComponent implements OnInit {
           });
         });
     
-        await promise.then((app: any) => {
-          app['status'] = 2;
-          console.log(app, app.id);
-          this.apiA.UpdateApplication(app, app.id);
-          app['company'] = this.company;
-          this.apiM.mailApplication(app).subscribe({});          
+        await promise.then((note: any) => {
+          //note['status'] = 2;
+          console.log(note, note.id);
+          this.apiN.UpdateNote(note, note.id);
+          note['company'] = this.company;
+          this.apiM.mailNote(note).subscribe({});          
         });
-        this.toastr.info('Receta enviada al correo!');
+        this.toastr.info('Pedido enviado al correo!');
       }
     });
-  } */
+  }
 
   PDF(id) {
     this.apiN.GetNote(id).valueChanges().subscribe(data => {

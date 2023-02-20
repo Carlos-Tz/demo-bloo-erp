@@ -22,4 +22,9 @@ export class MailService {
     return this.http.post(`${this.url}resources/mail_application.php`, JSON.stringify(app), {responseType: 'text'});
     //return this.http.post('mail.php', JSON.stringify(mail));
   }
+
+  mailNote(note: Object){
+    return this.http.post(`${this.url}resources/mail_note.php`, JSON.stringify(note), {responseType: 'text'});
+    //return this.http.post('mail.php', JSON.stringify(mail));
+  }
 }

@@ -93,7 +93,7 @@
                                         <tr *ngFor="let pro of products1">
                                             <td><input type="number" matInput style="text-align: center;" value="{{pro.value}}" readonly id="id___{{pro.value}}"></td>
                                             <td><input type="text" value="{{pro.label }}" readonly matInput id="name___{{pro.value}}"></td>
-                                            <td><input type="number" matInput style="text-align: center;" #ca id="quantity___{{pro.value}}" (blur)="blur1()" (focus)="focus1(pro)" (change)="change1($event)"></td>
+                                            <td><input type="number" value="{{pro.quantity}}" matInput style="text-align: center;" #ca id="quantity___{{pro.value}}" (blur)="blur1()" (focus)="focus1(pro)" (change)="change1($event)"></td>
                                             <td><input type="text" value="{{pro.data.unit }}" readonly matInput style="text-align: center;" id="unit___{{pro.value}}"></td>
                                             <td><input type="text" value="{{pro.data.presentation }}" readonly matInput style="text-align: center;" id="presentation___{{pro.value}}"></td>
                                             <td>

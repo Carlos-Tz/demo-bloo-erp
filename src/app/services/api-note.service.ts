@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angular/fire/compat/database';
 import { ToastrService } from 'ngx-toastr';
@@ -13,7 +14,7 @@ export class ApiNoteService {
   public noteObject!: AngularFireObject<any>;
   public lastNoteRef!: Observable<any[]>;
 
-  constructor(private db: AngularFireDatabase, public toastr: ToastrService) { }
+  constructor(private db: AngularFireDatabase, public toastr: ToastrService, private http: HttpClient) { }
 
   AddNote(note: Note) {
     this.db.database.ref().child('blooming-erp/note-list/'+ note.id).set(note);
@@ -50,5 +51,9 @@ export class ApiNoteService {
   DeleteNote(key: string) {
     this.noteObject = this.db.object('blooming-erp/note-list/' + key);
     this.noteObject.remove();
+  }
+
+  excel(data: any, url: string): Observable<any>{
+    return this.http.post<any>(`${url}debtsToCollect.php`, { orders: data });
   }
 }
