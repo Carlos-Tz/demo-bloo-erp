@@ -53,7 +53,7 @@ export class NotesComponent implements OnInit {
       data.forEach(item => {
         const r = item.payload.val();     
         if(r.status == 1){
-          const not = {'id': item.key, 'customer': r.customer.name, 'date': r.date, 'status': r.status, 'justification': r.justification };        
+          const not = {'id': item.key, 'customer': r.customer.name, 'date': r.date, 'status': r.status, 'justification': r.justification, 'send': r.send };        
           this.notes.push(not as Note);
         }   
       });
@@ -127,7 +127,7 @@ export class NotesComponent implements OnInit {
         });
     
         await promise.then((note: any) => {
-          //note['status'] = 2;
+          note['send'] = true;
           console.log(note, note.id);
           this.apiN.UpdateNote(note, note.id);
           note['company'] = this.company;
@@ -174,7 +174,7 @@ export class NotesComponent implements OnInit {
               body: [
                 //[{text: 'RECETA', colSpan: 5, alignment: 'center', fontSize: 26, margin: 15 },{}, {}, {}, {}, {}],
                 //[{},{ colSpan: 4, rowSpan: 3, text: this.company.name + '\nRFC: ' + this.company.rfc + '\n' +  this.company.address +'\n' }, {}, {}, {}, { text: 'MORELIA, MICHOACÁN', alignment: 'center'}],
-                [{ image: this.company.logo, width: 50 }, { /* rowSpan: 2, */ text: this.company.name + '\n' + this.company.business_name + this.company.rfc + '\n' +  this.company.address +'\n' + this.company.email + ' / ' +this.company.tel, alignment: 'center', fontSize: 10, margin: 2, colSpan: 4 }, {}, {}, {}, { text: 'No. Pedido: ' + data.id + '\n\nFecha: '+ data.date, alignment: 'right' }],
+                [{ image: 'logo', width: 50 }, { /* rowSpan: 2, */ text: this.company.name + '\n' + this.company.business_name + this.company.rfc + '\n' +  this.company.address +'\n' + this.company.email + ' / ' +this.company.tel, alignment: 'center', fontSize: 10, margin: 2, colSpan: 4 }, {}, {}, {}, { text: 'No. Pedido: ' + data.id + '\n\nFecha: '+ data.date, alignment: 'right' }],
                 //[{}, {}, {}, {}, {}, { text: 'Fecha: ' + data.date, alignment: 'center' }],
                 [{ text: 'Nombre', fillColor: '#eeeeee' }, { text: data.customer.name, colSpan: 5 }, {}, {}, {}, {}],
                 [{ text: 'Domicilio', fillColor: '#eeeeee' }, { text: data.address, colSpan: 5 }, {}, {}, {}, {}],
@@ -209,7 +209,17 @@ export class NotesComponent implements OnInit {
             alignment: 'center',
             fontSize: 8
           }
-        }  
+        },
+        images: {
+          logo: this.company.logo /* {
+            url: this.company.logo,
+            headers: {
+              'Access-Control-Allow-Origin': '*',
+              'Access-Control-Allow-Methods': 'PUT, GET, POST',
+              'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept'
+            }
+          } */
+        } 
       };  
      
       pdfMake.createPdf(docDefinition).open();  
