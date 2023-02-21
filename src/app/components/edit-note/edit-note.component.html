@@ -97,7 +97,7 @@
                                             <td><input type="text" value="{{pro.data.unit }}" readonly matInput style="text-align: center;" id="unit___{{pro.value}}"></td>
                                             <td><input type="text" value="{{pro.data.presentation }}" readonly matInput style="text-align: center;" id="presentation___{{pro.value}}"></td>
                                             <td>
-                                                <select matInput name="" id="cost___{{pro.value}}">
+                                                <select matInput name="" id="cost___{{pro.value}}" style="width: 100%; border: none;">
                                                     <option *ngFor="let cos of pro.data.costs" value="{{cos.cost}}">{{ cos.cost | currency }}</option>
                                                 </select>
                                             </td>

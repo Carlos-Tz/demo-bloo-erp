@@ -36,6 +36,7 @@ export class ReEditNoteComponent implements OnInit {
   public products: Select2Data = [];
   //public indications: any[] = [];
   public products1: any[] = [];
+  public products2: any[] = [];
   public customer1 = '';
   public scheduled = 0;
 
@@ -62,8 +63,10 @@ export class ReEditNoteComponent implements OnInit {
       }
       for (const e in data.products) {
         this.pro.push(e);
+        console.log(data.products[e]);
+        this.products2.push(data.products[e])
       };
-      //this.pro = data.products;
+      //this.products2 = data.products;
     });
     
     this.apiC.GetCustomerList().snapshotChanges().subscribe(data => {
@@ -81,7 +84,7 @@ export class ReEditNoteComponent implements OnInit {
       data.forEach(item => {
         const p = item.payload.val();
         if(p.existence >= 0.01){
-          const pro = {'value': item.key!, 'label': p.name, 'data': { 'existence': p.existence, 'unit': p.unit, 'costs': p.costs, 'presentation': p.presentation }};
+          const pro = {'value': item.key!, 'label': p.name, 'data': { 'iva': p.iva, 'quantity': p.quantity, 'existence': p.existence, 'unit': p.unit, 'costs': p.costs, 'presentation': p.presentation }};
           this.products.push(pro);
           //const p1 = { 'key': item.key, 'name': p.name, 'unit': p.unit, 'avcost': p.avcost, 'category': p.category }
           //this.products1.push(p1);
@@ -158,6 +161,25 @@ export class ReEditNoteComponent implements OnInit {
 
   updateP(ev){
     this.products1 = [...ev.options];
+    /* this.products1.forEach(p => {
+      $('input#quantity___'+p.value).val(p.quantity);
+      console.log($('input#quantity___'+p.value).val());
+      
+    }); */
+  }
+
+  changeId(){
+    this.products2.forEach(p => {
+      $('input#quantity___'+p.id).val(parseFloat(p.quantity));
+      //$('select#cost___'+p.id).attr('selected', 'selected');
+      $('select#cost___'+p.id).val(p.cost);
+      if(p.iva){ 
+        $('input#iva___'+p.id).prop( "checked", true );
+      }
+
+      //$('input#quantity___'+p.value).val(0);
+      //console.log($('input#id___'+p.value).val());
+    });
   }
 
   customer(customer){

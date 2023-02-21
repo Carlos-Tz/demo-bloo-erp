@@ -90,14 +90,14 @@
                                         <th style="background-color: #155a89; color: #fff; font-weight: 400; text-align: center;">I.V.A.</th>
                                     </thead>
                                     <tbody>
-                                        <tr *ngFor="let pro of products1">
+                                        <tr *ngFor="let pro of products1; let lastp = last" [isLast]="lastp" (ngInit)="changeId()">
                                             <td><input type="number" matInput style="text-align: center;" value="{{pro.value}}" readonly id="id___{{pro.value}}"></td>
                                             <td><input type="text" value="{{pro.label }}" readonly matInput id="name___{{pro.value}}"></td>
                                             <td><input type="number" matInput style="text-align: center;" #ca id="quantity___{{pro.value}}" (blur)="blur1()" (focus)="focus1(pro)" (change)="change1($event)"></td>
                                             <td><input type="text" value="{{pro.data.unit }}" readonly matInput style="text-align: center;" id="unit___{{pro.value}}"></td>
                                             <td><input type="text" value="{{pro.data.presentation }}" readonly matInput style="text-align: center;" id="presentation___{{pro.value}}"></td>
                                             <td>
-                                                <select matInput name="" id="cost___{{pro.value}}">
+                                                <select matInput name="" id="cost___{{pro.value}}" style="width: 100%; border: none;">
                                                     <option *ngFor="let cos of pro.data.costs" value="{{cos.cost}}">{{ cos.cost | currency }}</option>
                                                 </select>
                                             </td>
