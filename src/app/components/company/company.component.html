@@ -23,28 +23,28 @@
                 </mat-card-content>
                 <mat-divider inset></mat-divider>
                 <form [formGroup]="myForm" novalidate autocomplete="off" class="mt-4 mb-3">
-                    <mat-dialog-content class="w-100 m-0">
-                        <mat-form-field appearance="fill" class="w-100">
+                    <mat-dialog-content class="w-100 m-0 row">
+                        <mat-form-field appearance="fill" class="col-sm-12">
                             <mat-label>Nombre</mat-label>
                             <input matInput type="text" formControlName="name">
                         </mat-form-field>
-                        <mat-form-field appearance="fill" class="w-50">
+                        <mat-form-field appearance="fill" class="col-sm-12 col-md-6">
                             <mat-label>Razón Social</mat-label>
                             <input matInput type="text" formControlName="business_name">
                         </mat-form-field>
-                        <mat-form-field appearance="fill" class="w-50">
+                        <mat-form-field appearance="fill" class="col-sm-12 col-md-6">
                             <mat-label>Teléfono</mat-label>
                             <input matInput type="text" formControlName="tel">
                         </mat-form-field>
-                        <mat-form-field appearance="fill" class="w-50">
+                        <mat-form-field appearance="fill" class="col-sm-12 col-md-6">
                             <mat-label>RFC</mat-label>
                             <input matInput type="text" formControlName="rfc">
                         </mat-form-field>
-                        <mat-form-field appearance="fill" class="w-50">
+                        <mat-form-field appearance="fill" class="col-sm-12 col-md-6">
                             <mat-label>Correo</mat-label>
                             <input matInput type="email" formControlName="email">
                         </mat-form-field>
-                        <mat-form-field appearance="fill" class="w-100">
+                        <mat-form-field appearance="fill" class="col-sm-12">
                             <mat-label>Domicilio</mat-label>
                             <input matInput type="text" formControlName="address">
                         </mat-form-field>

@@ -6,10 +6,11 @@
                     <nav class="navbar bg-light">
                         <div class="container-fluid">
                             <a class="navbar-brand">Gestión de requisiciones</a>
-                            <div class="d-flex">
-                            </div>
+                            <div class="d-flex"></div>
                             <div class="d-flex">
                                 <button class="btn btn-outline-warning me-2" (click)="openRDialog()">Requisiciones rechazadas</button>
+                            </div>
+                            <div class="d-flex">
                                 <button class="btn btn-outline-success me-2" (click)="openPDialog()">Requisiciones pedidas</button>
                                 <button class="btn btn-outline-info me-2" [routerLink]="['/new-requisition']">Nueva requisición</button>
                             </div>
@@ -31,13 +32,13 @@
                             <mat-cell *matCellDef="let element">REQ-{{element.id}}
                                 <span (click)="PDF(element.id)" style="color: #fff; background-color: green; border-radius: 20%; padding: 0.2rem; margin-left: 0.3rem; cursor: pointer; font-size: 0.7rem;" class="me-2">PDF</span>
                                 <!-- <span (click)="PDF(element.id)" class="material-icons" style="color: #fff; background-color: green; border-radius: 20%; padding: 0.2rem; margin-left: 0.3rem; cursor: pointer; font-size: 1.5rem;">picture_as_pdf</span> -->
-                                <span *ngIf="element.status == 1">VoBo</span>
-                                <span *ngIf="element.status == 2">Autorizada</span>
-                                <span *ngIf="element.status == 3">Rechazada</span>
-                                <span *ngIf="element.status == 4">Cotizada</span>
-                                <span *ngIf="element.status == 5">Pedida</span>
-                                <span *ngIf="element.status == 6">Incompleta</span>
-                                <span *ngIf="element.status == 7">Completa</span>
+                                <span class="show-h" *ngIf="element.status == 1">VoBo</span>
+                                <span class="show-h" *ngIf="element.status == 2">Autorizada</span>
+                                <span class="show-h" *ngIf="element.status == 3">Rechazada</span>
+                                <span class="show-h" *ngIf="element.status == 4">Cotizada</span>
+                                <span class="show-h" *ngIf="element.status == 5">Pedida</span>
+                                <span class="show-h" *ngIf="element.status == 6">Incompleta</span>
+                                <span class="show-h" *ngIf="element.status == 7">Completa</span>
                             </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="date">
@@ -47,12 +48,12 @@
                         </ng-container>
 
                         <ng-container matColumnDef="cicle">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header class="pad-l">Ciclo</mat-header-cell>
-                            <mat-cell *matCellDef="let element" class="pad-l">{{element.cicle}}</mat-cell>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="pad-l show-hh">Ciclo</mat-header-cell>
+                            <mat-cell *matCellDef="let element" class="pad-l show-hh">{{element.cicle}}</mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="priority">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header class="pad-l">Prioridad</mat-header-cell>
-                            <mat-cell *matCellDef="let element" class="pad-l">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="pad-l show-h">Prioridad</mat-header-cell>
+                            <mat-cell *matCellDef="let element" class="pad-l show-h">
                                 <span *ngIf="element.priority == 1">Baja</span>
                                 <span *ngIf="element.priority == 2">Media</span>
                                 <span *ngIf="element.priority == 3">Alta</span>
@@ -71,12 +72,12 @@
                             </mat-cell>
                         </ng-container> -->
                         <ng-container matColumnDef="justification">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header class="pad-l">Justificación</mat-header-cell>
-                            <mat-cell *matCellDef="let element" class="pad-l">{{element.justification}}</mat-cell>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="pad-l show-h">Justificación</mat-header-cell>
+                            <mat-cell *matCellDef="let element" class="pad-l show-h">{{element.justification}}</mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="comments">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header class="pad-l">Comentarios</mat-header-cell>
-                            <mat-cell *matCellDef="let element" class="pad-l">{{element.comments}}</mat-cell>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="pad-l show-hh">Comentarios</mat-header-cell>
+                            <mat-cell *matCellDef="let element" class="pad-l show-hh">{{element.comments}}</mat-cell>
                         </ng-container>
 
                         <ng-container matColumnDef="action">
