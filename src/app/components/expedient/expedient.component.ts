@@ -264,11 +264,13 @@ export class ExpedientComponent implements OnInit {
 
   openUploadDialog(id: string) {
     const dialogRef = this.dialog.open(UploadFileComponent, {
-      width: '80%',
+      width: '100%',
+      maxWidth: '98%',
       data: {
         id: id,
         crop: this.myForm.get('crops').value
-      }
+      },
+      autoFocus: false
     });
 
     dialogRef.afterClosed().subscribe(result => {

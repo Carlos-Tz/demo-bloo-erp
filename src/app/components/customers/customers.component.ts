@@ -80,7 +80,10 @@ export class CustomersComponent implements OnInit {
   }
 
   openDialog() {
-    const dialogRef = this.dialog.open(NewCustomerComponent);
+    const dialogRef = this.dialog.open(NewCustomerComponent, {
+      width: '100%',
+      maxWidth: '98%'
+    });
 
     dialogRef.afterClosed().subscribe(result => {
       //console.log(`Dialog result: ${result}`);
@@ -91,7 +94,9 @@ export class CustomersComponent implements OnInit {
     const dialogRef = this.dialog.open(EditCustomerComponent, {
       data: {
         key: key
-      }
+      },
+      width: '100%',
+      maxWidth: '98%'
     });
     
     dialogRef.afterClosed().subscribe(result => {

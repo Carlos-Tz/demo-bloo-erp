@@ -84,7 +84,10 @@ export class ProvidersComponent implements OnInit {
   }
 
   openDialog() {
-    const dialogRef = this.dialog.open(NewProviderComponent);
+    const dialogRef = this.dialog.open(NewProviderComponent, {
+      width: '100%',
+      maxWidth: '98%'
+    });
 
     dialogRef.afterClosed().subscribe(result => {
       //console.log(`Dialog result: ${result}`);
@@ -95,7 +98,9 @@ export class ProvidersComponent implements OnInit {
     const dialogRef = this.dialog.open(EditProviderComponent, {
       data: {
         key: key
-      }
+      },
+      width: '100%',
+      maxWidth: '98%'
     });
     
     dialogRef.afterClosed().subscribe(result => {

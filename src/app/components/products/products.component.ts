@@ -140,7 +140,10 @@ export class ProductsComponent implements OnInit/* , OnDestroy */ {
   }
 
   openDialog() {
-    const dialogRef = this.dialog.open(NewProductComponent);
+    const dialogRef = this.dialog.open(NewProductComponent, {
+      width: '100%',
+      maxWidth: '98%'
+    });
 
     dialogRef.afterClosed().subscribe(result => {
       //console.log(`Dialog result: ${result}`);
@@ -151,7 +154,9 @@ export class ProductsComponent implements OnInit/* , OnDestroy */ {
     const dialogRef = this.dialog.open(EditProductComponent, {
       data: {
         key: key
-      }
+      },
+      width: '100%',
+      maxWidth: '98%'
     });
     
     dialogRef.afterClosed().subscribe(result => {
