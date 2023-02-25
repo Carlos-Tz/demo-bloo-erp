@@ -1,0 +1,12 @@
+canvas {
+    display: block;
+    border: 1px solid rgb(187, 178, 178);
+    /* background-color: rgb(52, 202, 152); */
+    /* width: 200px;
+    height: 100px; */
+    width: 100%;
+}
+button {
+    margin: 10px;
+    margin-left: 10px;
+}

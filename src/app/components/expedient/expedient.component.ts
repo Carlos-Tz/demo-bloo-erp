@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
@@ -25,14 +25,27 @@ import { ReNoteComponent } from '../re-note/re-note.component';
 import { ReEditNoteComponent } from '../re-edit-note/re-edit-note.component';
 import { ReEditApplicationComponent } from '../re-edit-application/re-edit-application.component';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;  
+//import SignaturePad from 'signature_pad';
+//import { SignaturePad } from 'angular2-signaturepad/signature-pad';
 
 @Component({
   selector: 'app-expedient',
   templateUrl: './expedient.component.html',
   styleUrls: ['./expedient.component.css']
 })
-export class ExpedientComponent implements OnInit {
+export class ExpedientComponent implements OnInit, AfterViewInit {
 
+  //@ViewChild('sig1', { static: false }) signaturePad: SignaturePad;
+  public signaturePadOptions: Object = { // passed through to szimek/signature_pad constructor
+    'minWidth': 0.5,
+    'maxWidth': 1,
+    /* 'canvasWidth': 200,
+    'canvasHeight': 200, */
+    'penColor': "rgb(33, 33, 33)"
+  };
+  //signaturePad: SignaturePad;
+  //@ViewChild('canvas') canvasEl: ElementRef;
+  signatureImg: string;
   url='https://demo-erp.bloomingtec.mx/';
   public myForm!: FormGroup;
   public key = '';
@@ -98,6 +111,73 @@ export class ExpedientComponent implements OnInit {
     this.apiC.GetCompany().valueChanges().subscribe(data => {
       this.company = data;
     });
+    //this.signaturePad.set('minWidth', 5); // set szimek/signature_pad options at runtime
+    //this.signaturePad.clear(); // invoke functions from szimek/signature_pad API
+  }
+
+  ngAfterViewInit() {
+    // this.signaturePad is now available
+    //this.signaturePad.set('minWidth', 5); // set szimek/signature_pad options at runtime
+    //this.signaturePad.clear(); // invoke functions from szimek/signature_pad API
+    //this.signaturePad = new SignaturePad(this.canvasEl.nativeElement, this.signaturePadOptions);
+  }
+
+  /* drawComplete() {
+    // will be notified of szimek/signature_pad's onEnd event
+    //console.log(this.signaturePad.toDataURL());
+  }
+ */
+  /* drawStart() {
+    // will be notified of szimek/signature_pad's onBegin event
+    console.log('begin drawing');
+  } */
+  startDrawing(event: Event) {
+    console.log(event);
+    // works in device not in browser
+
+  }
+
+  moved(event: Event) {
+    // works in device not in browser
+  }
+
+  clearPad() {
+    //this.signaturePad.clear();
+  }
+
+  savePad() {
+    //const base64Data = this.signaturePad.toDataURL();
+    //this.signatureImg = base64Data;
+  }
+
+  imgChanged($event) {
+    if ($event.target.src) {
+      const imgURL = $event.target.src;
+      console.log(imgURL);
+    }
+    
+    /* if ($event.target.src) {
+      const imgURL = $event.target.src;
+      const block = imgURL.split(';');
+      const contentType = block[0].split(':')[1];
+      const realData = block[1].split(',')[1];
+      const blob = this.b64toBlob(realData, contentType);
+      if (this.filePathf1 !== '') {
+        const ref = this.storage.ref(this.filePathf1);
+          ref.delete();
+      }
+      this.filePathf1 = `signs_sanchez/image_${Date.now()}`;
+      const fileRef = this.storage.ref(this.filePathf1);
+      this.storage.upload(this.filePathf1, blob).snapshotChanges().pipe(
+        finalize(() => {
+          fileRef.getDownloadURL().subscribe((url) => {
+            this.myForm.patchValue({firma1: url});
+            this.myForm.patchValue({firma1n: this.filePathf1});
+            this.toastr.success('Firma Actualizada!');
+          });
+        })
+      ).subscribe();
+    } */
   }
 
   sForm() {

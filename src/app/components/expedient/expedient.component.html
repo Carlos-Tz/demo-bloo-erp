@@ -243,6 +243,24 @@
                         </div>
                     </form>
                 </div>
+
+                <div class="signature">
+                    <div id="contSign" onclick="btn_click()">
+                      <img src="" id="imgSign" (load)="imgChanged($event)">
+                      <!-- <img src="" id="imgSign"> -->
+                    </div>
+                    <hr>
+                    Firma de conformidad
+                  </div>
+                <!-- <signature-pad id="sig1" [options]="signaturePadOptions" (onBeginEvent)="drawStart()" (onEndEvent)="drawComplete()"></signature-pad> -->
+                <!-- <div>
+                    <canvas #canvas (onBeginEvent)="startDrawing($event)" (onEndEvent)="moved($event)"></canvas>
+                </div>
+
+                <button (click)="clearPad()">Clear</button>
+                <button color="secondary" (click)="savePad()">Save</button>
+                <img src='{{ signatureImg }}' /> -->
+                
             </div>
         </div>
     </div>

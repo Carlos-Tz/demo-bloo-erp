@@ -14,6 +14,7 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { Select2Module } from 'ng-select2-component';
 import { DataTablesModule } from "angular-datatables";
+//import { SignaturePadModule  } from 'angular2-signaturepad';
 
 
 /* Material */
@@ -237,7 +238,8 @@ import { CollectedOrdersComponent } from './components/collected-orders/collecte
     MatDatepickerModule,
     MatNativeDateModule,
     MatTableExporterModule,
-    HttpClientModule
+    HttpClientModule,
+    //SignaturePadModule 
   ],
   providers: [AuthService, CurrencyPipe, MailService],
   bootstrap: [AppComponent]
