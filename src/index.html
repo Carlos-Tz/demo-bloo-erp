@@ -13,10 +13,17 @@
 </head>
 <body>
   <div id="myModal" class="modalp">
-    <span class="material-icons close" id="close">done</span>
-    <!-- <span class="close" id="close">&times;</span> -->
+    <!-- <span class="material-icons close" id="close">done</span> -->
+    <span class="close" id="close">&times;</span>
     <div id="contMod" class="modal-content">
       <canvas id="canvas"></canvas>
+      <span style="text-align: center;">Firma de conformidad del cliente</span>
+      <button class="btn btn-outline-secondary me-2" id="close1">
+        Cancelar
+      </button>
+      <button class="btn btn-outline-success me-2" id="done">
+        Firmar
+      </button>
     </div>
   </div>
   <app-root></app-root>

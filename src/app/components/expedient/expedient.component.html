@@ -146,6 +146,7 @@
                                                 <ng-container matColumnDef="id">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header >No. pedido</mat-header-cell>
                                                     <mat-cell *matCellDef="let element">{{element.id}}
+                                                        <span class="show-h" style="color: #fff; background-color: green; border-radius: 20%; padding: 0.2rem; margin-left: 0.3rem; font-size: 0.7rem;" *ngIf="element.signed">Firmado</span>
                                                     </mat-cell>
                                                 </ng-container>
                                                 <ng-container matColumnDef="date">
@@ -168,6 +169,9 @@
                                                         </button> -->
                                                         <button class="btn btn-outline-success me-2" style="padding: 0 0.2rem;" (click)="openEditDialog(element.id)" >
                                                             <span class="material-icons">content_copy</span>
+                                                        </button>
+                                                        <button class="btn btn-outline-primary me-2" style="padding: 0 0.2rem;" onclick="btn_click(this)" id="{{element.id}}" *ngIf="!element.signed">
+                                                            <span class="material-icons">draw</span>
                                                         </button>
                                                     </mat-cell>
                                                 </ng-container>
@@ -244,13 +248,11 @@
                     </form>
                 </div>
 
-                <div class="signature">
-                    <div id="contSign" onclick="btn_click()">
+                <div class="signature" hidden>
+                    <div id="contSign">
                       <img src="" id="imgSign" (load)="imgChanged($event)">
-                      <!-- <img src="" id="imgSign"> -->
                     </div>
-                    <hr>
-                    Firma de conformidad
+                    <input id="id_note" type="text">
                   </div>
                 <!-- <signature-pad id="sig1" [options]="signaturePadOptions" (onBeginEvent)="drawStart()" (onEndEvent)="drawComplete()"></signature-pad> -->
                 <!-- <div>

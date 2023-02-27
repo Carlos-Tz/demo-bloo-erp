@@ -25,6 +25,9 @@ import { ReNoteComponent } from '../re-note/re-note.component';
 import { ReEditNoteComponent } from '../re-edit-note/re-edit-note.component';
 import { ReEditApplicationComponent } from '../re-edit-application/re-edit-application.component';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;  
+import * as $ from 'jquery';
+import 'fecha';
+import fechaObj from 'fecha';
 //import SignaturePad from 'signature_pad';
 //import { SignaturePad } from 'angular2-signaturepad/signature-pad';
 
@@ -84,6 +87,7 @@ export class ExpedientComponent implements OnInit, AfterViewInit {
   public applications: Application[] = [];
   public notes: Note[] = [];
   public files: File[] = [];
+  generatedImage: string;
 
   constructor(
     private fb: FormBuilder,
@@ -110,11 +114,35 @@ export class ExpedientComponent implements OnInit, AfterViewInit {
     });
     this.apiC.GetCompany().valueChanges().subscribe(data => {
       this.company = data;
+      //this.getBase64ImageFromUrl(this.company.logo)
+      //this.getBase64ImageFromUrl('../../assets/bg.jpg')
+        //.then(result => {
+          //console.log(result);
+          //this.generatedImage = result as string;
+        //})
+        //.catch(err => console.error(err));
     });
     //this.signaturePad.set('minWidth', 5); // set szimek/signature_pad options at runtime
     //this.signaturePad.clear(); // invoke functions from szimek/signature_pad API
   }
 
+  /* async getBase64ImageFromUrl(imageUrl) {
+    var res = await fetch(imageUrl);
+    var blob = await res.blob();
+  
+    return new Promise((resolve, reject) => {
+      var reader  = new FileReader();
+      reader.addEventListener("load", function () {
+          resolve(reader.result);
+      }, false);
+  
+      reader.onerror = () => {
+        return reject(this);
+      };
+      reader.readAsDataURL(blob);
+    })
+  }
+ */
   ngAfterViewInit() {
     // this.signaturePad is now available
     //this.signaturePad.set('minWidth', 5); // set szimek/signature_pad options at runtime
@@ -122,47 +150,65 @@ export class ExpedientComponent implements OnInit, AfterViewInit {
     //this.signaturePad = new SignaturePad(this.canvasEl.nativeElement, this.signaturePadOptions);
   }
 
-  /* drawComplete() {
-    // will be notified of szimek/signature_pad's onEnd event
-    //console.log(this.signaturePad.toDataURL());
-  }
- */
-  /* drawStart() {
-    // will be notified of szimek/signature_pad's onBegin event
-    console.log('begin drawing');
-  } */
-  startDrawing(event: Event) {
-    console.log(event);
-    // works in device not in browser
-
-  }
-
-  moved(event: Event) {
-    // works in device not in browser
-  }
-
-  clearPad() {
-    //this.signaturePad.clear();
-  }
-
-  savePad() {
-    //const base64Data = this.signaturePad.toDataURL();
-    //this.signatureImg = base64Data;
-  }
-
   imgChanged($event) {
-    if ($event.target.src) {
-      const imgURL = $event.target.src;
-      console.log(imgURL);
-    }
+    console.log($('#id_note').val());
     
-    /* if ($event.target.src) {
+    
+    if ($event.target.src) {
       const imgURL = $event.target.src;
       const block = imgURL.split(';');
       const contentType = block[0].split(':')[1];
       const realData = block[1].split(',')[1];
       const blob = this.b64toBlob(realData, contentType);
-      if (this.filePathf1 !== '') {
+      const imageFile = new File([blob], 'image.jpg', {
+        type: "image/jpeg"
+      });
+      //this.generatedImage = window.URL.createObjectURL(imageFile);
+      //window.open(this.generatedImage);
+
+      const formData = new FormData();
+      formData.append('file', imageFile);
+      
+      this.http.post(`${this.url}resources/upload_sign.php`, formData)
+        .subscribe(async res => {
+          if(res){
+            console.log(res);
+            const promise = new Promise((resolve, reject) => {
+              this.apiN.GetNote($('#id_note').val().toString()).valueChanges().subscribe(data => {
+                //this.myForm.patchValue(data);
+                let current_note = data;
+                resolve(current_note);
+              });
+            });
+            await promise.then((n: Note) => {
+              n['signed'] = true;
+              n['url_sign'] = `${this.url}signs/${res}`;
+              n['date_sign'] = fechaObj.format(new Date(), 'YYYY[-]MM[-]DD'),
+              this.apiN.UpdateNote(n, n['id']);
+              this.toastr.success('Pedido firmado!');
+
+              /* this.myForm.patchValue({ date: fechaObj.format(new Date(), 'DD[/]MM[/]YYYY') });
+              this.myForm.patchValue({ status: 1 });
+              this.apiN.AddNote(this.myForm.value);
+              this.ResetForm();
+              this.toastr.success('Pedido duplicado!'); */
+            });
+            /* this.myForm1.patchValue({ 
+              date: fechaObj.format(new Date(), 'YYYY[-]MM[-]DD'),
+              name: this.myForm.get('name').value,
+              url: `${this.url}files/${res}`,
+              customer: this.data.id,
+              crop: this.data.crop,
+            }); */
+            //this.apiF.AddFile(this.myForm1.value);
+            //this.toastr.success('Pedido firmado!');
+          }
+          //alert('Uploaded Successfully.');
+        })
+
+
+
+      /* if (this.filePathf1 !== '') {
         const ref = this.storage.ref(this.filePathf1);
           ref.delete();
       }
@@ -176,8 +222,32 @@ export class ExpedientComponent implements OnInit, AfterViewInit {
             this.toastr.success('Firma Actualizada!');
           });
         })
-      ).subscribe();
-    } */
+      ).subscribe(); */
+    }
+  }
+
+  b64toBlob(b64Data, contentType, sliceSize?) {
+    contentType = contentType || '';
+    sliceSize = sliceSize || 512;
+
+    const byteCharacters = atob(b64Data);
+    const byteArrays = [];
+
+    for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+        const slice = byteCharacters.slice(offset, offset + sliceSize);
+
+        const byteNumbers = new Array(slice.length);
+        for (let i = 0; i < slice.length; i++) {
+            byteNumbers[i] = slice.charCodeAt(i);
+        }
+
+        const byteArray = new Uint8Array(byteNumbers);
+
+        byteArrays.push(byteArray);
+    }
+
+    const blob = new Blob(byteArrays, {type: contentType});
+    return blob;
   }
 
   sForm() {
@@ -234,7 +304,7 @@ export class ExpedientComponent implements OnInit, AfterViewInit {
       data.forEach(item => {
         const r = item.payload.val();
         if(r.customer.id == this.myForm.get('id').value && r.crops.includes(this.myForm.get('crops').value)){
-          const not = {'id': item.key, 'customer': r.customer.name, 'date': r.date, 'status': r.status, 'justification': r.justification };        
+          const not = {'id': item.key, 'customer': r.customer.name, 'date': r.date, 'status': r.status, 'justification': r.justification, 'signed': r.signed };        
           this.notes.push(not as Note);
         }   
       });
@@ -375,7 +445,7 @@ export class ExpedientComponent implements OnInit, AfterViewInit {
               body: [
                 //[{text: 'RECETA', colSpan: 5, alignment: 'center', fontSize: 26, margin: 15 },{}, {}, {}, {}, {}],
                 //[{},{ colSpan: 4, rowSpan: 3, text: this.company.name + '\nRFC: ' + this.company.rfc + '\n' +  this.company.address +'\n' }, {}, {}, {}, { text: 'MORELIA, MICHOACÁN', alignment: 'center'}],
-                [{ image: this.company.logo, width: 60 }, { /* rowSpan: 2, */ text: this.company.name + '\n' + this.company.business_name + this.company.rfc + '\n' +  this.company.address +'\n' + this.company.email + ' / ' +this.company.tel, alignment: 'center', fontSize: 10, margin: 2 }, { text: 'No. Receta: ' + data.id + '\n\nFecha: '+ data.date, alignment: 'right' }],
+                [{ image: 'logo', width: 60 }, { /* rowSpan: 2, */ text: this.company.name + '\n' + this.company.business_name + this.company.rfc + '\n' +  this.company.address +'\n' + this.company.email + ' / ' +this.company.tel, alignment: 'center', fontSize: 10, margin: 2 }, { text: 'No. Receta: ' + data.id + '\n\nFecha: '+ data.date, alignment: 'right' }],
                 //[{}, {}, {}, {}, {}, { text: 'Fecha: ' + data.date, alignment: 'center' }],
                 [{ text: 'Nombre', fillColor: '#eeeeee' }, { text: data.customer.name, colSpan: 2 }, {}],
                 [{ text: 'Domicilio', fillColor: '#eeeeee' }, { text: data.address, colSpan: 2 }, {}],
@@ -397,7 +467,10 @@ export class ExpedientComponent implements OnInit, AfterViewInit {
             margin: 5,
             alignment: 'center'
           }
-        }  
+        },
+        images: {
+          logo: this.company.logo,
+        } 
       };  
      
       pdfMake.createPdf(docDefinition).open();  
@@ -405,11 +478,12 @@ export class ExpedientComponent implements OnInit, AfterViewInit {
   }
 
   PDF1(id) {
-    this.apiN.GetNote(id).valueChanges().subscribe(data => {
+    this.apiN.GetNote(id).valueChanges().subscribe(async data => {
       let prods = [];
       let subtotal = 0;
       let iva = 0;
       let total = 0;
+      let sign = '';
       if(!data.products){
         prods = [{ id: '', name: '', cost: '', iva: '', presentation: '', quantity: '', unit: '' }];        
         //let prods: any = Object.values(data.products);
@@ -423,59 +497,90 @@ export class ExpedientComponent implements OnInit, AfterViewInit {
         }
       });
       total = subtotal + iva;
-      
-      let docDefinition = {  
-        //header: 'C# Corner PDF Header',  
-        content: [
-          {
-            style: 'table',
-            table: {
-              //widths: [60, 340, 'auto'],
-              widths: [60, 50, 60, 165, 55, 'auto'],
-              heights: [60, 20, 20, 20, 20],
-              headerRows: 1,
-              body: [
-                //[{text: 'RECETA', colSpan: 5, alignment: 'center', fontSize: 26, margin: 15 },{}, {}, {}, {}, {}],
-                //[{},{ colSpan: 4, rowSpan: 3, text: this.company.name + '\nRFC: ' + this.company.rfc + '\n' +  this.company.address +'\n' }, {}, {}, {}, { text: 'MORELIA, MICHOACÁN', alignment: 'center'}],
-                [{ image: this.company.logo, width: 50 }, { /* rowSpan: 2, */ text: this.company.name + '\n' + this.company.business_name + this.company.rfc + '\n' +  this.company.address +'\n' + this.company.email + ' / ' +this.company.tel, alignment: 'center', fontSize: 10, margin: 2, colSpan: 4 }, {}, {}, {}, { text: 'No. Pedido: ' + data.id + '\n\nFecha: '+ data.date, alignment: 'right' }],
-                //[{}, {}, {}, {}, {}, { text: 'Fecha: ' + data.date, alignment: 'center' }],
-                [{ text: 'Nombre', fillColor: '#eeeeee' }, { text: data.customer.name, colSpan: 5 }, {}, {}, {}, {}],
-                [{ text: 'Domicilio', fillColor: '#eeeeee' }, { text: data.address, colSpan: 5 }, {}, {}, {}, {}],
-                [{ text: 'Ciudad', fillColor: '#eeeeee' }, { text: data.city, colSpan: 5 }, {}, {}, {}, {}],
-                [{ text: 'Justificación', fillColor: '#eeeeee' }, { text: data.justification, colSpan: 5 }, {}, {}, {}, {}],
-                [{ text: 'Cultivo(s)', bold: true, style: 'ce', fillColor: '#eeeeee', colSpan: 6 }, {}, {}, {}, {}, {}],
-                ...data.crops.map(p => ([{ text: p, colSpan: 6 }, {}, {}, {}, {}, {}])),
-                [{ text: 'Cantidad', bold: true, style: 'ce', fillColor: '#eeeeee' }, { text: 'Unidad', bold: true, style: 'ce', fillColor: '#eeeeee' }, { text: 'Presentación', bold: true, style: 'ce', fillColor: '#eeeeee' }, { text: 'Descripción', bold: true, style: 'ce', fillColor: '#eeeeee' }, { text: 'P.U.', bold: true, style: 'ce', fillColor: '#eeeeee' }, { text: 'Importe', bold: true, style: 'ce', fillColor: '#eeeeee' }],
-                //...data.products.map(p => ([{ text: p.id + '.- ' + p.name, /* style: 'he', */ colSpan: 3 }, {}, {}]))
-                ...prods.map(p => ([{ text: p.quantity, style: 'ce' }, { text: p.unit, style: 'ce' }, { text: p.presentation, style: 'ce' }, { text: p.name, style: 'ce' }, { text: (p.cost).toLocaleString('en-US', { style: 'currency', currency: 'USD', }), style: 'ce' }, { text: (p.cost*p.quantity).toLocaleString('en-US', { style: 'currency', currency: 'USD', }), style: 'ce' }])),
-                [{ text: 'DEBO (EMOS) Y PAGARÉ (MOS) INCONDICIONALMENTE POR ESTE PAGARÉ A LA ORDEN DE Cuautémoc Moreno Martínez/Milton Alejandro Rivera de León EN LA CIUDAD DE __________ EL DÍA _______ DE ________ DEL _______ LA CANTIDAD DE $ _______________ M.N.\n VALOR RECIBIDO A NUESTRA ENTERA SATISFACCIÓN POR ESTE DOCUMENTO, LA DEMORA EN EL PAGO DE ESTE PAGARÉ CAUSA INTERESES MORATORIOS A RAZÓN DEL __ % MENSUAL.', alignment: 'left', colSpan: 4, fontSize: 8, rowSpan: 3 }, {}, {}, {}, { text: 'Subtotal', alignment: 'right' }, { text: (subtotal).toLocaleString('en-US', { style: 'currency', currency: 'USD', }), style: 'ce' }],
-                [{}, {}, {}, {}, { text: 'I.V.A.', alignment: 'right' }, { text: (iva).toLocaleString('en-US', { style: 'currency', currency: 'USD', }), style: 'ce' }],
-                [{}, {}, {}, {}, { text: 'Total', alignment: 'right' }, { text: (total).toLocaleString('en-US', { style: 'currency', currency: 'USD', }), style: 'ce' }],
-                [{text: '____ DE ____________ DEL ________\n\n\n\n_________________________________________________\n ACEPTO (AMOS) - NOMBRE Y FIRMA', colSpan: 6, style: 'm1'}, {}, {}, {}, {}, {}]
-              ]
+      /* const promise1 = new Promise((resolve, reject) => { */
+        if(data.url_sign){
+          //this.getBase64ImageFromUrl(data.url_sign)
+          //this.getBase64ImageFromUrl('../../assets/bg.jpg')
+          //.then(result => {
+            //testImage.src = result
+            //console.log(result);
+            //sign = result as string;
+            sign = data.url_sign;
+            //resolve(sign);
+          //})
+          //.catch(err => console.error(err));
+        }else {
+          sign = 'data:image/png;base64,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';
+          //resolve(sign);
+        }
+      //});
+      /* await promise1.then((s: string) => { */
+        let docDefinition = {  
+          //header: 'C# Corner PDF Header',  
+          content: [
+            {
+              style: 'table',
+              table: {
+                //widths: [60, 340, 'auto'],
+                widths: [60, 50, 60, 165, 55, 'auto'],
+                heights: [60, 20, 20, 20, 20],
+                headerRows: 1,
+                hLineColor: '#f00',
+                body: [
+                  //[{text: 'RECETA', colSpan: 5, alignment: 'center', fontSize: 26, margin: 15 },{}, {}, {}, {}, {}],
+                  //[{},{ colSpan: 4, rowSpan: 3, text: this.company.name + '\nRFC: ' + this.company.rfc + '\n' +  this.company.address +'\n' }, {}, {}, {}, { text: 'MORELIA, MICHOACÁN', alignment: 'center'}],
+                  [{ image: this.generatedImage/* this.company.logo */, width: 50 }, { /* rowSpan: 2, */ text: this.company.name + '\n' + this.company.business_name + this.company.rfc + '\n' +  this.company.address +'\n' + this.company.email + ' / ' +this.company.tel, alignment: 'center', fontSize: 10, margin: 2, colSpan: 4 }, {}, {}, {}, { text: 'No. Pedido: ' + data.id + '\n\nFecha: '+ data.date, alignment: 'right' }],
+                  //[{}, {}, {}, {}, {}, { text: 'Fecha: ' + data.date, alignment: 'center' }],
+                  [{ text: 'Nombre', fillColor: '#eeeeee' }, { text: data.customer.name, colSpan: 5 }, {}, {}, {}, {}],
+                  [{ text: 'Domicilio', fillColor: '#eeeeee' }, { text: data.address, colSpan: 5 }, {}, {}, {}, {}],
+                  [{ text: 'Ciudad', fillColor: '#eeeeee' }, { text: data.city, colSpan: 5 }, {}, {}, {}, {}],
+                  [{ text: 'Justificación', fillColor: '#eeeeee' }, { text: data.justification, colSpan: 5 }, {}, {}, {}, {}],
+                  [{ text: 'Cultivo(s)', bold: true, style: 'ce', fillColor: '#eeeeee', colSpan: 6 }, {}, {}, {}, {}, {}],
+                  ...data.crops.map(p => ([{ text: p, colSpan: 6 }, {}, {}, {}, {}, {}])),
+                  [{ text: 'Cantidad', bold: true, style: 'ce', fillColor: '#eeeeee' }, { text: 'Unidad', bold: true, style: 'ce', fillColor: '#eeeeee' }, { text: 'Presentación', bold: true, style: 'ce', fillColor: '#eeeeee' }, { text: 'Descripción', bold: true, style: 'ce', fillColor: '#eeeeee' }, { text: 'P.U.', bold: true, style: 'ce', fillColor: '#eeeeee' }, { text: 'Importe', bold: true, style: 'ce', fillColor: '#eeeeee' }],
+                  //...data.products.map(p => ([{ text: p.id + '.- ' + p.name, /* style: 'he', */ colSpan: 3 }, {}, {}]))
+                  ...prods.map(p => ([{ text: p.quantity, style: 'ce' }, { text: p.unit, style: 'ce' }, { text: p.presentation, style: 'ce' }, { text: p.name, style: 'ce' }, { text: (p.cost).toLocaleString('en-US', { style: 'currency', currency: 'USD', }), style: 'ce' }, { text: (p.cost*p.quantity).toLocaleString('en-US', { style: 'currency', currency: 'USD', }), style: 'ce' }])),
+                  [{ text: '', colSpan: 4, fontSize: 8, rowSpan: 3 }, {}, {}, {}, { text: 'Subtotal', alignment: 'right' }, { text: (subtotal).toLocaleString('en-US', { style: 'currency', currency: 'USD', }), style: 'ce' }],
+                  [{}, {}, {}, {}, { text: 'I.V.A.', alignment: 'right' }, { text: (iva).toLocaleString('en-US', { style: 'currency', currency: 'USD', }), style: 'ce' }],
+                  [{}, {}, {}, {}, { text: 'Total', alignment: 'right' }, { text: (total).toLocaleString('en-US', { style: 'currency', currency: 'USD', }), style: 'ce' }],
+                  [{text: 'DEBO (EMOS) Y PAGARÉ (MOS) INCONDICIONALMENTE POR ESTE PAGARÉ A LA ORDEN DE Cuautémoc Moreno Martínez/Milton Alejandro Rivera de León EN LA CIUDAD DE __________ EL DÍA _______ DE ________ DEL _______ LA CANTIDAD DE $ _______________ M.N. VALOR RECIBIDO A NUESTRA ENTERA SATISFACCIÓN POR ESTE DOCUMENTO, LA DEMORA EN EL PAGO DE ESTE PAGARÉ CAUSA INTERESES MORATORIOS A RAZÓN DEL __ % MENSUAL.', alignment: 'left', fontSize: 7, colSpan: 6 }, {}, {}, {}, {}, {}],
+                  [{text: data.date_sign ? '\nFirmado: ' + data.date_sign : '\n____ DE ____________ DEL ________', colSpan: 6, style: 'ce1'}, {}, {}, {}, {}, {}],
+                  [{ image: 'sign_1', width: 100, colSpan: 6, alignment: 'center' }, {}, {}, {}, {}, {}],
+                  [{text: 'ACEPTO (AMOS) - NOMBRE Y FIRMA', colSpan: 6, style: 'ce1'}, {}, {}, {}, {}, {}],
+                ]
+              },
+            }
+          ],
+          styles: {
+            table :{
+              fontSize: 10
             },
-          }
-        ],
-        styles: {
-          table :{
-            fontSize: 10
+            he: {
+              margin: 5,
+              alignment: 'center'
+            },
+            ce: {
+              alignment: 'center'
+            },
+            ce1: {
+              alignment: 'center',
+              fontSize: 8
+            },
+            m1: {
+              margin: 15,
+              alignment: 'center',
+              fontSize: 8
+            }
           },
-          he: {
-            margin: 5,
-            alignment: 'center'
-          },
-          ce: {
-            alignment: 'center'
-          },
-          m1: {
-            margin: 15,
-            alignment: 'center',
-            fontSize: 8
-          }
-        }  
-      };  
-     
-      pdfMake.createPdf(docDefinition).open();  
+          images: {
+            logo: this.company.logo,
+            sign_1: sign
+          } 
+        };  
+       
+        pdfMake.createPdf(docDefinition).open();  
+      /* }); */
+      
     });
   }
 
@@ -515,7 +620,9 @@ export class ExpedientComponent implements OnInit, AfterViewInit {
       data: {
         id: id
       },
-      autoFocus: false
+      autoFocus: false,
+      width: '100%',
+      maxWidth: '98%'
     });
     dialogRef.afterClosed().subscribe(async result => {
     });
@@ -526,6 +633,8 @@ export class ExpedientComponent implements OnInit, AfterViewInit {
       data: {
         id: id
       },
+      width: '100%',
+      maxWidth: '98%',
       autoFocus: false
     });
     dialogRef.afterClosed().subscribe(async result => {
@@ -537,7 +646,9 @@ export class ExpedientComponent implements OnInit, AfterViewInit {
       data: {
         id: id
       },
-      autoFocus: false
+      autoFocus: false,
+      width: '100%',
+      maxWidth: '98%'
     });
     dialogRef.afterClosed().subscribe(async result => {
     });

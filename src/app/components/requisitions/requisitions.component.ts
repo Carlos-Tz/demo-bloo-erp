@@ -118,7 +118,8 @@ export class RequisitionsComponent implements OnInit {
 
   openRDialog() {
     const dialogRef = this.dialog.open(RejectedRequisitionsComponent, {
-      width: '80%',
+      width: '100%',
+      maxWidth: '98%',
       autoFocus: false
     });
 
@@ -129,7 +130,8 @@ export class RequisitionsComponent implements OnInit {
 
   openPDialog() {
     const dialogRef = this.dialog.open(OrderedRequisitionsComponent, {
-      width: '80%',
+      width: '100%',
+      maxWidth: '98%',
       autoFocus: false
     });
 
@@ -142,7 +144,9 @@ export class RequisitionsComponent implements OnInit {
     const dialogRef = this.dialog.open(AuthorizeRequisitionComponent, {
       data: {
         id: id
-      }
+      },
+      width: '100%',
+      maxWidth: '98%'
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -154,7 +158,9 @@ export class RequisitionsComponent implements OnInit {
     const dialogRef = this.dialog.open(QuoteComponent, {
       data: {
         id: id
-      }
+      },
+      width: '100%',
+      maxWidth: '98%'
     });
 
     //dialogRef.afterClosed().subscribe(result => {
@@ -166,7 +172,9 @@ export class RequisitionsComponent implements OnInit {
     const dialogRef = this.dialog.open(OrderComponent, {
       data: {
         id: id
-      }
+      },
+      width: '100%',
+      maxWidth: '98%'
     });
 
     //dialogRef.afterClosed().subscribe(result => {
@@ -179,7 +187,9 @@ export class RequisitionsComponent implements OnInit {
       data: {
         requisition: requisition
       },
-      autoFocus: false
+      autoFocus: false,
+      width: '100%',
+      maxWidth: '98%'
     });
 
     //dialogRef.afterClosed().subscribe(result => {
@@ -192,7 +202,9 @@ export class RequisitionsComponent implements OnInit {
       data: {
         requisition: requisition
       },
-      autoFocus: false
+      autoFocus: false,
+      width: '100%',
+      maxWidth: '98%'
     });
   }
 
@@ -216,10 +228,10 @@ export class RequisitionsComponent implements OnInit {
             style: 'table',
             table: {
               widths: [75, 75, 75, 55, 70, 'auto'],
-              heights: [50, 20, 20, 20, 20, 20, 20, 25],
+              heights: [50, 20, 20, 20, 20, 20, 20, 15],
               headerRows: 1,
               body: [
-                [{text: 'REQUISICIÓN', colSpan: 5, alignment: 'center', fontSize: 26, margin: 15 },{}, {}, {}, {}, { image: this.company.logo, width: 50, alignment: 'right' }],
+                [{text: 'REQUISICIÓN', colSpan: 5, alignment: 'center', fontSize: 26, margin: 15 },{}, {}, {}, {}, { image: 'logo', width: 50, alignment: 'right' }],
                 [{ colSpan: 5, rowSpan: 3, text: this.company.name + '\n' + this.company.business_name + '\nRFC: ' + this.company.rfc + '\n' +  this.company.address +'\n' + this.company.email + ' / ' +this.company.tel }, {}, {}, {}, {}, { text: 'MORELIA, MICHOACÁN', alignment: 'center'}],
                 [{}, {}, {}, {}, {}, { text: 'REQ - ' + data.id, alignment: 'center' }],
                 [{}, {}, {}, {}, {}, { text: '', alignment: 'center' }],
@@ -237,10 +249,13 @@ export class RequisitionsComponent implements OnInit {
             fontSize: 10
           },
           he: {
-            margin: 5,
+            margin: 2,
             alignment: 'center'
           }
-        }  
+        },
+        images: {
+          logo: this.company.logo
+        }   
       };  
      
       pdfMake.createPdf(docDefinition).open();  

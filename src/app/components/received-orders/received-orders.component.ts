@@ -104,7 +104,7 @@ export class ReceivedOrdersComponent implements OnInit {
               heights: [50, 20, 20, 20, 20, 20, 20, 170, 20, 20, 20, 10, 10, 10, 5, 10, 50, 5, 60],
               headerRows: 1,
               body: [
-                [{text: 'ORDEN DE COMPRA', colSpan: 4, alignment: 'center', fontSize: 26, margin: 15 },{}, {}, {}, { image: this.company.logo, width: 50, colSpan: 2, alignment: 'right' }, {}],
+                [{text: 'ORDEN DE COMPRA', colSpan: 4, alignment: 'center', fontSize: 26, margin: 15 },{}, {}, {}, { image: 'logo', width: 50, colSpan: 2, alignment: 'right' }, {}],
                 [{ colSpan: 4, rowSpan: 3, text: this.company.name + '\n' + this.company.business_name + '\nRFC: ' + this.company.rfc + '\n' +  this.company.address +'\n' + this.company.email + ' / ' +this.company.tel }, {}, {}, {}, { text: 'MORELIA, MICHOACÁN', alignment: 'center', colSpan: 2 }, {}],
                 [{}, {}, {}, {}, { text: 'OC - ' + order.id, alignment: 'center', colSpan: 2  }, {}],
                 [{}, {}, {}, {}, { text: '', alignment: 'center', colSpan: 2  }, {}],
@@ -144,7 +144,10 @@ export class ReceivedOrdersComponent implements OnInit {
             margin: 5,
             alignment: 'center'
           }
-        }  
+        },
+        images: {
+          logo: this.company.logo,
+        } 
       };  
      
       pdfMake.createPdf(docDefinition).open();  

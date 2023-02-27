@@ -1,7 +1,7 @@
 canvas {
     border: 1px solid #ccc;
     display: inline;
-    background-color: rgb(255, 255, 255);
+    /* background-color: rgb(255, 255, 255); */
   }
   
   .modalp {
@@ -18,12 +18,12 @@ canvas {
   }
   
   .modal-content {
-    background-color: #fefefe;
+    background-color: #fefefe !important;
     margin: 3% auto;
     padding: 25px 25px;
-    border: 5px solid #888;
-    border-radius: 2%;
-    width: 80%;
+    border: 5px solid #888 !important;
+    border-radius: 2% !important;
+    width: 80% !important;
     height: 80%;
   }
   

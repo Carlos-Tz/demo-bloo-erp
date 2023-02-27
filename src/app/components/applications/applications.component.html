@@ -30,8 +30,8 @@
                             <mat-header-cell *matHeaderCellDef mat-sort-header >Folio</mat-header-cell>
                             <mat-cell *matCellDef="let element">{{element.id}}
                                 <!-- <span (click)="PDF(element.id)" style="color: #fff; background-color: green; border-radius: 20%; padding: 0.2rem; margin-left: 0.3rem; cursor: pointer; font-size: 0.7rem;" class="me-2">PDF</span> -->
-                                <span class="ms-3" *ngIf="element.status == 1">Programada</span>
-                                <span class="ms-3" *ngIf="element.status == 2">Enviada</span>
+                                <span class="ms-3 show-h" *ngIf="element.status == 1">Programada</span>
+                                <span class="ms-3 show-h" *ngIf="element.status == 2">Enviada</span>
                                 <!-- <span class="me-3" *ngIf="element.status == 3">Realizada</span> -->
                             </mat-cell>
                         </ng-container>
@@ -40,24 +40,24 @@
                             <mat-cell *matCellDef="let element" class="pad-l">{{element.customer}}</mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="date">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header class="pad-l">Fecha</mat-header-cell>
-                            <mat-cell *matCellDef="let element" class="pad-l">{{element.date}}</mat-cell>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="pad-l show-h">Fecha</mat-header-cell>
+                            <mat-cell *matCellDef="let element" class="pad-l show-h">{{element.date}}</mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="justification">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header class="pad-l">Justificación</mat-header-cell>
-                            <mat-cell *matCellDef="let element" class="pad-l">{{element.justification}}</mat-cell>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="pad-l show-hh">Justificación</mat-header-cell>
+                            <mat-cell *matCellDef="let element" class="pad-l show-hh">{{element.justification}}</mat-cell>
                         </ng-container>
 
                         <ng-container matColumnDef="action">
                             <mat-header-cell *matHeaderCellDef> Acción </mat-header-cell>
                             <mat-cell *matCellDef="let element; let i = index;">
-                                <button class="btn btn-outline-success me-2 w-100" style="padding: 0 0.2rem;" [routerLink]="['/edit-application', element.id]" >
+                                <button class="btn btn-outline-success me-2" style="padding: 0 0.2rem;" [routerLink]="['/edit-application', element.id]" >
                                     <span class="material-icons">content_copy</span>
                                 </button>
-                                <button class="btn btn-outline-danger me-2 w-100" style="padding: 0 0.2rem;" (click)="PDF(element.id)" >
+                                <button class="btn btn-outline-danger me-2" style="padding: 0 0.2rem;" (click)="PDF(element.id)" >
                                     <span class="material-icons">picture_as_pdf</span>
                                 </button>
-                                <button *ngIf="element.status == 1" class="btn btn-outline-info me-2 w-100" style="padding: 0 0.2rem;" (click)="openMailDialog(element.id)" >
+                                <button *ngIf="element.status == 1" class="btn btn-outline-info me-2" style="padding: 0 0.2rem;" (click)="openMailDialog(element.id)" >
                                     <span class="material-icons">mail</span>
                                 </button>
                             </mat-cell>

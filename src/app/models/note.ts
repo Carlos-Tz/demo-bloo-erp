@@ -10,11 +10,14 @@ export interface Note {
     address: string;
     city: string;
     send: boolean;
+    signed: boolean;
     complete: boolean;
     paymentdate: string;
     folio: number;
     paymenttype: string;
     orderdate: string;
+    url_sign: string;
+    date_sign: string;
     crops: [];
     products: [];
     balance: number;

@@ -19,16 +19,16 @@
                         </mat-cell>
                     </ng-container>
                     <ng-container matColumnDef="paymentdate">
-                        <mat-header-cell *matHeaderCellDef class="pad-l">Fecha programada</mat-header-cell>
-                        <mat-cell *matCellDef="let element" class="pad-l">{{element.paymentdate}}</mat-cell>
+                        <mat-header-cell *matHeaderCellDef class="pad-l show-h">Fecha programada</mat-header-cell>
+                        <mat-cell *matCellDef="let element" class="pad-l show-h">{{element.paymentdate}}</mat-cell>
                     </ng-container>
                     <ng-container matColumnDef="price">
-                        <mat-header-cell *matHeaderCellDef class="pad-l">Subtotal</mat-header-cell>
-                        <mat-cell *matCellDef="let element" class="pad-l">{{element.price*element.quantity | currency}}</mat-cell>
+                        <mat-header-cell *matHeaderCellDef class="pad-l show-h">Subtotal</mat-header-cell>
+                        <mat-cell *matCellDef="let element" class="pad-l show-h">{{element.price*element.quantity | currency}}</mat-cell>
                     </ng-container>
                     <ng-container matColumnDef="iva">
-                        <mat-header-cell *matHeaderCellDef class="pad-l">I.V.A.</mat-header-cell>
-                        <mat-cell *matCellDef="let element" class="pad-l">{{element.price*element.quantity*element.iva | currency}}</mat-cell>
+                        <mat-header-cell *matHeaderCellDef class="pad-l show-hh">I.V.A.</mat-header-cell>
+                        <mat-cell *matCellDef="let element" class="pad-l show-hh">{{element.price*element.quantity*element.iva | currency}}</mat-cell>
                     </ng-container>
                     <ng-container matColumnDef="quantity">
                         <mat-header-cell *matHeaderCellDef class="pad-l">Total</mat-header-cell>

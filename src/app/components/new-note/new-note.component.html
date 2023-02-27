@@ -8,6 +8,8 @@
                             <a class="navbar-brand">Nuevo pedido</a>
                             <div class="d-flex">
                                 <button mat-button class="btn btn-outline-success" (click)="allCrops()">Todos los cultivos</button>
+                            </div>
+                            <div class="d-flex">
                                 <button mat-button [routerLink]="['/notes']">Cancelar</button>
                                 <button mat-button (click)="submitSurveyData()" [routerLink]="['/notes']" [disabled]="!myForm.valid" class="btn btn-outline-info">Guardar</button>
                                 <!-- <button mat-button (click)="submitSurveyData()" class="btn btn-outline-info">Guardar</button> -->
@@ -77,7 +79,7 @@
                                     <select2-hint>Productos</select2-hint>
                                 </select2>
                             </div>
-                            <div class="col">
+                            <div class="col-sm-12" style="overflow-x: auto;">
                                 <table class="table table-bordered" style="font-size: 0.85rem;">
                                     <thead>
                                         <th style="background-color: #155a89; color: #fff; font-weight: 400; text-align: center;">Id</th>
@@ -97,7 +99,7 @@
                                             <td><input type="text" value="{{pro.data.unit }}" readonly matInput style="text-align: center;" id="unit___{{pro.value}}"></td>
                                             <td><input type="text" value="{{pro.data.presentation }}" readonly matInput style="text-align: center;" id="presentation___{{pro.value}}"></td>
                                             <td>
-                                                <select matInput name="" id="cost___{{pro.value}}">
+                                                <select matInput name="" id="cost___{{pro.value}}" style="width: 100%; border: none;">
                                                     <option *ngFor="let cos of pro.data.costs" value="{{cos.cost}}">{{ cos.cost | currency }}</option>
                                                 </select>
                                                 <!-- <mat-select matInput name="cost" id="cost___{{pro.value}}" required #co>
