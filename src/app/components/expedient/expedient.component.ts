@@ -28,6 +28,7 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 import * as $ from 'jquery';
 import 'fecha';
 import fechaObj from 'fecha';
+import { ChangeApplicationComponent } from '../change-application/change-application.component';
 //import SignaturePad from 'signature_pad';
 //import { SignaturePad } from 'angular2-signaturepad/signature-pad';
 
@@ -643,6 +644,19 @@ export class ExpedientComponent implements OnInit, AfterViewInit {
 
   openEditAppDialog(id: string) {
     const dialogRef = this.dialog.open(ReEditApplicationComponent, {
+      data: {
+        id: id
+      },
+      autoFocus: false,
+      width: '100%',
+      maxWidth: '98%'
+    });
+    dialogRef.afterClosed().subscribe(async result => {
+    });
+  }
+
+  openChangeAppDialog(id: string) {
+    const dialogRef = this.dialog.open(ChangeApplicationComponent, {
       data: {
         id: id
       },

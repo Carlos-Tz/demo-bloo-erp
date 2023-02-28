@@ -110,8 +110,8 @@ export class NewApplicationComponent implements OnInit {
     //console.log(ev.value);
     this.myForm.patchValue({ 'address': ev.value.street + ' # ' + ev.value.num + ' ' + ev.value.colony});
     this.myForm.patchValue({ 'city': ev.value.city });
-    /* this.crops = [];
-    this.apiC.GetCustomer(ev.value).valueChanges().subscribe(data => {
+    this.crops = [];
+    /*this.apiC.GetCustomer(ev.value).valueChanges().subscribe(data => {
       if(data.crops){*/
         for (const e in ev.value.crops) {
           if (Object.prototype.hasOwnProperty.call(ev.value.crops, e)) {

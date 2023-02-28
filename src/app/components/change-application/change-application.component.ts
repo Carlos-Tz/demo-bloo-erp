@@ -11,16 +11,16 @@ import fechaObj from 'fecha';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-re-edit-application',
-  templateUrl: './re-edit-application.component.html',
-  styleUrls: ['./re-edit-application.component.css']
+  selector: 'app-change-application',
+  templateUrl: './change-application.component.html',
+  styleUrls: ['./change-application.component.css']
 })
-export class ReEditApplicationComponent implements OnInit {
+export class ChangeApplicationComponent implements OnInit {
   public myForm!: FormGroup;
   public myForm1!: FormGroup;
   //public key = '';
   public cro: string[] = [];
-  public cus = "";
+  //public cus = "";
   public crops: any[] = [];
   public tab = false;
   public scheduled = 0;
@@ -47,9 +47,12 @@ export class ReEditApplicationComponent implements OnInit {
     //this.myForm.patchValue({ date: new Date().toISOString() });
     this.apiA.GetApplication(this.data.id).valueChanges().subscribe(data => {
       this.myForm.patchValue(data);
-      this.cus = data.customer.name;
-      if(data.customer.crops){
-        data.customer.crops.forEach(item => {
+      this.myForm.patchValue({ 'address': '' });
+      this.myForm.patchValue({ 'city': '' });
+      this.myForm.patchValue({ 'customer': '' });
+      //this.cus = data.customer.name;
+      /* if(data.crops){
+        data.crops.forEach(item => {
           //const c = item.payload.val();
           const cro = {'value': item, 'label': item};        
           this.crops.push(cro);
@@ -57,7 +60,7 @@ export class ReEditApplicationComponent implements OnInit {
         //this.crops = data.crops;
         
         this.cro = data.crops
-      }
+      } */
       if(data.indications){
         this.indications = data.indications;
       }
@@ -65,9 +68,11 @@ export class ReEditApplicationComponent implements OnInit {
     this.apiC.GetCustomerList().snapshotChanges().subscribe(data => {
       data.forEach(item => {
         //const p = item.payload.toJSON();
+        
         const c = item.payload.val();
         //if(c.status){
-          const cus = c;/* = {'value': c, 'label': c.name};  */    
+          const cus = c;/*  {'value': c, 'label': c.name};   */   
+          //console.log(cus);
           this.customers.push(cus);
         //}
       });
@@ -108,8 +113,8 @@ export class ReEditApplicationComponent implements OnInit {
     //console.log(ev.value);
     this.myForm.patchValue({ 'address': ev.value.street + ' # ' + ev.value.num + ' ' + ev.value.colony});
     this.myForm.patchValue({ 'city': ev.value.city });
-    /* this.crops = [];
-    this.apiC.GetCustomer(ev.value).valueChanges().subscribe(data => {
+    this.crops = [];
+    /*this.apiC.GetCustomer(ev.value).valueChanges().subscribe(data => {
       if(data.crops){*/
         for (const e in ev.value.crops) {
           if (Object.prototype.hasOwnProperty.call(ev.value.crops, e)) {
@@ -181,3 +186,4 @@ export class ReEditApplicationComponent implements OnInit {
     }
   }
 }
+

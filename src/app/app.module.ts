@@ -122,6 +122,7 @@ import { MakeChargeComponent } from './components/make-charge/make-charge.compon
 import { ViewChargeComponent } from './components/view-charge/view-charge.component';
 import { DebtsToCollectComponent } from './components/debts-to-collect/debts-to-collect.component';
 import { CollectedOrdersComponent } from './components/collected-orders/collected-orders.component';
+import { ChangeApplicationComponent } from './components/change-application/change-application.component';
 
 @NgModule({
   declarations: [
@@ -204,7 +205,8 @@ import { CollectedOrdersComponent } from './components/collected-orders/collecte
     MakeChargeComponent,
     ViewChargeComponent,
     DebtsToCollectComponent,
-    CollectedOrdersComponent
+    CollectedOrdersComponent,
+    ChangeApplicationComponent
   ],
   imports: [
     BrowserModule,
