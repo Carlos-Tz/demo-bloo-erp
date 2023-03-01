@@ -28,9 +28,9 @@ export class NotesComponent implements OnInit {
   @ViewChild('input', {static: false}) input!: ElementRef;
   displayedColumns: any[] = [
     'id',
+    'status',
     'date',
     'customer',
-    /* 'status', */
     'justification',
     'action',
   ];
@@ -53,10 +53,10 @@ export class NotesComponent implements OnInit {
       this.notes = [];
       data.forEach(item => {
         const r = item.payload.val();     
-        if(r.status == 1){
+        //if(r.status == 1){
           const not = {'id': item.key, 'customer': r.customer.name, 'date': r.date, 'status': r.status, 'justification': r.justification, 'send': r.send };        
           this.notes.push(not as Note);
-        }   
+        //}   
       });
       if (this.notes.length > 0) {
         this.data = true;
@@ -99,7 +99,7 @@ export class NotesComponent implements OnInit {
     this.dataSource.filter = event.value.trim().toLocaleLowerCase();
   }
 
-  openEDialog() {
+  /* openEDialog() {
     const dialogRef = this.dialog.open(DeliveredNotesComponent, {
       width: '100%',
       maxWidth: '98%',
@@ -109,7 +109,7 @@ export class NotesComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       //console.log(`Dialog result: ${result}`);
     });
-  }
+  } */
   openMailDialog(id: string) {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       data: "¿Confirma que desea enviar este pedido por correo?"

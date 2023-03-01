@@ -15,11 +15,11 @@ import { ActivatedRoute } from '@angular/router';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-re-edit-note',
-  templateUrl: './re-edit-note.component.html',
-  styleUrls: ['./re-edit-note.component.css']
+  selector: 'app-duplicate-note',
+  templateUrl: './duplicate-note.component.html',
+  styleUrls: ['./duplicate-note.component.css']
 })
-export class ReEditNoteComponent implements OnInit {
+export class DuplicateNoteComponent implements OnInit {
 
   public myForm!: FormGroup;
   public myForm1!: FormGroup;
@@ -56,11 +56,14 @@ export class ReEditNoteComponent implements OnInit {
     this.sForm1();
     this.apiN.GetNote(this.data.id).valueChanges().subscribe(data => {
       this.myForm.patchValue(data);
-      $('#customer1').val(data.customer.name);
-      this.customer(data.customer)
-      for (const e in data.crops) {
+      this.myForm.patchValue({ 'address': '' });
+      this.myForm.patchValue({ 'city': '' });
+      this.myForm.patchValue({ 'customer': '' });
+      //$('#customer1').val(data.customer.name);
+      //this.customer(data.customer)
+      /* for (const e in data.crops) {
         this.cro.push(data.crops[e]);
-      }
+      } */
       for (const e in data.products) {
         this.pro.push(e);
         //console.log(data.products[e]);
@@ -84,7 +87,7 @@ export class ReEditNoteComponent implements OnInit {
       data.forEach(item => {
         const p = item.payload.val();
         if(p.existence >= 0.01){
-          const pro = {'value': item.key!, 'label': p.name, 'data': { 'iva': p.iva, 'quantity': p.quantity, 'existence': p.existence, 'unit': p.unit, 'costs': p.costs, 'presentation': p.presentation }};
+          const pro = {'value': item.key!, 'label': p.name, 'data': { 'iva': p.iva, 'id': p.id, 'quantity': p.quantity, 'existence': p.existence, 'unit': p.unit, 'costs': p.costs, 'presentation': p.presentation }};
           this.products.push(pro);
           //const p1 = { 'key': item.key, 'name': p.name, 'unit': p.unit, 'avcost': p.avcost, 'category': p.category }
           //this.products1.push(p1);
@@ -92,14 +95,14 @@ export class ReEditNoteComponent implements OnInit {
       });
     });
 
-    /* this.apiN.GetLastNote().subscribe(res=> {
+    this.apiN.GetLastNote().subscribe(res=> {
       if(res[0]){
         this.ord = Number(res[0].id);
         this.myForm.patchValue({ id: this.ord + 1 });      
       } else {
         this.myForm.patchValue({ id: 1 });      
       }
-    }); */
+    });
   }
 
   sForm() {
@@ -158,14 +161,14 @@ export class ReEditNoteComponent implements OnInit {
       
       products_d[p.value] = { id: id, name: name, quantity: q, unit: unit, presentation: presentation, cost: cost, iva: iva  };
     });
-    //this.date = fechaObj.format(new Date(), 'DD[/]MM[/]YYYY');
-    //this.myForm.patchValue({ date: this.date });
-    //this.myForm.patchValue({ status: 1 });
+    this.date = fechaObj.format(new Date(), 'DD[/]MM[/]YYYY');
+    this.myForm.patchValue({ date: this.date });
+    this.myForm.patchValue({ status: 1 });
     this.myForm.patchValue({ 'products': products_d });
-    //this.apiN.AddNote(this.myForm.value);
-    this.apiN.UpdateNote(this.myForm.value, this.data.id);
+    this.apiN.AddNote(this.myForm.value);
+    //this.apiN.UpdateNote(this.myForm.value, this.data.id);
     this.ResetForm();
-    this.toastr.success('Pedido guardado!');
+    this.toastr.success('Pedido duplicado!');
   }
 
   ResetForm() {
@@ -181,30 +184,69 @@ export class ReEditNoteComponent implements OnInit {
     }); */
   }
 
-  changeId(){
-    this.products2.forEach(p => {
-      $('input#quantity___'+p.id).val(parseFloat(p.quantity));
-      //$('select#cost___'+p.id).attr('selected', 'selected');
-      $('select#cost___'+p.id).val(p.cost);
-      if(p.iva){ 
-        $('input#iva___'+p.id).prop( "checked", true );
-      }
+  async changeId(){
 
-      //$('input#quantity___'+p.value).val(0);
-      //console.log($('input#id___'+p.value).val());
+    const promise6 = new Promise((resolve, reject) => {
+      //this.scheduled = 0;
+      let ns_ = [];
+      this.apiN.GetNoteList().snapshotChanges().subscribe(data => {
+        data.forEach(item => {
+          const r = item.payload.val();
+          if(r.status < 3 ){
+             ns_.push(r);
+          }   
+        });
+        resolve(ns_);
+      });
     });
+    await promise6.then((ns: any[]) => {
+      this.products2.forEach(p => {
+        let ex = 0;
+        let sch = 0;
+        let p_c = this.products.find(p_ => {
+          return p_.data.id == p.id
+        });
+        if(p_c){
+          ex = p_c.data['existence'];
+        }
+        //console.log(ex);
+        ns.forEach(n => {
+          if(n.products){
+            Object.entries(n.products).forEach(([key, value], index) => {      
+              if(key == p.id && value['quantity'] > 0){ 
+                sch += value['quantity'];
+              }
+            });
+          }
+        });
+        console.log(sch);
+        let av = ex - sch;
+        if(av >= p.quantity){
+          $('input#quantity___'+p.id).val(parseFloat(p.quantity));
+        }else{
+          $('input#quantity___'+p.id).val(0);
+        }
+        $('select#cost___'+p.id).val(p.cost);
+        if(p.iva){ 
+          $('input#iva___'+p.id).prop( "checked", true );
+        }
+
+      });
+      
+    });
+
   }
 
-  customer(customer){
+  customer(ev){
     //console.log(ev.value);
-    this.myForm.patchValue({ 'address': customer.street + ' # ' + customer.num + ' ' + customer.colony});
-    this.myForm.patchValue({ 'city': customer.city });
-    /* this.crops = [];
-    this.apiC.GetCustomer(customer).valueChanges().subscribe(data => {
+    this.myForm.patchValue({ 'address': ev.value.street + ' # ' + ev.value.num + ' ' + ev.value.colony});
+    this.myForm.patchValue({ 'city': ev.value.city });
+    this.crops = [];
+    /*this.apiC.GetCustomer(ev.value).valueChanges().subscribe(data => {
       if(data.crops){*/
-        for (const e in customer.crops) {
-          if (Object.prototype.hasOwnProperty.call(customer.crops, e)) {
-            const element = customer.crops[e];
+        for (const e in ev.value.crops) {
+          if (Object.prototype.hasOwnProperty.call(ev.value.crops, e)) {
+            const element = ev.value.crops[e];
             const cro = {'value': element, 'label': element};   
             this.crops.push(cro);
           }
@@ -225,7 +267,7 @@ export class ReEditNoteComponent implements OnInit {
     this.apiN.GetNoteList().snapshotChanges().subscribe(data => {
       data.forEach(item => {
         const r = item.payload.val();
-        if(r.status < 3){ 
+        if(r.status < 3 /* && r.id != this.data.id */){ 
           if(r.products){          
             Object.entries(r.products).forEach(([key, value], index) => {              
               if(key == pro.value){
@@ -253,6 +295,8 @@ export class ReEditNoteComponent implements OnInit {
   }
 
   change1(ev){
+    console.log(ev.src.value);
+    
     if(parseFloat(ev.srcElement.value) > parseFloat($('#available').val().toString())){
       $('input#'+ ev.srcElement.id).val(0);
     }
@@ -263,4 +307,5 @@ export class ReEditNoteComponent implements OnInit {
   }
 
 }
+
 

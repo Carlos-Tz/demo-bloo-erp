@@ -57,7 +57,7 @@ export class ChargesComponent implements OnInit {
       this.notes = [];
       data.forEach(item => {
         const r = item.payload.val();     
-        if(r.status == 2 || r.status == 3 || r.status == 4){
+        if(r.status == 5 || r.status == 3 || r.status == 4){
           //const not = {'id': item.key, 'customer': r.customer.name, 'date': r.date, 'status': r.status, 'justification': r.justification, 'balance': r.balance, 'total': r.total };        
           this.notes.push(r as Note);
         }   

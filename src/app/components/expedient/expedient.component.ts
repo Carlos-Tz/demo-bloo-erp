@@ -29,6 +29,7 @@ import * as $ from 'jquery';
 import 'fecha';
 import fechaObj from 'fecha';
 import { ChangeApplicationComponent } from '../change-application/change-application.component';
+import { DuplicateNoteComponent } from '../duplicate-note/duplicate-note.component';
 //import SignaturePad from 'signature_pad';
 //import { SignaturePad } from 'angular2-signaturepad/signature-pad';
 
@@ -71,9 +72,9 @@ export class ExpedientComponent implements OnInit, AfterViewInit {
   @ViewChild('input', {static: false}) input!: ElementRef;
   displayedColumns: any[] = [
     'id',
+    'status',
     'date',
     /* 'customer', */
-    /* 'status', */
     'justification',
     'action',
   ];
@@ -429,6 +430,30 @@ export class ExpedientComponent implements OnInit, AfterViewInit {
     });
   }
 
+  openCheckDialog(key: string) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: "¿Confirma que desea marcar como pedido final?"
+    });
+
+    dialogRef.afterClosed().subscribe(async result => {
+      if(result){
+        //console.log(result);
+        const promise2 = new Promise((resolve, reject) => {
+          this.apiN.GetNote(key).valueChanges().subscribe(data => {
+            //this.myForm.patchValue(data);
+            let current_note = data;
+            resolve(current_note);
+          });
+        });
+        await promise2.then((n: Note) => {
+          n['status'] = 2;
+          this.apiN.UpdateNote(n, n['id']);
+          this.toastr.success('Pedido marcado como final!');
+        });
+      }
+    });
+  }
+
   PDF(id) {
     this.apiA.GetApplication(id).valueChanges().subscribe(data => {
       if(!data.indications){
@@ -530,7 +555,7 @@ export class ExpedientComponent implements OnInit, AfterViewInit {
                 body: [
                   //[{text: 'RECETA', colSpan: 5, alignment: 'center', fontSize: 26, margin: 15 },{}, {}, {}, {}, {}],
                   //[{},{ colSpan: 4, rowSpan: 3, text: this.company.name + '\nRFC: ' + this.company.rfc + '\n' +  this.company.address +'\n' }, {}, {}, {}, { text: 'MORELIA, MICHOACÁN', alignment: 'center'}],
-                  [{ image: this.generatedImage/* this.company.logo */, width: 50 }, { /* rowSpan: 2, */ text: this.company.name + '\n' + this.company.business_name + this.company.rfc + '\n' +  this.company.address +'\n' + this.company.email + ' / ' +this.company.tel, alignment: 'center', fontSize: 10, margin: 2, colSpan: 4 }, {}, {}, {}, { text: 'No. Pedido: ' + data.id + '\n\nFecha: '+ data.date, alignment: 'right' }],
+                  [{ image: 'logo', width: 50 }, { /* rowSpan: 2, */ text: this.company.name + '\n' + this.company.business_name + this.company.rfc + '\n' +  this.company.address +'\n' + this.company.email + ' / ' +this.company.tel, alignment: 'center', fontSize: 10, margin: 2, colSpan: 4 }, {}, {}, {}, { text: 'No. Pedido: ' + data.id + '\n\nFecha: '+ data.date, alignment: 'right' }],
                   //[{}, {}, {}, {}, {}, { text: 'Fecha: ' + data.date, alignment: 'center' }],
                   [{ text: 'Nombre', fillColor: '#eeeeee' }, { text: data.customer.name, colSpan: 5 }, {}, {}, {}, {}],
                   [{ text: 'Domicilio', fillColor: '#eeeeee' }, { text: data.address, colSpan: 5 }, {}, {}, {}, {}],
@@ -631,6 +656,19 @@ export class ExpedientComponent implements OnInit, AfterViewInit {
 
   openEditDialog(id: string) {
     const dialogRef = this.dialog.open(ReEditNoteComponent, {
+      data: {
+        id: id
+      },
+      width: '100%',
+      maxWidth: '98%',
+      autoFocus: false
+    });
+    dialogRef.afterClosed().subscribe(async result => {
+    });
+  }
+
+  openDuplicateDialog(id: string) {
+    const dialogRef = this.dialog.open(DuplicateNoteComponent, {
       data: {
         id: id
       },

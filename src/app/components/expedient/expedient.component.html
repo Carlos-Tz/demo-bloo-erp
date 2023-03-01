@@ -78,10 +78,12 @@
                                                         <!-- <span class="me-3" *ngIf="element.status == 3">Realizada</span> -->
                                                     </mat-cell>
                                                 </ng-container>
-                                                <!-- <ng-container matColumnDef="customer">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="pad-l">Cliente</mat-header-cell>
-                                                    <mat-cell *matCellDef="let element" class="pad-l">{{element.customer}}</mat-cell>
-                                                </ng-container> -->
+                                                <ng-container matColumnDef="status">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="pad-l show-h">Estatus</mat-header-cell>
+                                                    <mat-cell *matCellDef="let element" class="pad-l show-h">
+                                                        <span *ngIf="element.status == 1">Programada</span>
+                                                        <span *ngIf="element.status == 2">Enviada</span></mat-cell>
+                                                </ng-container>
                                                 <ng-container matColumnDef="date">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header class="pad-l">Fecha</mat-header-cell>
                                                     <mat-cell *matCellDef="let element" class="pad-l">{{element.date}}</mat-cell>
@@ -152,6 +154,17 @@
                                                         <span class="show-h" style="color: #fff; background-color: green; border-radius: 20%; padding: 0.2rem; margin-left: 0.3rem; font-size: 0.7rem;" *ngIf="element.signed">Firmado</span>
                                                     </mat-cell>
                                                 </ng-container>
+                                                <ng-container matColumnDef="status">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="pad-l show-h">Estatus</mat-header-cell>
+                                                    <mat-cell *matCellDef="let element" class="pad-l show-h">
+                                                        <span *ngIf="element.status == 1">Nuevo</span>
+                                                        <span *ngIf="element.status == 2">Final</span>
+                                                        <span *ngIf="element.status == 3">Entregado</span>
+                                                        <span *ngIf="element.status == 4">C. Programado</span>
+                                                        <span *ngIf="element.status == 5">C. Parcial</span>
+                                                        <span *ngIf="element.status == 6">Cobrado</span>
+                                                    </mat-cell>
+                                                </ng-container>
                                                 <ng-container matColumnDef="date">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header class="pad-l">Fecha</mat-header-cell>
                                                     <mat-cell *matCellDef="let element" class="pad-l">{{element.date}}</mat-cell>
@@ -170,8 +183,14 @@
                                                         <!-- <button class="btn btn-outline-success me-2" style="padding: 0 0.2rem;" (click)="openRenoteDialog(element.id)">
                                                             <span class="material-icons">content_copy</span>Duplicar
                                                         </button> -->
-                                                        <button class="btn btn-outline-success me-2" style="padding: 0 0.2rem;" (click)="openEditDialog(element.id)" >
-                                                            <span class="material-icons">content_copy</span>
+                                                        <button *ngIf="element.status == 1" class="btn btn-outline-success me-2" style="padding: 0 0.2rem;" (click)="openEditDialog(element.id)" >
+                                                            <span class="material-icons">edit</span>
+                                                        </button>
+                                                        <button *ngIf="element.status == 1" class="btn btn-outline-info me-2" style="padding: 0 0.2rem;" (click)="openCheckDialog(element.id)">
+                                                            <span class="material-icons">done_all</span>
+                                                        </button>
+                                                        <button class="btn btn-outline-dark me-2" style="padding: 0 0.2rem;" (click)="openDuplicateDialog(element.id)">
+                                                            <span class="material-icons">people</span>
                                                         </button>
                                                         <button class="btn btn-outline-primary me-2" style="padding: 0 0.2rem;" onclick="btn_click(this)" id="{{element.id}}" *ngIf="!element.signed">
                                                             <span class="material-icons">draw</span>

@@ -14,6 +14,7 @@ import { Note } from 'src/app/models/note';
 import { ApiNoteService } from 'src/app/services/api-note.service';
 import { OutputNoteComponent } from '../output-note/output-note.component';
 import { ViewNoteComponent } from '../view-note/view-note.component';
+import { DeliveredNotesComponent } from '../delivered-notes/delivered-notes.component';
 
 @Component({
   selector: 'app-output',
@@ -52,7 +53,7 @@ export class OutputComponent implements OnInit {
       this.notes = [];
       data.forEach(item => {
         const r = item.payload.val();     
-        if(r.status == 1){
+        if(r.status == 2){
           const not = {'id': item.key, 'customer': r.customer.name, 'date': r.date, 'crops': r.crops, 'justification': r.justification };        
           this.notes.push(not as Note);
         }   
@@ -181,7 +182,9 @@ export class OutputComponent implements OnInit {
       data: {
         id: id
       },
-      autoFocus: false
+      autoFocus: false,
+      width: '100%',
+      maxWidth: '98%',
     });
     dialogRef.afterClosed().subscribe(async result => {
     });
@@ -192,9 +195,23 @@ export class OutputComponent implements OnInit {
       data: {
         id: id
       },
-      autoFocus: false
+      autoFocus: false,
+      width: '100%',
+      maxWidth: '98%',
     });
     dialogRef.afterClosed().subscribe(async result => {
+    });
+  }
+
+  openEDialog() {
+    const dialogRef = this.dialog.open(DeliveredNotesComponent, {
+      width: '100%',
+      maxWidth: '98%',
+      autoFocus: false
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      //console.log(`Dialog result: ${result}`);
     });
   }
 

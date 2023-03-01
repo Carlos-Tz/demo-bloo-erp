@@ -71,6 +71,9 @@ export class OutputNoteComponent implements OnInit {
   sForm() {
     this.myForm = this.fb.group({
       id: [null],
+      iva: [''],
+      subtotal: [''],
+      total: [''],
       date: [''],
       customer: [''],
       status: [''],
@@ -78,11 +81,19 @@ export class OutputNoteComponent implements OnInit {
       address: [''],
       city: [''],
       send: [''],
+      signed: [''],
       complete: [''],
       paymentdate: [''],
+      folio: [''],
+      paymenttype: [''],
       orderdate: [''],
+      url_sign: [''],
+      date_sign: [''],
       crops: [],
       products: [],
+      balance: [''],
+      paidout: [''],
+      payments: [],
     });
   }
 

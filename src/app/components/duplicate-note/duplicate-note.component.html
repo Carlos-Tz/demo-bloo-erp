@@ -5,11 +5,11 @@
                 <div class="card-header">
                     <nav class="navbar bg-light">
                         <div class="container-fluid">
-                            <a class="navbar-brand">Editar pedido {{ this.data.id }}</a>
+                            <a class="navbar-brand">Duplicar pedido {{ this.data.id }}</a>
                             <div class="d-flex">
                                 <button mat-button class="btn btn-outline-success" (click)="allCrops()">Todos los cultivos</button>
                                 <button mat-button mat-dialog-close>Cancelar</button>
-                                <button mat-button (click)="submitSurveyData()" [mat-dialog-close]="true" [disabled]="!myForm.valid" class="btn btn-outline-info">Guardar</button>
+                                <button mat-button (click)="submitSurveyData()" [mat-dialog-close]="true" [disabled]="!myForm.valid" class="btn btn-outline-info">Guardar nuevo</button>
                             </div>
                         </div>
                     </nav>
@@ -29,11 +29,11 @@
                             </mat-form-field>
                             <mat-form-field appearance="fill" class="col-sm-12">
                                 <mat-label>Cliente</mat-label>
-                                <input matInput type="text" id="customer1" required readonly>
-                                <!-- <mat-select matInput name="customer" id="customer" formControlName="customer" required (selectionChange)="customer($event)">
+                                <!-- <input matInput type="text" id="customer1" required readonly> -->
+                                <mat-select matInput name="customer" id="customer" formControlName="customer" required (selectionChange)="customer($event)">
                                     <mat-option *ngFor="let customer of customers" [value]="customer">{{ customer.name }}
                                     </mat-option>
-                                </mat-select> -->
+                                </mat-select>
                             </mat-form-field>
                             <mat-form-field appearance="fill" class="col-sm-12 col-md-6">
                                 <mat-label>Domicilio</mat-label>
@@ -124,4 +124,5 @@
         </div>
     </div>
 </div>
+
 

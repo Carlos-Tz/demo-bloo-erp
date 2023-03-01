@@ -9,7 +9,7 @@
                             <div class="d-flex">
                             </div>
                             <div class="d-flex">
-                                <button class="btn btn-outline-success me-2" (click)="openEDialog()">Pedidos entregados</button>
+                                <!-- <button class="btn btn-outline-success me-2" (click)="openEDialog()">Pedidos entregados</button> -->
                                 <!-- <button class="btn btn-outline-warning me-2" (click)="openRDialog()">Requisiciones rechazadas</button>
                                 <button class="btn btn-outline-success me-2" (click)="openPDialog()">Requisiciones pedidas</button> -->
                                 <button class="btn btn-outline-info me-2" [routerLink]="['/new-note']">Nuevo pedido</button>
@@ -31,9 +31,20 @@
                             <mat-header-cell *matHeaderCellDef mat-sort-header >Folio</mat-header-cell>
                             <mat-cell *matCellDef="let element">{{element.id}}
                                 <!-- <span (click)="PDF(element.id)" style="color: #fff; background-color: green; border-radius: 20%; padding: 0.2rem; margin-left: 0.3rem; cursor: pointer; font-size: 0.7rem;" class="me-2">PDF</span> -->
-                                <span class="ms-3 show-h" *ngIf="!element.send">Nuevo</span>
-                                <span class="ms-3 show-h" *ngIf="element.send">Enviado</span>
+                                <!-- <span class="ms-3 show-h" *ngIf="!element.send">Nuevo</span> -->
+                                <span class="ms-3 show-h" *ngIf="element.send" style="color: #fff; background-color: green; border-radius: 20%; padding: 0.2rem; margin-left: 0.3rem; font-size: 0.7rem;">Enviado</span>
                                 <!-- <span class="me-3" *ngIf="element.status == 3">Realizada</span> -->
+                            </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="status">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="pad-l show-h">Estatus</mat-header-cell>
+                            <mat-cell *matCellDef="let element" class="pad-l show-h">
+                                <span *ngIf="element.status == 1">Nuevo</span>
+                                <span *ngIf="element.status == 2">Final</span>
+                                <span *ngIf="element.status == 3">Entregado</span>
+                                <span *ngIf="element.status == 4">C. Programado</span>
+                                <span *ngIf="element.status == 5">C. Parcial</span>
+                                <span *ngIf="element.status == 6">Cobrado</span>
                             </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="customer">
@@ -52,9 +63,9 @@
                         <ng-container matColumnDef="action">
                             <mat-header-cell *matHeaderCellDef> Acción </mat-header-cell>
                             <mat-cell *matCellDef="let element; let i = index;">
-                                <button class="btn btn-outline-success me-2" style="padding: 0 0.2rem;" [routerLink]="['/edit-note', element.id]" >
+                                <!-- <button class="btn btn-outline-success me-2" style="padding: 0 0.2rem;" [routerLink]="['/edit-note', element.id]" >
                                     <span class="material-icons">content_copy</span>
-                                </button>
+                                </button> -->
                                 <button class="btn btn-outline-danger me-2" style="padding: 0 0.2rem;" (click)="PDF(element.id)" >
                                     <span class="material-icons">picture_as_pdf</span>
                                 </button>

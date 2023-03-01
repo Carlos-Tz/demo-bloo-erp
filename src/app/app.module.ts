@@ -123,6 +123,7 @@ import { ViewChargeComponent } from './components/view-charge/view-charge.compon
 import { DebtsToCollectComponent } from './components/debts-to-collect/debts-to-collect.component';
 import { CollectedOrdersComponent } from './components/collected-orders/collected-orders.component';
 import { ChangeApplicationComponent } from './components/change-application/change-application.component';
+import { DuplicateNoteComponent } from './components/duplicate-note/duplicate-note.component';
 
 @NgModule({
   declarations: [
@@ -206,7 +207,8 @@ import { ChangeApplicationComponent } from './components/change-application/chan
     ViewChargeComponent,
     DebtsToCollectComponent,
     CollectedOrdersComponent,
-    ChangeApplicationComponent
+    ChangeApplicationComponent,
+    DuplicateNoteComponent
   ],
   imports: [
     BrowserModule,
