@@ -144,7 +144,7 @@ export class NewNoteComponent implements OnInit {
       products_d[p.value] = { id: id, name: name, quantity: q, unit: unit, presentation: presentation, cost: cost, iva: iva  };
     });
     total = subtotal + iva_;
-    console.log(subtotal, iva_, total);
+    //console.log(subtotal, iva_, total);
     
     this.myForm.patchValue({ 'iva': iva_ });
     this.myForm.patchValue({ 'subtotal': subtotal });

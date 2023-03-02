@@ -57,6 +57,7 @@ export class DuplicateNoteComponent implements OnInit {
     this.apiN.GetNote(this.data.id).valueChanges().subscribe(data => {
       //this.myForm.patchValue(data);
       this.myForm.patchValue({ 'justification': data.justification });
+      this.myForm.patchValue({ 'paidout': 0 });
       //this.myForm.patchValue({ 'address': '' });
       //this.myForm.patchValue({ 'city': '' });
       //this.myForm.patchValue({ 'customer': '' });
@@ -112,7 +113,7 @@ export class DuplicateNoteComponent implements OnInit {
       iva: [''],
       subtotal: [''],
       total: [''],
-      date: ['', [Validators.required]],
+      date: [''],
       customer: ['', [Validators.required]],
       status: [''],
       justification: ['', [Validators.required]],
