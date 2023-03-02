@@ -55,10 +55,11 @@ export class DuplicateNoteComponent implements OnInit {
     this.sForm();
     this.sForm1();
     this.apiN.GetNote(this.data.id).valueChanges().subscribe(data => {
-      this.myForm.patchValue(data);
-      this.myForm.patchValue({ 'address': '' });
-      this.myForm.patchValue({ 'city': '' });
-      this.myForm.patchValue({ 'customer': '' });
+      //this.myForm.patchValue(data);
+      this.myForm.patchValue({ 'justification': data.justification });
+      //this.myForm.patchValue({ 'address': '' });
+      //this.myForm.patchValue({ 'city': '' });
+      //this.myForm.patchValue({ 'customer': '' });
       //$('#customer1').val(data.customer.name);
       //this.customer(data.customer)
       /* for (const e in data.crops) {
