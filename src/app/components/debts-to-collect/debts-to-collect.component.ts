@@ -5,6 +5,7 @@ import { Note } from 'src/app/models/note';
 import { ApiNoteService } from 'src/app/services/api-note.service';
 import { ApiOrdersService } from 'src/app/services/api-orders.service';
 import { ApiProviderService } from 'src/app/services/api-provider.service';
+import { HelpService } from 'src/app/services/help.service';
 
 @Component({
   selector: 'app-debts-to-collect',
@@ -20,7 +21,8 @@ export class DebtsToCollectComponent implements OnInit {
     private fb: FormBuilder,
     //public apiP: ApiProviderService,
     public apiN: ApiNoteService,
-    private http: HttpClient
+    private http: HttpClient,
+    private helpS: HelpService
   ) { }
 
   ngOnInit(): void {
@@ -37,7 +39,7 @@ export class DebtsToCollectComponent implements OnInit {
       this.notes = [];
       data.forEach(item => {
         const n = item.payload.val();
-        if(n.status > 1){
+        if(n.status > 2){
           this.notes.push(n as Note);
         }
       });
@@ -68,7 +70,8 @@ export class DebtsToCollectComponent implements OnInit {
 
   submitSurveyData() {
     //let url='http://localhost:8080/local/dev/adm/php-back/';
-    let url='https://demo-erp.bloomingtec.mx/resources/';
+    //let url='https://demo-erp.bloomingtec.mx/resources/';
+    let url = this.helpS.GetUrl();
     let n_notes: any[] = this.notes.filter((e) => {
       return e.paymentdate >= this.myForm.get('initial_date').value && e.paymentdate <= this.myForm.get('final_date').value
     });
@@ -82,11 +85,11 @@ export class DebtsToCollectComponent implements OnInit {
       nn_orders.push(n_o);
     }); */
     this.myForm.patchValue({ 'notes': n_notes });
-    console.log(n_notes);
+    //console.log(n_notes);
     
     this.apiN.excel(n_notes, url).subscribe(res => {
       //console.log(res);
-      window.location.href = `${url}cuentasXcobrar.xlsx`;
+      window.location.href = `${url}resources/cuentasXcobrar.xlsx`;
     }, err => {
       console.log(err);
     });

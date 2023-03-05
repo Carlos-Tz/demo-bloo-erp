@@ -18,9 +18,9 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './edit-note.component.html',
   styleUrls: ['./edit-note.component.css']
 })
-export class EditNoteComponent implements OnInit {
+export class EditNoteComponent /* implements OnInit  */{
 
-  public myForm!: FormGroup;
+  /* public myForm!: FormGroup;
   public myForm1!: FormGroup;
   public date = '';
   public key = '';
@@ -63,7 +63,7 @@ export class EditNoteComponent implements OnInit {
       
       //this.customer = data.customer.name;
       //data.products.forEach(pp => {
-      //}); */
+      //});
       for (const e in data.products) {
         this.pro.push(e);
         //console.log(e);
@@ -71,11 +71,11 @@ export class EditNoteComponent implements OnInit {
         //const pro = {'value': element.id, 'label': element.name, 'data': { 'iva': element.iva, 'quantity': element.quantity, 'unit': element.unit, 'cost': element.cost, 'presentation': element.presentation }};
         //const pro = {'value': pp.id, 'label': pp.name, 'data': { 'iva': pp.iva, 'quantity': pp.quantity, 'unit': pp.unit, 'cost': pp.cost, 'presentation': pp.presentation }};
         //this.products.push(pro);
-        /* if (Object.prototype.hasOwnProperty.call(ev.value.crops, e)) {
-          const element = ev.value.crops[e];
-          const cro = {'value': element, 'label': element};   
-          this.crops.push(cro);
-        } */
+        //if (Object.prototype.hasOwnProperty.call(ev.value.crops, e)) {
+          //const element = ev.value.crops[e];
+          //const cro = {'value': element, 'label': element};   
+          //this.crops.push(cro);
+        //}
       };
       //this.pro = data.products;
     });
@@ -85,7 +85,7 @@ export class EditNoteComponent implements OnInit {
         //const p = item.payload.toJSON();
         const c = item.payload.val();
         //if(c.status){
-          const cus = c;/* {'id': c.id, 'crops': c.crops}; */        
+          const cus = c;//* {'id': c.id, 'crops': c.crops};        
           this.customers.push(cus);
         //}
       });
@@ -179,9 +179,9 @@ export class EditNoteComponent implements OnInit {
     //console.log(ev.value);
     this.myForm.patchValue({ 'address': customer.street + ' # ' + customer.num + ' ' + customer.colony});
     this.myForm.patchValue({ 'city': customer.city });
-    /* this.crops = [];
-    this.apiC.GetCustomer(customer).valueChanges().subscribe(data => {
-      if(data.crops){*/
+    //this.crops = [];
+    //this.apiC.GetCustomer(customer).valueChanges().subscribe(data => {
+      //if(data.crops){
         for (const e in customer.crops) {
           if (Object.prototype.hasOwnProperty.call(customer.crops, e)) {
             const element = customer.crops[e];
@@ -189,8 +189,8 @@ export class EditNoteComponent implements OnInit {
             this.crops.push(cro);
           }
         }
-      /*}
-    }); */
+      //}
+    //}); 
   }
 
   allCrops(){
@@ -240,7 +240,7 @@ export class EditNoteComponent implements OnInit {
 
   blur1(){
     $('#exis').hide();
-  }
+  } */
 
 }
 

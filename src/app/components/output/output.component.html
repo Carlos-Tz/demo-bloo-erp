@@ -40,16 +40,16 @@
                             <mat-cell *matCellDef="let element" class="pad-l">{{element.customer}}</mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="date">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header class="pad-l">Fecha</mat-header-cell>
-                            <mat-cell *matCellDef="let element" class="pad-l">{{element.date}}</mat-cell>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="pad-l show-h">Fecha</mat-header-cell>
+                            <mat-cell *matCellDef="let element" class="pad-l show-h">{{element.date}}</mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="crops">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header class="pad-l">Cultivo(s)</mat-header-cell>
-                            <mat-cell *matCellDef="let element" class="pad-l">{{element.crops}}</mat-cell>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="pad-l show-h">Cultivo(s)</mat-header-cell>
+                            <mat-cell *matCellDef="let element" class="pad-l show-h">{{element.crops}}</mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="justification">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header class="pad-l">Justificación</mat-header-cell>
-                            <mat-cell *matCellDef="let element" class="pad-l">{{element.justification}}</mat-cell>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="pad-l show-hh">Justificación</mat-header-cell>
+                            <mat-cell *matCellDef="let element" class="pad-l show-hh" style="white-space: break-spaces;">{{element.justification}}</mat-cell>
                         </ng-container>
 
                         <ng-container matColumnDef="action">
@@ -58,7 +58,7 @@
                                 <button class="btn btn-outline-success me-2" style="padding: 0 0.2rem;" (click)="openViewDialog(element.id)">
                                     <span class="material-icons">visibility</span>Ver
                                 </button>
-                                <button class="btn btn-outline-info me-2" style="padding: 0 0.2rem;" (click)="openOutputDialog(element.id)">
+                                <button *ngIf="element.status == 2" class="btn btn-outline-info me-2" style="padding: 0 0.2rem;" (click)="openOutputDialog(element.id)">
                                     <span class="material-icons">unarchive</span>Entregar
                                 </button>
                                 <!-- <button *ngIf="element.status == 1" class="btn btn-outline-info me-2 w-100" style="padding: 0 0.2rem;" (click)="openMailDialog(element.id)" >

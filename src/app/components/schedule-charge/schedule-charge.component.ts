@@ -27,11 +27,11 @@ export class ScheduleChargeComponent implements OnInit {
     this.customer = '';
     this.sForm();
     this.myForm.patchValue(this.data.note);
-    this.myForm.patchValue({ 'status': 3 });
+    this.myForm.patchValue({ 'status': 4 });
     this.customer = this.data.note.customer.name;
     /* this.apiP.GetProvider(this.data.order.provider).valueChanges().subscribe(data => {
     }); */
-    console.log(this.data.note, this.myForm.value);
+    //console.log(this.data.note, this.myForm.value);
     
   }
 
@@ -56,6 +56,8 @@ export class ScheduleChargeComponent implements OnInit {
       orderdate: [''],
       url_sign: [''],
       date_sign: [''],
+      name_sign: [''],
+      user: [''],
       crops: [],
       products: [],
       balance: [null, [Validators.required]],

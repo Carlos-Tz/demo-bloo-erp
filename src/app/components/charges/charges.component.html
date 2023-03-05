@@ -34,23 +34,23 @@
                             <mat-header-cell *matHeaderCellDef mat-sort-header >Folio</mat-header-cell>
                             <mat-cell *matCellDef="let element">{{element.id}}
                                 <span (click)="PDF(element.id)" style="color: #fff; background-color: green; border-radius: 20%; padding: 0.2rem; margin-left: 0.3rem; cursor: pointer; font-size: 0.7rem;" class="me-2">PDF</span>
-                                <span class="ms-3" *ngIf="element.status == 2">Entregado</span>
-                                <span class="ms-3" *ngIf="element.status == 3">Programado</span>
-                                <span class="ms-3" *ngIf="element.status == 4">Parcial</span>
+                                <span class="ms-3 show-h" *ngIf="element.status == 3">Entregado</span>
+                                <span class="ms-3 show-h" *ngIf="element.status == 4">Programado</span>
+                                <span class="ms-3 show-h" *ngIf="element.status == 5">Parcial</span>
                                 <!-- <span class="me-3" *ngIf="element.status == 3">Realizada</span> -->
                             </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="customer">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header class="pad-l">Cliente</mat-header-cell>
-                            <mat-cell *matCellDef="let element" class="pad-l">{{element.customer.name}}</mat-cell>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="pad-l show-h">Cliente</mat-header-cell>
+                            <mat-cell *matCellDef="let element" class="pad-l show-h">{{element.customer.name}}</mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="date">
                             <mat-header-cell *matHeaderCellDef mat-sort-header class="pad-l">Fecha</mat-header-cell>
                             <mat-cell *matCellDef="let element" class="pad-l">{{element.date}}</mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="justification">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header class="pad-l">Justificación</mat-header-cell>
-                            <mat-cell *matCellDef="let element" class="pad-l">{{element.justification}}</mat-cell>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="pad-l show-hh">Justificación</mat-header-cell>
+                            <mat-cell *matCellDef="let element" class="pad-l show-hh" style="white-space: break-spaces;">{{element.justification}}</mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="total">
                             <mat-header-cell *matHeaderCellDef mat-sort-header class="pad-l">Total</mat-header-cell>
@@ -64,13 +64,13 @@
                         <ng-container matColumnDef="action">
                             <mat-header-cell *matHeaderCellDef> Acción </mat-header-cell>
                             <mat-cell *matCellDef="let element; let i = index;">
-                                <button *ngIf="element.status == 2" class="btn btn-outline-success me-2 w-100" style="padding: 0 0.2rem;" (click)="openScheduleChargeDialog(element)" >
+                                <button *ngIf="element.status == 3" class="btn btn-outline-success me-2" style="padding: 0 0.2rem;" (click)="openScheduleChargeDialog(element)" >
                                     <span class="material-icons">pending_actions</span>
                                 </button>
-                                <button *ngIf="element.status == 3 || element.status == 4" class="btn btn-outline-success me-2 w-100" style="padding: 0 0.2rem;" (click)="openMakeChargeDialog(element)" >
+                                <button *ngIf="element.status == 5 || element.status == 4" class="btn btn-outline-success me-2" style="padding: 0 0.2rem;" (click)="openMakeChargeDialog(element)" >
                                     <span class="material-icons">paid</span>Cobrar
                                 </button>
-                                <button *ngIf="element.status > 2" class="btn btn-outline-secondary me-2 w-100" style="padding: 0 0.2rem;" (click)="openChargesDialog(element)" >
+                                <button *ngIf="element.status == 5 || element.status == 4" class="btn btn-outline-secondary me-2" style="padding: 0 0.2rem;" (click)="openChargesDialog(element)">
                                     <span class="material-icons">attach_money</span>cobros
                                 </button>
                             </mat-cell>

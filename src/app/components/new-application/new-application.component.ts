@@ -11,6 +11,7 @@ import { ApiApplicationService } from 'src/app/services/api-application.service'
 import * as $ from 'jquery';
 import { Customer } from 'src/app/models/customer';
 import { ApiCustomerService } from 'src/app/services/api-customer.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-new-application',
@@ -37,6 +38,7 @@ export class NewApplicationComponent implements OnInit {
     public apiA: ApiApplicationService,
     public apiP: ApiProductService,
     public toastr: ToastrService,
+    public authService: AuthService
   ) { }
 
   ngOnInit(): void {
@@ -45,6 +47,7 @@ export class NewApplicationComponent implements OnInit {
     this.date = fechaObj.format(new Date(), 'DD[/]MM[/]YYYY');
     //this.myForm.patchValue({ date: new Date().toISOString() });
     this.myForm.patchValue({ date: this.date });
+    this.myForm.patchValue({ user: this.authService.userName });
     //this.myForm.patchValue({ petitioner: 'Demo' });
     this.apiC.GetCustomerList().snapshotChanges().subscribe(data => {
       data.forEach(item => {
@@ -76,6 +79,7 @@ export class NewApplicationComponent implements OnInit {
       justification: ['', [Validators.required]],
       address: ['', [Validators.required]],
       city: ['', [Validators.required]],
+      user: ['', [Validators.required]],
       crops: [],
       indications: [],
     });

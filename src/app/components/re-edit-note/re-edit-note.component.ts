@@ -123,6 +123,8 @@ export class ReEditNoteComponent implements OnInit {
       orderdate: [''],
       url_sign: [''],
       date_sign: [''],
+      name_sign: [''],
+      user: [''],
       crops: [],
       products: [],
       balance: [''],

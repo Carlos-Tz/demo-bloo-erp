@@ -25,6 +25,10 @@
                                 <input matInput type="number" formControlName="id" required>
                             </mat-form-field>
                             <mat-form-field appearance="fill" class="col-sm-12 col-md-4" hidden>
+                                <mat-label>Usuario</mat-label>
+                                <input matInput type="text" formControlName="user" required>
+                            </mat-form-field>
+                            <mat-form-field appearance="fill" class="col-sm-12 col-md-4" hidden>
                                 <mat-label>Estatus</mat-label>
                                 <mat-select matInput name="status" id="status" formControlName="status" required>
                                     <mat-option [value]="1">Programado</mat-option>

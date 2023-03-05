@@ -15,9 +15,9 @@ import { ApiMovementService } from 'src/app/services/api-movement.service';
   templateUrl: './re-note.component.html',
   styleUrls: ['./re-note.component.css']
 })
-export class ReNoteComponent implements OnInit {
+export class ReNoteComponent /* implements OnInit  */{
 
-  public products: Select2Data = [];
+  /* public products: Select2Data = [];
   public myForm!: FormGroup;
   public products1: any[] = [];
   public ord = 0;
@@ -38,8 +38,8 @@ export class ReNoteComponent implements OnInit {
     this.apiN.GetNote(this.data.id).valueChanges().subscribe(data => {
       this.myForm.patchValue(data);
       this.customer = data.customer.name;
-      /* data.products.forEach(pp => {
-      }); */
+      //data.products.forEach(pp => {
+      //});
       for (const e in data.products) {
         this.pro.push(e);
         //console.log(e);
@@ -95,5 +95,5 @@ export class ReNoteComponent implements OnInit {
 
   ResetForm() {
     this.myForm.reset();
-  }
+  } */
 }

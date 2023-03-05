@@ -23,12 +23,12 @@
                         <mat-cell *matCellDef="let element" class="pad-l">{{element.paymentdate}}</mat-cell>
                     </ng-container>
                     <ng-container matColumnDef="subtotal">
-                        <mat-header-cell *matHeaderCellDef class="pad-l">Subtotal</mat-header-cell>
-                        <mat-cell *matCellDef="let element" class="pad-l">{{element.subtotal | currency}}</mat-cell>
+                        <mat-header-cell *matHeaderCellDef class="pad-l show-h">Subtotal</mat-header-cell>
+                        <mat-cell *matCellDef="let element" class="pad-l show-h">{{element.subtotal | currency}}</mat-cell>
                     </ng-container>
                     <ng-container matColumnDef="iva">
-                        <mat-header-cell *matHeaderCellDef class="pad-l">I.V.A.</mat-header-cell>
-                        <mat-cell *matCellDef="let element" class="pad-l">{{element.iva | currency}}</mat-cell>
+                        <mat-header-cell *matHeaderCellDef class="pad-l show-h">I.V.A.</mat-header-cell>
+                        <mat-cell *matCellDef="let element" class="pad-l show-h">{{element.iva | currency}}</mat-cell>
                     </ng-container>
                     <ng-container matColumnDef="total">
                         <mat-header-cell *matHeaderCellDef class="pad-l">Total</mat-header-cell>

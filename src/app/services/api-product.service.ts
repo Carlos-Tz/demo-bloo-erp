@@ -3,6 +3,7 @@ import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angula
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { Product } from '../models/product';
+import { HelpService } from './help.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,31 +13,34 @@ export class ApiProductService {
   public productList!: AngularFireList<any>;
   public productObject!: AngularFireObject<any>;
   public lastProductRef!: Observable<any[]>;
+  private db_name = '';
 
-  constructor(private db: AngularFireDatabase, public toastr: ToastrService) { }
+  constructor(private db: AngularFireDatabase, public toastr: ToastrService, private helpS: HelpService) { 
+    this.db_name = helpS.GetDbName();
+  }
 
   AddProduct(product: Product) {
-    this.db.database.ref().child('blooming-erp/product-list/'+ product.id).set(product);
-    //this.db.list('blooming-erp/product-list').push(product);
+    this.db.database.ref().child(this.db_name + '/product-list/'+ product.id).set(product);
+    //this.db.list(this.db_name + '/product-list').push(product);
   }
 
   GetProductList() {
-    this.productList = this.db.list('blooming-erp/product-list');
+    this.productList = this.db.list(this.db_name + '/product-list');
     return this.productList;
   }
 
   GetProduct(key: string) {
-    this.productObject = this.db.object('blooming-erp/product-list/' + key);
+    this.productObject = this.db.object(this.db_name + '/product-list/' + key);
     return this.productObject;
   }
 
   GetLastProduct(){
-    this.lastProductRef = this.db.list('blooming-erp/product-list/', ref => ref.limitToLast(1)).valueChanges();
+    this.lastProductRef = this.db.list(this.db_name + '/product-list/', ref => ref.limitToLast(1)).valueChanges();
     return this.lastProductRef;
   }
 
   UpdateProduct(product: Product) {
-    //this.db.object('blooming-erp/product-list/' + key)
+    //this.db.object(this.db_name + '/product-list/' + key)
     this.productObject
     .update(product);
   }
@@ -56,20 +60,20 @@ export class ApiProductService {
       });
       await promise3.then(async (pro: Product) => {
         const promise4 = new Promise((resolve, reject) => {
-          let ob : AngularFireObject<any> = this.db.object('blooming-erp/product-list/' + pro.id);
+          let ob : AngularFireObject<any> = this.db.object(this.db_name + '/product-list/' + pro.id);
           ob.update(pro).then(e => {
             resolve(e)
           })
         });
         await promise4.then((e: any) => {
-          console.log(e);
+          //console.log(e);
         });
       });
     }); 
   }
 
   DeleteProduct(key: string) {
-    this.productObject = this.db.object('blooming-erp/product-list/' + key);
+    this.productObject = this.db.object(this.db_name + '/product-list/' + key);
     this.productObject.remove();
   }
 }

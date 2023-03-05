@@ -30,6 +30,7 @@ import 'fecha';
 import fechaObj from 'fecha';
 import { ChangeApplicationComponent } from '../change-application/change-application.component';
 import { DuplicateNoteComponent } from '../duplicate-note/duplicate-note.component';
+import { HelpService } from 'src/app/services/help.service';
 //import SignaturePad from 'signature_pad';
 //import { SignaturePad } from 'angular2-signaturepad/signature-pad';
 
@@ -51,7 +52,7 @@ export class ExpedientComponent implements OnInit, AfterViewInit {
   //signaturePad: SignaturePad;
   //@ViewChild('canvas') canvasEl: ElementRef;
   signatureImg: string;
-  url='https://demo-erp.bloomingtec.mx/';
+  private url = '';
   public myForm!: FormGroup;
   public key = '';
   public crops: Select2Data = [];
@@ -101,10 +102,12 @@ export class ExpedientComponent implements OnInit, AfterViewInit {
     public dialog: MatDialog,
     private http: HttpClient,
     public toastr: ToastrService,
-    private actRouter: ActivatedRoute
+    private actRouter: ActivatedRoute,
+    private helpS: HelpService
   ) { }
 
   ngOnInit(): void {
+    this.url = this.helpS.GetUrl();
     this.key = this.actRouter.snapshot.paramMap.get('id');
     this.sForm();
     this.apiCu.GetCustomer(this.key).valueChanges().subscribe(data => {
@@ -153,7 +156,8 @@ export class ExpedientComponent implements OnInit, AfterViewInit {
   }
 
   imgChanged($event) {
-    console.log($('#id_note').val());
+    //console.log($('#id_note').val());
+    //console.log($('input#customer_sign').val());
     
     
     if ($event.target.src) {
@@ -162,8 +166,8 @@ export class ExpedientComponent implements OnInit, AfterViewInit {
       const contentType = block[0].split(':')[1];
       const realData = block[1].split(',')[1];
       const blob = this.b64toBlob(realData, contentType);
-      const imageFile = new File([blob], 'image.jpg', {
-        type: "image/jpeg"
+      const imageFile = new File([blob], 'image.png', {
+        type: "image/png"
       });
       //this.generatedImage = window.URL.createObjectURL(imageFile);
       //window.open(this.generatedImage);
@@ -174,7 +178,7 @@ export class ExpedientComponent implements OnInit, AfterViewInit {
       this.http.post(`${this.url}resources/upload_sign.php`, formData)
         .subscribe(async res => {
           if(res){
-            console.log(res);
+            //console.log(res);
             const promise = new Promise((resolve, reject) => {
               this.apiN.GetNote($('#id_note').val().toString()).valueChanges().subscribe(data => {
                 //this.myForm.patchValue(data);
@@ -186,6 +190,7 @@ export class ExpedientComponent implements OnInit, AfterViewInit {
               n['signed'] = true;
               n['url_sign'] = `${this.url}signs/${res}`;
               n['date_sign'] = fechaObj.format(new Date(), 'YYYY[-]MM[-]DD'),
+              n['name_sign'] = $('input#customer_sign').val().toString(),
               this.apiN.UpdateNote(n, n['id']);
               this.toastr.success('Pedido firmado!');
 
@@ -305,10 +310,12 @@ export class ExpedientComponent implements OnInit, AfterViewInit {
       this.notes = [];
       data.forEach(item => {
         const r = item.payload.val();
-        if(r.customer.id == this.myForm.get('id').value && r.crops.includes(this.myForm.get('crops').value)){
-          const not = {'id': item.key, 'customer': r.customer.name, 'date': r.date, 'status': r.status, 'justification': r.justification, 'signed': r.signed };        
-          this.notes.push(not as Note);
-        }   
+        if(r.crops){
+          if(r.customer.id == this.myForm.get('id').value && r.crops.includes(this.myForm.get('crops').value)){
+            const not = {'id': item.key, 'customer': r.customer.name, 'date': r.date, 'status': r.status, 'justification': r.justification, 'signed': r.signed };        
+            this.notes.push(not as Note);
+          }   
+        }
       });
       if (this.notes.length > 0) {
         this.data_notes = true;
@@ -569,10 +576,10 @@ export class ExpedientComponent implements OnInit, AfterViewInit {
                   [{ text: '', colSpan: 4, fontSize: 8, rowSpan: 3 }, {}, {}, {}, { text: 'Subtotal', alignment: 'right' }, { text: (subtotal).toLocaleString('en-US', { style: 'currency', currency: 'USD', }), style: 'ce' }],
                   [{}, {}, {}, {}, { text: 'I.V.A.', alignment: 'right' }, { text: (iva).toLocaleString('en-US', { style: 'currency', currency: 'USD', }), style: 'ce' }],
                   [{}, {}, {}, {}, { text: 'Total', alignment: 'right' }, { text: (total).toLocaleString('en-US', { style: 'currency', currency: 'USD', }), style: 'ce' }],
-                  [{text: 'DEBO (EMOS) Y PAGARÉ (MOS) INCONDICIONALMENTE POR ESTE PAGARÉ A LA ORDEN DE Cuautémoc Moreno Martínez/Milton Alejandro Rivera de León EN LA CIUDAD DE __________ EL DÍA _______ DE ________ DEL _______ LA CANTIDAD DE $ _______________ M.N. VALOR RECIBIDO A NUESTRA ENTERA SATISFACCIÓN POR ESTE DOCUMENTO, LA DEMORA EN EL PAGO DE ESTE PAGARÉ CAUSA INTERESES MORATORIOS A RAZÓN DEL __ % MENSUAL.', alignment: 'left', fontSize: 7, colSpan: 6 }, {}, {}, {}, {}, {}],
+                  [{text: 'DEBO (EMOS) Y PAGARÉ (MOS) INCONDICIONALMENTE POR ESTE PAGARÉ A LA ORDEN DE ' + this.company.business_name + ' EN LA CIUDAD DE __________ EL DÍA _______ DE ________ DEL _______ LA CANTIDAD DE $ _______________ M.N. VALOR RECIBIDO A NUESTRA ENTERA SATISFACCIÓN POR ESTE DOCUMENTO, LA DEMORA EN EL PAGO DE ESTE PAGARÉ CAUSA INTERESES MORATORIOS A RAZÓN DEL __ % MENSUAL.', alignment: 'left', fontSize: 7, colSpan: 6 }, {}, {}, {}, {}, {}],
                   [{text: data.date_sign ? '\nFirmado: ' + data.date_sign : '\n____ DE ____________ DEL ________', colSpan: 6, style: 'ce1'}, {}, {}, {}, {}, {}],
                   [{ image: 'sign_1', width: 100, colSpan: 6, alignment: 'center' }, {}, {}, {}, {}, {}],
-                  [{text: 'ACEPTO (AMOS) - NOMBRE Y FIRMA', colSpan: 6, style: 'ce1'}, {}, {}, {}, {}, {}],
+                  [{text:  data.name_sign ? data.name_sign + '\nACEPTO (AMOS) - NOMBRE Y FIRMA\n': 'ACEPTO (AMOS) - NOMBRE Y FIRMA', colSpan: 6, style: 'ce1'}, {}, {}, {}, {}, {}],
                 ]
               },
             }

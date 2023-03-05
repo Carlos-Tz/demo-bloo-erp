@@ -80,7 +80,11 @@ export class CategoriesComponent implements OnInit {
   }
 
   openDialog() {
-    const dialogRef = this.dialog.open(NewCategoryComponent);
+    const dialogRef = this.dialog.open(NewCategoryComponent, {
+      autoFocus: false,
+      width: '100%',
+      maxWidth: '98%'
+    });
 
     dialogRef.afterClosed().subscribe(result => {
       //console.log(`Dialog result: ${result}`);
@@ -91,7 +95,10 @@ export class CategoriesComponent implements OnInit {
     const dialogRef = this.dialog.open(EditCategoryComponent, {
       data: {
         key: key
-      }
+      },
+      autoFocus: false,
+      width: '100%',
+      maxWidth: '98%'
     });
     
     dialogRef.afterClosed().subscribe(result => {

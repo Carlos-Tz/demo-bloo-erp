@@ -3,6 +3,7 @@ import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angula
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { Application } from '../models/application';
+import { HelpService } from './help.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,26 +13,29 @@ export class ApiApplicationService {
   public applicationList!: AngularFireList<any>;
   public applicationObject!: AngularFireObject<any>;
   public lastApplicationRef!: Observable<any[]>;
+  private db_name = '';
 
-  constructor(private db: AngularFireDatabase, public toastr: ToastrService) { }
+  constructor(private db: AngularFireDatabase, public toastr: ToastrService, private helpS: HelpService) {
+    this.db_name = helpS.GetDbName();
+   }
 
   AddApplication(application: Application) {
-    this.db.database.ref().child('blooming-erp/application-list/'+ application.id).set(application);
-    //this.db.list('blooming-erp/application-list').push(application);
+    this.db.database.ref().child(this.db_name + '/application-list/'+ application.id).set(application);
+    //this.db.list(this.db_name + '/application-list').push(application);
   }
 
   GetApplicationList() {
-    this.applicationList = this.db.list('blooming-erp/application-list');
+    this.applicationList = this.db.list(this.db_name + '/application-list');
     return this.applicationList;
   }
 
   GetApplication(key: string) {
-    this.applicationObject = this.db.object('blooming-erp/application-list/' + key);
+    this.applicationObject = this.db.object(this.db_name + '/application-list/' + key);
     return this.applicationObject;
   }
 
   GetLastApplication(){
-    this.lastApplicationRef = this.db.list('blooming-erp/application-list/', ref => ref.limitToLast(1)).valueChanges();
+    this.lastApplicationRef = this.db.list(this.db_name + '/application-list/', ref => ref.limitToLast(1)).valueChanges();
     return this.lastApplicationRef;
   }
 
@@ -41,13 +45,13 @@ export class ApiApplicationService {
   }
 
   AssignProvider(key: string, pro: any, index: number) {
-    this.db.object('blooming-erp/application-list/' + key + '/products/' + index).update(pro);
+    this.db.object(this.db_name + '/application-list/' + key + '/products/' + index).update(pro);
     /* this.applicationObject
     .update(application); */
   }
 
   DeleteApplication(key: string) {
-    this.applicationObject = this.db.object('blooming-erp/application-list/' + key);
+    this.applicationObject = this.db.object(this.db_name + '/application-list/' + key);
     this.applicationObject.remove();
   }
 }

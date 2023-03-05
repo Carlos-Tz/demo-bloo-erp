@@ -57,7 +57,11 @@
                         </ng-container>
                         <ng-container matColumnDef="justification">
                             <mat-header-cell *matHeaderCellDef mat-sort-header class="pad-l show-hh">Justificación</mat-header-cell>
-                            <mat-cell *matCellDef="let element" class="pad-l show-hh">{{element.justification}}</mat-cell>
+                            <mat-cell *matCellDef="let element" class="pad-l show-hh" style="white-space: break-spaces;">{{element.justification}}</mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="user">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="pad-l show-hh">Usuario</mat-header-cell>
+                            <mat-cell *matCellDef="let element" class="pad-l show-hh">{{element.user}}</mat-cell>
                         </ng-container>
 
                         <ng-container matColumnDef="action">

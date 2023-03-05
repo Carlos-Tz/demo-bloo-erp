@@ -106,6 +106,9 @@ export class OutputNoteComponent implements OnInit {
     let complete = true;
     let movements = [];
     let existences = [];
+    let iva_n = 0;
+    let subtotal_n = 0;
+    let total_n = 0;
     this.products1.forEach(p => {
       let id = $('input#id___'+p.value).val();
       let name = $('input#name___'+p.value).val();
@@ -123,11 +126,7 @@ export class OutputNoteComponent implements OnInit {
       
       let iva = $('input#iva___'+p.value).prop('checked');
       
-      let output = $('input#output___'+p.value).prop('checked'); console.log(output);
-      
-      if(!output){
-        complete = false;
-      }
+      let output = $('input#output___'+p.value).prop('checked'); //console.log(output);
 
       if(q > 0 && output){
         let mo = {
@@ -152,9 +151,21 @@ export class OutputNoteComponent implements OnInit {
         };
         existences.push(ex);
       }
+
+      if(!output){
+        complete = false;
+        q = 0;
+      }
+
+      subtotal_n += cost*q;
+      if(iva){
+        iva_n += subtotal_n*0.16;
+      }
       
       products_d[p.value] = { id: id, name: name, quantity: q, unit: unit, presentation: presentation, cost: cost, iva: iva, output: output, comment: comment  };
     });
+
+    total_n = subtotal_n + iva_n;
     if(movements.length > 0){
       this.addMov(movements);
     }
@@ -163,7 +174,11 @@ export class OutputNoteComponent implements OnInit {
     }
 
     this.myForm.patchValue({ 'products': products_d });
-    this.myForm.patchValue({ 'status': 2 });
+    this.myForm.patchValue({ 'subtotal': subtotal_n });
+    this.myForm.patchValue({ 'total': total_n });
+    this.myForm.patchValue({ 'balance': total_n });
+    this.myForm.patchValue({ 'iva': iva_n });
+    this.myForm.patchValue({ 'status': 3 });
     if(complete){
       this.myForm.patchValue({ 'complete': true });
     }else{

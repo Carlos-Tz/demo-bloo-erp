@@ -6,6 +6,7 @@ import { FileUploadService } from 'src/app/services/file-upload.service';
 import 'fecha';
 import fechaObj from 'fecha';
 import { ToastrService } from 'ngx-toastr';
+import { HelpService } from 'src/app/services/help.service';
 
 @Component({
   selector: 'app-upload-file',
@@ -14,7 +15,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class UploadFileComponent implements OnInit {
 
-  url='https://demo-erp.bloomingtec.mx/';
+  private url = '';
   public myForm1!: FormGroup;
   public ord = 0;
   myForm = new FormGroup({
@@ -27,10 +28,12 @@ export class UploadFileComponent implements OnInit {
     public apiF: FileUploadService,
     public toastr: ToastrService,
     private fb: FormBuilder,
-    private http: HttpClient
+    private http: HttpClient,
+    private helpS: HelpService
   ) { }
 
   ngOnInit(): void {
+    this.url = this.helpS.GetUrl();
     this.sForm();
     this.apiF.GetLastFile().subscribe(res=> {
       if(res[0]){

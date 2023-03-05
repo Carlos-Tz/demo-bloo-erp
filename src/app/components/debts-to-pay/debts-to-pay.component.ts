@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Order } from 'src/app/models/order';
 import { ApiOrdersService } from 'src/app/services/api-orders.service';
 import { ApiProviderService } from 'src/app/services/api-provider.service';
+import { HelpService } from 'src/app/services/help.service';
 //import 'fecha';
 //import fechaObj from 'fecha';
 
@@ -21,7 +22,8 @@ export class DebtsToPayComponent implements OnInit {
     private fb: FormBuilder,
     public apiP: ApiProviderService,
     public apiO: ApiOrdersService,
-    private http: HttpClient
+    private http: HttpClient,
+    private helpS: HelpService
   ) { }
 
   ngOnInit(): void {
@@ -69,7 +71,8 @@ export class DebtsToPayComponent implements OnInit {
 
   submitSurveyData() {
     //let url='http://localhost:8080/local/dev/adm/php-back/';
-    let url='https://demo-erp.bloomingtec.mx/resources/';
+    //let url='https://demo-erp.bloomingtec.mx/resources/';
+    let url = this.helpS.GetUrl();
     let n_orders: any[] = this.orders.filter((e) => {
       return e.paymentdate >= this.myForm.get('initial_date').value && e.paymentdate <= this.myForm.get('final_date').value
     });
@@ -87,7 +90,7 @@ export class DebtsToPayComponent implements OnInit {
     
     this.apiO.excel(nn_orders, url).subscribe(res => {
       //console.log(res);
-      window.location.href = `${url}cuentasXpagar.xlsx`;
+      window.location.href = `${url}resources/cuentasXpagar.xlsx`;
     }, err => {
       console.log(err);
     });

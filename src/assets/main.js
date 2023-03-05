@@ -47,7 +47,7 @@ function resizeCanvas() {
     var w = modal.clientWidth;
     var h = modal.clientHeight;
     canvas.width = Math.ceil(w * 0.75);
-    canvas.height = Math.ceil(h * 0.60);
+    canvas.height = Math.ceil(h * 0.53);
     signaturePad.clear();
 }
 

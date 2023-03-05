@@ -6,6 +6,7 @@ export interface Application {
     justification: string;
     address: string;
     city: string;
+    user: string;
     crops: [],
     indications: []
 }

@@ -13,6 +13,7 @@ import { ApiCustomerService } from 'src/app/services/api-customer.service';
 import { ApiNoteService } from 'src/app/services/api-note.service';
 import { ActivatedRoute } from '@angular/router';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-duplicate-note',
@@ -48,6 +49,7 @@ export class DuplicateNoteComponent implements OnInit {
     private actRouter: ActivatedRoute,
     public apiP: ApiProductService,
     public toastr: ToastrService,
+    public authService: AuthService
   ) { }
 
   ngOnInit(): void {
@@ -55,9 +57,33 @@ export class DuplicateNoteComponent implements OnInit {
     this.sForm();
     this.sForm1();
     this.apiN.GetNote(this.data.id).valueChanges().subscribe(data => {
-      //this.myForm.patchValue(data);
-      this.myForm.patchValue({ 'justification': data.justification });
+      this.myForm.patchValue(data);
+      //this.myForm.patchValue({ 'justification': data.justification });
+      this.myForm.patchValue({ 'iva': 0 });
+      this.myForm.patchValue({ 'subtotal': 0 });
+      this.myForm.patchValue({ 'total': 0 });
+      this.myForm.patchValue({ 'date': '' });
+      this.myForm.patchValue({ 'customer': '' });
+      this.myForm.patchValue({ 'status': 1 });
+      this.myForm.patchValue({ 'address': '' });
+      this.myForm.patchValue({ 'city': '' });
+      this.myForm.patchValue({ 'send': false });
+      this.myForm.patchValue({ 'signed': false });
+      this.myForm.patchValue({ 'complete': false });
+      this.myForm.patchValue({ 'paymentdate': '' });
+      this.myForm.patchValue({ 'folio': '' });
+      this.myForm.patchValue({ 'paymenttype': '' });
+      this.myForm.patchValue({ 'orderdate': '' });
+      this.myForm.patchValue({ 'url_sign': '' });
+      this.myForm.patchValue({ 'date_sign': '' });
+      this.myForm.patchValue({ 'name_sign': '' });
+      this.myForm.patchValue({ 'user': '' });
+      this.myForm.patchValue({ 'crops': [] });
+      this.myForm.patchValue({ 'products': [] });
+      this.myForm.patchValue({ 'balance': '' });
       this.myForm.patchValue({ 'paidout': 0 });
+      this.myForm.patchValue({ 'payments': [] });
+
       //this.myForm.patchValue({ 'address': '' });
       //this.myForm.patchValue({ 'city': '' });
       //this.myForm.patchValue({ 'customer': '' });
@@ -109,7 +135,7 @@ export class DuplicateNoteComponent implements OnInit {
 
   sForm() {
     this.myForm = this.fb.group({
-      id: [null, [Validators.required]],
+      id: ['', [Validators.required]],
       iva: [''],
       subtotal: [''],
       total: [''],
@@ -128,6 +154,8 @@ export class DuplicateNoteComponent implements OnInit {
       orderdate: [''],
       url_sign: [''],
       date_sign: [''],
+      name_sign: [''],
+      user: [''],
       crops: [],
       products: [],
       balance: [''],
@@ -166,6 +194,7 @@ export class DuplicateNoteComponent implements OnInit {
     this.date = fechaObj.format(new Date(), 'DD[/]MM[/]YYYY');
     this.myForm.patchValue({ date: this.date });
     this.myForm.patchValue({ status: 1 });
+    this.myForm.patchValue({ user: this.authService.userName });
     this.myForm.patchValue({ 'products': products_d });
     this.apiN.AddNote(this.myForm.value);
     //this.apiN.UpdateNote(this.myForm.value, this.data.id);
@@ -255,6 +284,8 @@ export class DuplicateNoteComponent implements OnInit {
         }
       /*}
     }); */
+    console.log(this.myForm.value);
+    
   }
 
   allCrops(){
@@ -297,7 +328,7 @@ export class DuplicateNoteComponent implements OnInit {
   }
 
   change1(ev){
-    console.log(ev.src.value);
+    //console.log(ev.src.value);
     
     if(parseFloat(ev.srcElement.value) > parseFloat($('#available').val().toString())){
       $('input#'+ ev.srcElement.id).val(0);

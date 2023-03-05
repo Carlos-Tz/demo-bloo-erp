@@ -32,6 +32,7 @@ export class NotesComponent implements OnInit {
     'date',
     'customer',
     'justification',
+    'user',
     'action',
   ];
   //public categories: Select2Data = [];
@@ -54,7 +55,7 @@ export class NotesComponent implements OnInit {
       data.forEach(item => {
         const r = item.payload.val();     
         //if(r.status == 1){
-          const not = {'id': item.key, 'customer': r.customer.name, 'date': r.date, 'status': r.status, 'justification': r.justification, 'send': r.send };        
+          const not = {'id': item.key, 'customer': r.customer.name, 'date': r.date, 'status': r.status, 'justification': r.justification, 'send': r.send, 'user': r.user };        
           this.notes.push(not as Note);
         //}   
       });
@@ -87,6 +88,7 @@ export class NotesComponent implements OnInit {
         case 'date': return this.compare(a.date.trim().toLocaleLowerCase(), b.date.trim().toLocaleLowerCase(), isAsc);
         case 'id': return this.compare(a.id, b.id, isAsc);
         case 'justification': return this.compare(a.justification.trim().toLocaleLowerCase(), b.justification.trim().toLocaleLowerCase(), isAsc);
+        case 'user': return this.compare(a.user.trim().toLocaleLowerCase(), b.user.trim().toLocaleLowerCase(), isAsc);
         default: return 0;
       }
     });
@@ -130,7 +132,7 @@ export class NotesComponent implements OnInit {
     
         await promise.then((note: any) => {
           note['send'] = true;
-          console.log(note, note.id);
+          //console.log(note, note.id);
           this.apiN.UpdateNote(note, note.id);
           note['company'] = this.company;
           this.apiM.mailNote(note).subscribe({});          
@@ -193,10 +195,10 @@ export class NotesComponent implements OnInit {
                 [{ text: '', colSpan: 4, fontSize: 8, rowSpan: 3 }, {}, {}, {}, { text: 'Subtotal', alignment: 'right' }, { text: (subtotal).toLocaleString('en-US', { style: 'currency', currency: 'USD', }), style: 'ce' }],
                 [{}, {}, {}, {}, { text: 'I.V.A.', alignment: 'right' }, { text: (iva).toLocaleString('en-US', { style: 'currency', currency: 'USD', }), style: 'ce' }],
                 [{}, {}, {}, {}, { text: 'Total', alignment: 'right' }, { text: (total).toLocaleString('en-US', { style: 'currency', currency: 'USD', }), style: 'ce' }],
-                [{text: 'DEBO (EMOS) Y PAGARÉ (MOS) INCONDICIONALMENTE POR ESTE PAGARÉ A LA ORDEN DE Cuautémoc Moreno Martínez/Milton Alejandro Rivera de León EN LA CIUDAD DE __________ EL DÍA _______ DE ________ DEL _______ LA CANTIDAD DE $ _______________ M.N. VALOR RECIBIDO A NUESTRA ENTERA SATISFACCIÓN POR ESTE DOCUMENTO, LA DEMORA EN EL PAGO DE ESTE PAGARÉ CAUSA INTERESES MORATORIOS A RAZÓN DEL __ % MENSUAL.', alignment: 'left', fontSize: 7, colSpan: 6 }, {}, {}, {}, {}, {}],
+                [{text: 'DEBO (EMOS) Y PAGARÉ (MOS) INCONDICIONALMENTE POR ESTE PAGARÉ A LA ORDEN DE ' + this.company.business_name + ' EN LA CIUDAD DE __________ EL DÍA _______ DE ________ DEL _______ LA CANTIDAD DE $ _______________ M.N. VALOR RECIBIDO A NUESTRA ENTERA SATISFACCIÓN POR ESTE DOCUMENTO, LA DEMORA EN EL PAGO DE ESTE PAGARÉ CAUSA INTERESES MORATORIOS A RAZÓN DEL __ % MENSUAL.', alignment: 'left', fontSize: 7, colSpan: 6 }, {}, {}, {}, {}, {}],
                 [{text: data.date_sign ? '\nFirmado: ' + data.date_sign : '\n____ DE ____________ DEL ________', colSpan: 6, style: 'ce1'}, {}, {}, {}, {}, {}],
                 [{ image: 'sign_1', width: 100, colSpan: 6, alignment: 'center' }, {}, {}, {}, {}, {}],
-                [{text: 'ACEPTO (AMOS) - NOMBRE Y FIRMA', colSpan: 6, style: 'ce1'}, {}, {}, {}, {}, {}],
+                [{text:  data.name_sign ? data.name_sign + '\nACEPTO (AMOS) - NOMBRE Y FIRMA\n': 'ACEPTO (AMOS) - NOMBRE Y FIRMA', colSpan: 6, style: 'ce1'}, {}, {}, {}, {}, {}],
               ]
             },
           }

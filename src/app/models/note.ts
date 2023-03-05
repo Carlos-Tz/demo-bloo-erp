@@ -18,6 +18,8 @@ export interface Note {
     orderdate: string;
     url_sign: string;
     date_sign: string;
+    name_sign: string;
+    user: string;
     crops: [];
     products: [];
     balance: number;

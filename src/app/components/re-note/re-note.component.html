@@ -1,11 +1,9 @@
-<div class="card mt-2">
+<!-- <div class="card mt-2">
     <div class="card-header">
         <nav class="navbar bg-light">
             <div class="container-fluid">
                 <a class="navbar-brand">Duplicar pedido No. {{data.id}}</a>
                 <div class="d-flex">
-                    <!-- <button mat-button class="btn btn-outline-success" (click)="allCrops()">Todos los cultivos</button> -->
-                    <!-- <button mat-button [routerLink]="['/notes']">Cancelar</button> -->
                     <button mat-button mat-dialog-close>Cerrar</button>
                     <button mat-button (click)="submitSurveyData()" [mat-dialog-close]="true" class="btn btn-outline-info">Duplicar</button>
                 </div>
@@ -28,10 +26,6 @@
                 <mat-form-field appearance="fill" class="col-sm-12">
                     <mat-label>Cliente</mat-label>
                     <input matInput type="text" [value]="customer" required readonly>
-                    <!-- <mat-select matInput name="customer" id="customer" formControlName="customer" required>
-                        <mat-option [value]="customer">{{ customer.name }}
-                        </mat-option>
-                    </mat-select> -->
                 </mat-form-field>
                 <mat-form-field appearance="fill" class="col-sm-12 col-md-6" hidden>
                     <mat-label>Domicilio</mat-label>
@@ -57,22 +51,16 @@
                         resettable
                         (update)="updateP($event)"
                         resultMaxHeight="200px">
-                        <!-- formControlName="products" -->
                         <select2-hint>Productos</select2-hint>
                     </select2>
                 </div>
                 <div class="col">
                     <table class="table table-bordered" style="font-size: 0.85rem;">
                         <thead>
-                            <!-- <th style="background-color: #155a89; color: #fff; font-weight: 400; text-align: center;">Id</th> -->
                             <th style="background-color: #155a89; color: #fff; font-weight: 400; text-align: center;">Producto</th>
                             <th style="background-color: #155a89; color: #fff; font-weight: 400; text-align: center;">Cantidad</th>
                             <th style="background-color: #155a89; color: #fff; font-weight: 400; text-align: center;">Unidad</th>
                             <th style="background-color: #155a89; color: #fff; font-weight: 400; text-align: center;">Presentación</th>
-                            <!-- <th style="background-color: #155a89; color: #fff; font-weight: 400; text-align: center;">Entregar</th>
-                            <th style="background-color: #155a89; color: #fff; font-weight: 400; text-align: center;">Comentarios</th> -->
-                            <!-- <th style="background-color: #155a89; color: #fff; font-weight: 400; text-align: center;">Costo</th>
-                            <th style="background-color: #155a89; color: #fff; font-weight: 400; text-align: center;">I.V.A.</th> -->
                         </thead>
                         <tbody>
                             <tr *ngFor="let pro of products1">
@@ -81,8 +69,6 @@
                                 <td><input type="number" value="{{pro.data.quantity }}" matInput style="text-align: center;" #ca id="quantity___{{pro.value}}" readonly></td>
                                 <td><input type="text" value="{{pro.data.unit }}" readonly matInput style="text-align: center;" id="unit___{{pro.value}}"></td>
                                 <td><input type="text" value="{{pro.data.presentation }}" readonly matInput style="text-align: center;" id="presentation___{{pro.value}}"></td>
-                                <!-- <td style="text-align: center;"><input type="checkbox" id="output___{{pro.value}}"></td>
-                                <td><textarea name="" id="comment___{{pro.value}}" rows="2" matInput></textarea></td> -->
                                 <td hidden><input type="number" matInput style="text-align: center;" value="{{pro.data.cost}}" readonly id="cost___{{pro.value}}"></td>
                                 <td hidden><input type="checkbox" id="iva___{{pro.value}}" [checked]="pro.data.iva" disabled="disabled"></td>
                             </tr>
@@ -94,3 +80,4 @@
     </div>
 </div>
 
+ -->

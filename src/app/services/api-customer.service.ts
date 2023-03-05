@@ -3,6 +3,7 @@ import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angula
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { Customer } from '../models/customer';
+import { HelpService } from './help.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,44 +13,47 @@ export class ApiCustomerService {
   public customerList!: AngularFireList<any>;
   public customerObject!: AngularFireObject<any>;
   public lastCustomerRef!: Observable<any[]>;
+  private db_name = '';
 
-  constructor(private db: AngularFireDatabase, public toastr: ToastrService) { }
+  constructor(private db: AngularFireDatabase, public toastr: ToastrService, private helpS: HelpService) { 
+    this.db_name = helpS.GetDbName();
+  }
 
   AddCustomer(customer: Customer) {
     
-    this.db.database.ref().child('blooming-erp/customer-list/'+ customer.id).once("value", snapshot => {
+    this.db.database.ref().child(this.db_name + '/customer-list/'+ customer.id).once("value", snapshot => {
       if(snapshot.exists()){
         this.toastr.error('No guardado, ya existe un registro con este nombre!');
         return true;
       }
       //this.toastr.success('Guardado!');
-      this.db.database.ref().child('blooming-erp/customer-list/'+ customer.id).set(customer);
+      this.db.database.ref().child(this.db_name + '/customer-list/'+ customer.id).set(customer);
       return false;
     });
   }
 
   GetCustomerList() {
-    this.customerList = this.db.list('blooming-erp/customer-list');
+    this.customerList = this.db.list(this.db_name + '/customer-list');
     return this.customerList;
   }
 
   GetCustomer(key: string) {
-    this.customerObject = this.db.object('blooming-erp/customer-list/' + key);
+    this.customerObject = this.db.object(this.db_name + '/customer-list/' + key);
     return this.customerObject;
   }
 
   UpdateCustomer(customer: Customer, key: string) {
-    this.db.object('blooming-erp/customer-list/' + key)
+    this.db.object(this.db_name + '/customer-list/' + key)
     .update(customer);
   }
 
   DeleteCustomer(key: string) {
-    this.customerObject = this.db.object('blooming-erp/customer-list/' + key);
+    this.customerObject = this.db.object(this.db_name + '/customer-list/' + key);
     this.customerObject.remove();
   }
 
   GetLastCustomer(){
-    this.lastCustomerRef = this.db.list('blooming-erp/customer-list/', ref => ref.limitToLast(1)).valueChanges();
+    this.lastCustomerRef = this.db.list(this.db_name + '/customer-list/', ref => ref.limitToLast(1)).valueChanges();
     return this.lastCustomerRef;
   }
 }

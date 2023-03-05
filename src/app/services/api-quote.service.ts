@@ -7,6 +7,7 @@ import { ApiProviderService } from './api-provider.service';
 import 'fecha';
 import fechaObj from 'fecha';
 import { ApiRequisitionService } from './api-requisition.service';
+import { HelpService } from './help.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,13 +17,17 @@ export class ApiQuoteService {
   public lastQuotationRef!: Observable<any[]>;
   public lastOrderRef!: Observable<any[]>;
   public quotations_ = [];
+  private db_name = '';
 
   constructor(
     private db: AngularFireDatabase,
     private apiP: ApiProductService,
     private apiPr: ApiProviderService,
-    private apiR: ApiRequisitionService
-    ) { }
+    private apiR: ApiRequisitionService,
+    private helpS: HelpService
+    ) { 
+      this.db_name = helpS.GetDbName();
+    }
 
   AddQuotation(products: any[]) {
     this.quotations_ = [];
@@ -102,20 +107,20 @@ export class ApiQuoteService {
   }
 
   add(quotation){
-    this.db.database.ref().child('blooming-erp/quotation-list/'+ quotation.id).set(quotation);
+    this.db.database.ref().child(this.db_name + '/quotation-list/'+ quotation.id).set(quotation);
   }
 
   addO(order){
-    this.db.database.ref().child('blooming-erp/order-list/'+ order.id).set(order);
+    this.db.database.ref().child(this.db_name + '/order-list/'+ order.id).set(order);
   }
 
   GetLastQuotation(){
-    this.lastQuotationRef = this.db.list('blooming-erp/quotation-list/', ref => ref.limitToLast(1)).valueChanges();
+    this.lastQuotationRef = this.db.list(this.db_name + '/quotation-list/', ref => ref.limitToLast(1)).valueChanges();
     return this.lastQuotationRef;
   }
 
   GetLastOrder(){
-    this.lastOrderRef = this.db.list('blooming-erp/order-list/', ref => ref.limitToLast(1)).valueChanges();
+    this.lastOrderRef = this.db.list(this.db_name + '/order-list/', ref => ref.limitToLast(1)).valueChanges();
     return this.lastOrderRef;
   }
 }

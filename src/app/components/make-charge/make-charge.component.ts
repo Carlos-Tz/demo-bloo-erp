@@ -75,6 +75,8 @@ export class MakeChargeComponent implements OnInit {
       orderdate: [''],
       url_sign: [''],
       date_sign: [''],
+      name_sign: [''],
+      user: [''],
       crops: [],
       products: [],
       balance: [null, [Validators.required]],
@@ -93,16 +95,16 @@ export class MakeChargeComponent implements OnInit {
     this.payments.push(this.myForm.value as Payment);
     let amount = this.myForm.get('amount').value;
     if(amount == this.balance){
-      this.myForm2.patchValue({ 'status': 5 });
+      this.myForm2.patchValue({ 'status': 6 });
     }else {
-      this.myForm2.patchValue({ 'status': 4 });
+      this.myForm2.patchValue({ 'status': 5 });
     }
     let paid = this.myForm2.get('paidout').value;
     this.myForm2.patchValue({ 'paidout': paid + amount });
     this.myForm2.patchValue({ 'payments': this.payments });
     this.myForm2.patchValue({ 'balance': this.balance - amount });
     this.apiN.UpdateNote(this.myForm2.value, this.data.note.id);
-    console.log(this.myForm2.value);
+    //console.log(this.myForm2.value);
     this.ResetForm();
     
     this.toastr.success('Cobro registrado!');

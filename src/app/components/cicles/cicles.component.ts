@@ -77,7 +77,11 @@ export class CiclesComponent implements OnInit {
   }
 
   openDialog() {
-    const dialogRef = this.dialog.open(NewCicleComponent);
+    const dialogRef = this.dialog.open(NewCicleComponent, {
+      autoFocus: false,
+      width: '100%',
+      maxWidth: '98%'
+    });
 
     dialogRef.afterClosed().subscribe(result => {
       //console.log(`Dialog result: ${result}`);
@@ -88,7 +92,10 @@ export class CiclesComponent implements OnInit {
     const dialogRef = this.dialog.open(EditCicleComponent, {
       data: {
         key: key
-      }
+      },
+      autoFocus: false,
+      width: '100%',
+      maxWidth: '98%'
     });
     
     dialogRef.afterClosed().subscribe(result => {

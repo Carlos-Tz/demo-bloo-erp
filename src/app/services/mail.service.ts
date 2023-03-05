@@ -1,14 +1,17 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { HelpService } from './help.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MailService {
   //url='http://localhost:4200/';
-  url='https://demo-erp.bloomingtec.mx/';
+  url='';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private helpS: HelpService) { 
+    this.url = helpS.GetUrl();
+  }
   mail_(mail: Object){
     //return this.http.post(`${this.url}mail.php`, JSON.stringify(mail));
     return this.http.post('mail.php', JSON.stringify(mail));

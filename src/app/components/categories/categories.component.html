@@ -23,8 +23,8 @@
                     <mat-table class="mat-elevation-z8" [dataSource]="dataSource" matSort matSortActive="name" matSortDirection="desc" matSortDisableClear (matSortChange)="sortData($event)">
 
                         <ng-container matColumnDef="id">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header class="pad-l">ID</mat-header-cell>
-                            <mat-cell *matCellDef="let element" class="pad-l">{{element.id}}</mat-cell>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="pad-l show-h">ID</mat-header-cell>
+                            <mat-cell *matCellDef="let element" class="pad-l show-h">{{element.id}}</mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="name">
                             <mat-header-cell *matHeaderCellDef mat-sort-header >Nombre</mat-header-cell>
@@ -32,8 +32,8 @@
                             </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="description">
-                            <mat-header-cell *matHeaderCellDef class="pad-l">Descripción</mat-header-cell>
-                            <mat-cell *matCellDef="let element" class="pad-l">{{element.description}}
+                            <mat-header-cell *matHeaderCellDef class="pad-l show-hh">Descripción</mat-header-cell>
+                            <mat-cell *matCellDef="let element" class="pad-l show-hh">{{element.description}}
                             </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="action">

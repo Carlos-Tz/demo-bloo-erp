@@ -3,6 +3,7 @@ import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angula
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { Movement } from '../models/movement';
+import { HelpService } from './help.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,26 +13,29 @@ export class ApiMovementService {
   public movementList!: AngularFireList<any>;
   public movementObject!: AngularFireObject<any>;
   public lastMovementRef!: Observable<any[]>;
+  private db_name = '';
 
-  constructor(private db: AngularFireDatabase, public toastr: ToastrService) { }
+  constructor(private db: AngularFireDatabase, public toastr: ToastrService, private helpS: HelpService) { 
+    this.db_name = helpS.GetDbName();
+  }
 
   AddMovement(movement: Movement) {
-    this.db.database.ref().child('blooming-erp/movement-list/'+ movement.id).set(movement);
-    //this.db.list('blooming-erp/movement-list').push(movement);
+    this.db.database.ref().child(this.db_name + '/movement-list/'+ movement.id).set(movement);
+    //this.db.list(this.db_name + '/movement-list').push(movement);
   }
 
   GetMovementList() {
-    this.movementList = this.db.list('blooming-erp/movement-list');
+    this.movementList = this.db.list(this.db_name + '/movement-list');
     return this.movementList;
   }
 
   GetMovement(key: string) {
-    this.movementObject = this.db.object('blooming-erp/movement-list/' + key);
+    this.movementObject = this.db.object(this.db_name + '/movement-list/' + key);
     return this.movementObject;
   }
 
   GetLastMovement(){
-    this.lastMovementRef = this.db.list('blooming-erp/movement-list/', ref => ref.limitToLast(1)).valueChanges();
+    this.lastMovementRef = this.db.list(this.db_name + '/movement-list/', ref => ref.limitToLast(1)).valueChanges();
     return this.lastMovementRef;
   }
 }

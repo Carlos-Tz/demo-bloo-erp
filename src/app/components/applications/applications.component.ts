@@ -41,6 +41,7 @@ export class ApplicationsComponent implements OnInit {
     'customer',
     /* 'status', */
     'justification',
+    'user',
     'action',
   ];
   //public categories: Select2Data = [];
@@ -62,7 +63,7 @@ export class ApplicationsComponent implements OnInit {
       data.forEach(item => {
         const r = item.payload.val();     
         //if(r.status == 1){
-          const app = {'id': item.key, 'customer': r.customer.name, 'date': r.date, 'status': r.status, 'justification': r.justification };        
+          const app = {'id': item.key, 'customer': r.customer.name, 'date': r.date, 'status': r.status, 'justification': r.justification, 'user': r.user };        
           this.applications.push(app as Application);
         //}   
       });
@@ -95,6 +96,7 @@ export class ApplicationsComponent implements OnInit {
         case 'date': return this.compare(a.date.trim().toLocaleLowerCase(), b.date.trim().toLocaleLowerCase(), isAsc);
         case 'id': return this.compare(a.id, b.id, isAsc);
         case 'justification': return this.compare(a.justification.trim().toLocaleLowerCase(), b.justification.trim().toLocaleLowerCase(), isAsc);
+        case 'user': return this.compare(a.user.trim().toLocaleLowerCase(), b.user.trim().toLocaleLowerCase(), isAsc);
         default: return 0;
       }
     });
@@ -204,7 +206,7 @@ export class ApplicationsComponent implements OnInit {
     
         await promise.then((app: any) => {
           app['status'] = 2;
-          console.log(app, app.id);
+          //console.log(app, app.id);
           this.apiA.UpdateApplication(app, app.id);
           app['company'] = this.company;
           this.apiM.mailApplication(app).subscribe({});          

@@ -29,14 +29,14 @@
                             <mat-header-cell *matHeaderCellDef mat-sort-header >ID Orden</mat-header-cell>
                             <mat-cell *matCellDef="let element">OC-{{element.id}}
                                 <span (click)="PDF(element.id)" style="color: #fff; background-color: green; border-radius: 20%; padding: 0.2rem; margin-left: 0.3rem; cursor: pointer; font-size: 0.7rem;" class="me-2">PDF</span>
-                                <span *ngIf="element.status_reception == 1">Pendiente</span>
-                                <span *ngIf="element.status_reception == 2">Incompleta</span>
-                                <span *ngIf="element.status_reception == 3">Recibida</span>
+                                <span class="show-h" *ngIf="element.status_reception == 1">Pendiente</span>
+                                <span class="show-h" *ngIf="element.status_reception == 2">Incompleta</span>
+                                <span class="show-h" *ngIf="element.status_reception == 3">Recibida</span>
                             </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="orderdate">
-                            <mat-header-cell *matHeaderCellDef class="pad-l">Fecha de orden</mat-header-cell>
-                            <mat-cell *matCellDef="let element" class="pad-l">{{element.orderdate}}</mat-cell>
+                            <mat-header-cell *matHeaderCellDef class="pad-l show-hh">Fecha de orden</mat-header-cell>
+                            <mat-cell *matCellDef="let element" class="pad-l show-hh">{{element.orderdate}}</mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="quantity">
                             <mat-header-cell *matHeaderCellDef class="pad-l">Cantidad pedida</mat-header-cell>

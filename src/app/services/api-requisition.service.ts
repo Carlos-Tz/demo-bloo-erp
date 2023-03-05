@@ -3,6 +3,7 @@ import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angula
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { Requisition } from '../models/requisition';
+import { HelpService } from './help.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,26 +13,29 @@ export class ApiRequisitionService {
   public requisitionList!: AngularFireList<any>;
   public requisitionObject!: AngularFireObject<any>;
   public lastRequisitionRef!: Observable<any[]>;
+  private db_name = '';
 
-  constructor(private db: AngularFireDatabase, public toastr: ToastrService) { }
+  constructor(private db: AngularFireDatabase, public toastr: ToastrService, private helpS: HelpService) { 
+    this.db_name = helpS.GetDbName();
+  }
 
   AddRequisition(requisition: Requisition) {
-    this.db.database.ref().child('blooming-erp/requisition-list/'+ requisition.id).set(requisition);
-    //this.db.list('blooming-erp/requisition-list').push(requisition);
+    this.db.database.ref().child(this.db_name + '/requisition-list/'+ requisition.id).set(requisition);
+    //this.db.list(this.db_name + '/requisition-list').push(requisition);
   }
 
   GetRequisitionList() {
-    this.requisitionList = this.db.list('blooming-erp/requisition-list');
+    this.requisitionList = this.db.list(this.db_name + '/requisition-list');
     return this.requisitionList;
   }
 
   GetRequisition(key: string) {
-    this.requisitionObject = this.db.object('blooming-erp/requisition-list/' + key);
+    this.requisitionObject = this.db.object(this.db_name + '/requisition-list/' + key);
     return this.requisitionObject;
   }
 
   GetLastRequisition(){
-    this.lastRequisitionRef = this.db.list('blooming-erp/requisition-list/', ref => ref.limitToLast(1)).valueChanges();
+    this.lastRequisitionRef = this.db.list(this.db_name + '/requisition-list/', ref => ref.limitToLast(1)).valueChanges();
     return this.lastRequisitionRef;
   }
 
@@ -41,13 +45,13 @@ export class ApiRequisitionService {
   }
 
   AssignProvider(key: string, pro: any, index: number) {
-    this.db.object('blooming-erp/requisition-list/' + key + '/products/' + index).update(pro);
+    this.db.object(this.db_name + '/requisition-list/' + key + '/products/' + index).update(pro);
     /* this.requisitionObject
     .update(requisition); */
   }
 
   DeleteRequisition(key: string) {
-    this.requisitionObject = this.db.object('blooming-erp/requisition-list/' + key);
+    this.requisitionObject = this.db.object(this.db_name + '/requisition-list/' + key);
     this.requisitionObject.remove();
   }
 }

@@ -11,6 +11,7 @@ import * as $ from 'jquery';
 import { Customer } from 'src/app/models/customer';
 import { ApiCustomerService } from 'src/app/services/api-customer.service';
 import { ApiNoteService } from 'src/app/services/api-note.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-new-note',
@@ -39,6 +40,7 @@ export class NewNoteComponent implements OnInit {
     public apiC: ApiCustomerService,
     public apiN: ApiNoteService,
     public apiP: ApiProductService,
+    public authService: AuthService,
     public toastr: ToastrService,
   ) { }
 
@@ -47,6 +49,7 @@ export class NewNoteComponent implements OnInit {
     this.sForm1();
     this.date = fechaObj.format(new Date(), 'DD[/]MM[/]YYYY');
     this.myForm.patchValue({ date: this.date });
+    this.myForm.patchValue({ user: this.authService.userName });
     this.apiC.GetCustomerList().snapshotChanges().subscribe(data => {
       data.forEach(item => {
         //const p = item.payload.toJSON();
@@ -101,6 +104,8 @@ export class NewNoteComponent implements OnInit {
       orderdate: [''],
       url_sign: [''],
       date_sign: [''],
+      name_sign: [''],
+      user: ['', [Validators.required]],
       crops: [],
       products: [],
       balance: [''],

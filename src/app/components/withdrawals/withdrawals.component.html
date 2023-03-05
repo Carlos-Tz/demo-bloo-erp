@@ -67,16 +67,16 @@
                                 <mat-cell *matCellDef="let element" class="pad-l">{{element.name_prod}}</mat-cell>
                             </ng-container>
                             <ng-container matColumnDef="price">
-                                <mat-header-cell *matHeaderCellDef class="pad-l">Precio</mat-header-cell>
-                                <mat-cell *matCellDef="let element" class="pad-l">{{element.price | currency}}</mat-cell>
+                                <mat-header-cell *matHeaderCellDef class="pad-l show-h">Precio</mat-header-cell>
+                                <mat-cell *matCellDef="let element" class="pad-l show-h">{{element.price | currency}}</mat-cell>
                             </ng-container>
                             <ng-container matColumnDef="quantity">
                                 <mat-header-cell *matHeaderCellDef class="pad-l">Cantidad</mat-header-cell>
                                 <mat-cell *matCellDef="let element" class="pad-l">{{element.quantity}}</mat-cell>
                             </ng-container>
-                            <ng-container matColumnDef="customer_name">
-                                <mat-header-cell *matHeaderCellDef class="pad-l">Cliente</mat-header-cell>
-                                <mat-cell *matCellDef="let element" class="pad-l">{{element.customer_name}}</mat-cell>
+                            <ng-container matColumnDef="customer">
+                                <mat-header-cell *matHeaderCellDef class="pad-l show-hh">Cliente</mat-header-cell>
+                                <mat-cell *matCellDef="let element" class="pad-l show-hh">{{element.customer}}</mat-cell>
                             </ng-container>
 
                             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

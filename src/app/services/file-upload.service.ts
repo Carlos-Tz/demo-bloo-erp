@@ -4,6 +4,7 @@ import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angula
 import { ToastrService } from 'ngx-toastr';
 import {Observable} from 'rxjs';
 import { File } from '../models/file';
+import { HelpService } from './help.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,12 +15,16 @@ export class FileUploadService {
   public fileList!: AngularFireList<any>;
   public fileObject!: AngularFireObject<any>;
   public lastFileRef!: Observable<any[]>;
+  private db_name = '';
 
   constructor(
     private db: AngularFireDatabase,
-    public toastr: ToastrService
+    public toastr: ToastrService,
+    private helpS: HelpService
     //private http:HttpClient
-    ) { }
+    ) { 
+      this.db_name = helpS.GetDbName();
+    }
     
   // Returns an observable
   /* upload(file):Observable<any> {
@@ -35,26 +40,26 @@ export class FileUploadService {
       return this.http.post(this.baseApiUrl, formData)
   } */
   GetFileList() {
-    this.fileList = this.db.list('blooming-erp/file-list');
+    this.fileList = this.db.list(this.db_name + '/file-list');
     return this.fileList;
   }
 
   AddFile(file: File) {
-    this.db.database.ref().child('blooming-erp/file-list/'+ file.id).set(file);
+    this.db.database.ref().child(this.db_name + '/file-list/'+ file.id).set(file);
   }
 
   GetFile(key: string) {
-    this.fileObject = this.db.object('blooming-erp/file-list/' + key);
+    this.fileObject = this.db.object(this.db_name + '/file-list/' + key);
     return this.fileObject;
   }
 
   GetLastFile(){
-    this.lastFileRef = this.db.list('blooming-erp/file-list/', ref => ref.limitToLast(1)).valueChanges();
+    this.lastFileRef = this.db.list(this.db_name + '/file-list/', ref => ref.limitToLast(1)).valueChanges();
     return this.lastFileRef;
   }
 
   DeleteFile(key: string) {
-    this.fileObject = this.db.object('blooming-erp/file-list/' + key);
+    this.fileObject = this.db.object(this.db_name + '/file-list/' + key);
     this.fileObject.remove();
   }
 }

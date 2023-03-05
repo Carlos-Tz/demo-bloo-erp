@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { ApiCompanyService } from 'src/app/services/api-company.service';
+import { HelpService } from 'src/app/services/help.service';
 
 @Component({
   selector: 'app-company',
@@ -11,7 +12,7 @@ import { ApiCompanyService } from 'src/app/services/api-company.service';
 })
 export class CompanyComponent implements OnInit {
 
-  url='https://demo-erp.bloomingtec.mx/';
+  private url='';
   public myForm!: FormGroup;
   public name = '';
   public file: any;
@@ -21,10 +22,12 @@ export class CompanyComponent implements OnInit {
     public api: ApiCompanyService,
     private http: HttpClient,
     public toastr: ToastrService,
+    private helpS: HelpService
   ) { }
 
   ngOnInit(): void {
     this.sForm();
+    this.url = this.helpS.GetUrl();
     this.api.GetCompany().valueChanges().subscribe(data => {
       this.myForm.patchValue(data);
       if(data.logo){

@@ -9,7 +9,7 @@
                             <div class="d-flex">
                                 <button mat-button class="btn btn-outline-success" (click)="allCrops()">Todos los cultivos</button>
                                 <button mat-button mat-dialog-close>Cancelar</button>
-                                <button mat-button (click)="submitSurveyData()" [mat-dialog-close]="true" [disabled]="!myForm.valid" class="btn btn-outline-info">Guardar nuevo</button>
+                                <button mat-button (click)="submitSurveyData()" [mat-dialog-close]="true" class="btn btn-outline-info" [disabled]="!myForm.valid" >Guardar nuevo</button>
                             </div>
                         </div>
                     </nav>
@@ -57,9 +57,9 @@
                                     listPosition="above"
                                     styleMode="material"
                                     resettable
+                                    formControlName="crops"
                                     resultMaxHeight="200px">
                                     <select2-hint>Cultivos</select2-hint>
-                                    <!-- formControlName="crops" -->
                                 </select2>
                             </div>
                             <div class="col-sm-12">

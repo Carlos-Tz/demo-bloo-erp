@@ -80,7 +80,11 @@ export class PresentationsComponent implements OnInit {
   }
 
   openDialog() {
-    const dialogRef = this.dialog.open(NewPresentationComponent);
+    const dialogRef = this.dialog.open(NewPresentationComponent, {
+      autoFocus: false,
+      width: '100%',
+      maxWidth: '98%'
+    });
 
     dialogRef.afterClosed().subscribe(result => {
       //console.log(`Dialog result: ${result}`);
@@ -91,7 +95,10 @@ export class PresentationsComponent implements OnInit {
     const dialogRef = this.dialog.open(EditPresentationComponent, {
       data: {
         key: key
-      }
+      },
+      autoFocus: false,
+      width: '100%',
+      maxWidth: '98%'
     });
     
     dialogRef.afterClosed().subscribe(result => {

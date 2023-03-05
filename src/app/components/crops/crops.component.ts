@@ -80,7 +80,11 @@ export class CropsComponent implements OnInit {
   }
 
   openDialog() {
-    const dialogRef = this.dialog.open(NewCropComponent);
+    const dialogRef = this.dialog.open(NewCropComponent, {
+      autoFocus: false,
+      width: '100%',
+      maxWidth: '98%'
+    });
 
     dialogRef.afterClosed().subscribe(result => {
       //console.log(`Dialog result: ${result}`);
@@ -91,7 +95,10 @@ export class CropsComponent implements OnInit {
     const dialogRef = this.dialog.open(EditCropComponent, {
       data: {
         key: key
-      }
+      },
+      autoFocus: false,
+      width: '100%',
+      maxWidth: '98%'
     });
     
     dialogRef.afterClosed().subscribe(result => {
